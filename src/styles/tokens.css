@@ -1,0 +1,122 @@
+:root {
+  /* default building block (4px) */
+  --base-unit: 0.25rem; 
+
+  /* Spacing */
+  --space-xs: var(--base-unit); /* 4px */
+  --space-sm: calc(var(--base-unit) * 2); /* 8px */
+  --space-md: calc(var(--base-unit) * 4); /* 16px */
+  --space-lg: calc(var(--base-unit) * 6); /* 24px */
+  --space-xl: calc(var(--base-unit) * 8); /* 32px */
+
+  /* Border Radius */
+  --border-radius-xs: 2px;
+  --border-radius-sm: 8px; 
+  --border-radius-md: 12px; 
+  --border-radius-lg: 24px;
+
+  /* Icon size */
+  --icon-size-xs: 12px;
+  --icon-size-sm: 16px;
+
+  /* Icon Stroke width */
+  --icon-stroke-width: 1.5;
+
+  /* Typography */
+  --font-family: "Geist", -apple-system, sans-serif;
+
+  /* Font sizes */
+  --font-size-body-sm: 14px;
+  --font-size-body-lg: 16px;
+  --font-size-heading: 18px;
+  --font-size-display: 28px;
+  --font-size-display-lg: 32px;
+
+  /* Font weight */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* Color */
+  /* Text Color */
+  --color-font-primary: #F8F9FA;
+  --color-font-secondary: #C1C4E5;
+  --color-font-disabled: #8E94C6;
+
+  --color-bg-panel: #0E1221;
+  --color-bg-widget: linear-gradient(#222650, #1B1D38);
+
+  --color-border: #6671CE;
+
+  --color-primary-400: #785FFA;
+  --color-primary-300: #9D8CFF; 
+  --color-primary-200: #C3B6FF; 
+  --color-primary-100: #E4DEFF; 
+
+  --color-primary: var(--color-primary-400);
+
+  /* Button color functions */
+  --color-button-default: rgb(from var(--color-primary) r g b / 0.15);
+  --color-button-hover: rgb(from var(--color-primary) r g b / 0.22);
+  --color-button-focus: rgb(from var(--color-primary) r g b / 0.30);
+  --color-button-active: var(--color-primary);
+  --color-button-disabled:  rgb(from var(--color-primary) r g b / 0.04);
+
+  --color-track-ring: rgb(from var(--color-primary) r g b / 0.3);
+
+  /* Semantic Colors */
+  --color-success: #34D399;
+  --color-error: #FCA5A5;
+  --color-warning: #FDE68A;
+}
+
+/* BUTTON STATES */
+.btn-primary {
+  /* default state */
+  background-color: var(--color-button-default); 
+  color: var(--color-font-primary); /* White text (#F8F9FA) passes 11.4:1 contrast */
+  border: 1px solid var(--color-border); /* #6671CE border passes 3:1 boundary contrast */
+  
+  padding: calc(var(--space-xs) * 1.5) var(--space-md); 
+  border-radius: var(--border-radius-md);
+
+  font-family: var(--font-family);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-regular);
+  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+/* hover state */
+.btn-primary:hover {
+  background-color: var(--color-button-hover);
+}
+
+/* focus state */
+.btn-primary:focus-visible {
+  background-color: var(--color-button-focus); 
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* active state */
+.btn-primary:active {
+  background-color: var(--color-button-active);
+  color: var(--color-bg-panel);
+  border-color: transparent;                    
+}
+
+/* disabled */
+.btn-primary[aria-disabled="true"] {
+  background-color: var(--color-button-disabled);
+  border-color: rgb(from var(--color-border) r g b / 0.3);  
+  color: var(--color-font-disabled);                            
+  
+  cursor: not-allowed;
+  pointer-events: none; /* Stops accidental mouse triggers */
+}
