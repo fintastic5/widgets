@@ -1,0 +1,91 @@
+:root {
+  /* Font sizes */
+  --font-size-title: 18px;
+  --font-size-subtitle: 14px;
+  --font-size-display-sm: 24px;
+  --font-size-display-lg: 34px;
+  --font-size-body-sm: 14px;
+  --font-size-body-lg: 16px;
+
+  /* Font weight */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+}
+
+[data-theme="light"] {
+  --bg-panel: #F3F2F8;
+  --bg-widget: #FFFFFF;
+  --border: #E1E0E6;
+
+  --text-primary: #111111;
+  --text-secondary: #55555A;
+
+  --color-primary: #6155F5;
+  --color-secondary: #0088FF;
+  --color-tertiary: #0A96A3;
+
+  --success: #00812D;
+  --error: #A7000F;
+  --warning: #8E4900;
+
+  --bg-success: rgb(from var(--success) r g b / 0.15);
+  --bg-error: rgb(from var(--error) r g b / 0.15);
+  --bg-warning: #FFF3C2;
+
+  --track-ring: #EFEFF0;
+}
+
+[data-theme="dark"] {
+  --bg-panel: #000000;
+  --bg-widget: #1C1C1E;
+  --border: #2C2C2E;
+
+  --text-primary: #F1F1F1;
+  --text-secondary: #A8A8A8;
+
+  --color-primary: #6155F5;
+  --color-secondary: #0088FF;
+  --color-tertiary: #00C3D0;
+ 
+  --success: #10B981;
+  --error: #FF453A;
+  --warning: #FF9F0A;
+
+  --bg-success: rgb(from var(--success) r g b / 0.15);
+  --bg-error: rgb(from var(--error) r g b / 0.15);
+  --bg-warning: rgb(from var(--warning) r g b / 0.15);
+
+  --track-ring: #3E3D45;
+}
+
+[data-theme="midnight"] {
+  --bg-panel: #101221;
+  --bg-widget: linear-gradient(#222050, #181d3e);
+  --border: #343875;
+
+  --text-primary: #f9f9fa;
+  --text-secondary: #c1c4e5;
+
+  --color-primary: #785FFA;
+  --color-secondary: #9D8CFF;
+  --color-tertiary: #E4DEFF;
+
+  --success: #34d399;
+  --error: #F26565;
+  --warning: #fde68a;
+
+  --bg-success: rgb(from var(--success) r g b / 0.15);
+  --bg-error: rgb(from var(--error) r g b / 0.15);
+  --bg-warning: rgb(from var(--warning) r g b / 0.15);
+
+  --track-ring: rgb(from var(--purple-400) r g b / 0.3);
+}
+
+body {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+

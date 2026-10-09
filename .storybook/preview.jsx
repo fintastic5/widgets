@@ -1,3 +1,5 @@
+import "./theme.css";
+
 /** @type { import('@storybook/react-vite').Preview } */
 const preview = {
   parameters: {
@@ -7,14 +9,29 @@ const preview = {
         date: /Date$/i,
       },
     },
-
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo"
-    }
+      // "todo" shows violations in the test UI, "error" fails CI on them
+      test: "todo",
+    },
   },
+  globalTypes: {
+    theme: {
+      description: "Global theme for widgets",
+      defaultValue: "dark",
+      toolbar: {
+        title: "Theme",
+        icon: "mirror",
+        items: ["dark", "light", "midnight"],
+        dynamicTitle: true,
+      },
+    },
+  },
+  decorators: [
+    (Story, context) => {
+      document.documentElement.setAttribute("data-theme", context.globals.theme);
+      return Story();
+    },
+  ],
 };
 
 export default preview;

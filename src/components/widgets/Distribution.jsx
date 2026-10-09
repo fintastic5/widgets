@@ -1,17 +1,20 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-secondary);
 `;
+
 const Title = styled.p`
   margin: 0;
   font-size: 14px;
 `;
+
 const Subtitle = styled.p`
   margin: 0 0 16px;
   font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  color: var(--text-primary);
 `;
+
 const Donut = styled.div`
   width: 140px;
   height: 140px;
@@ -25,9 +28,10 @@ const Donut = styled.div`
     position: absolute;
     inset: 22px;
     border-radius: 50%;
-    background: var(--bg-widget, linear-gradient(#222050, #181d3e));
+    background: var(--bg-widget);
   }
 `;
+
 const Legend = styled.ul`
   list-style: none;
   margin: 0;
@@ -37,19 +41,21 @@ const Legend = styled.ul`
   gap: 8px;
   font-size: 13px;
 `;
+
 const LegendItem = styled.li`
   display: flex;
   align-items: center;
   gap: 6px;
 `;
-const Swatch = styled.span`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+
+const Key = styled.span`
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
   background: ${(p) => p.$color};
 `;
 
-const SEGMENT_COLORS = ["var(--purple-400, #7b5ffa)", "var(--purple-300, #9083cf)", "var(--purple-200, #c3b8f2)", "var(--purple-100, #e4defb)"];
+const SEGMENT_COLORS = ["var(--color-primary)", "var(--color-secondary)", "var(--color-tertiary)"];
 
 export function Distribution({ title, subtitle, segments = [] }) {
   const stops = segments.reduce((acc, seg, i) => {
@@ -65,11 +71,18 @@ export function Distribution({ title, subtitle, segments = [] }) {
     <Wrapper>
       {title && <Title>{title}</Title>}
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <Donut $gradient={stops.join(", ")} role="img" aria-label={segments.map((s) => `${s.label} ${s.pct}%`).join(", ")} />
+      <Donut
+        $gradient={stops.join(", ")}
+        role="img"
+        aria-label={segments.map((s) => `${s.label} ${s.pct}%`).join(", ")}
+      />
       <Legend>
         {segments.map((seg, i) => (
           <LegendItem key={seg.label}>
-            <Swatch $color={SEGMENT_COLORS[i % SEGMENT_COLORS.length]} />
+            <Key 
+              $color={SEGMENT_COLORS[i % SEGMENT_COLORS.length]} 
+              aria-hidden="true"
+            />
             {seg.label} {seg.pct}%
           </LegendItem>
         ))}
