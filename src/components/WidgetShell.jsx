@@ -10,31 +10,35 @@ const Header = styled.div`
 `;
 
 const HeaderText = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-primary, #171719);
 `;
 
 const Title = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 700;
 `;
 
 const Subtitle = styled.p`
   margin: 0;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--text-secondary, #5b5b63);
 `;
 
 const MenuButton = styled.button`
   background: none;
   border: none;
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-secondary, #5b5b63);
   cursor: pointer;
   padding: 4px;
   display: flex;
 `;
 
 const StateMessage = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-secondary, #5b5b63);
   font-size: 13px;
   padding: 24px 0;
   text-align: center;
@@ -43,7 +47,7 @@ const StateMessage = styled.div`
 const Skeleton = styled.div`
   height: 140px;
   border-radius: 12px;
-  background: linear-gradient(90deg, var(--border, #343875) 25%, var(--bg-panel, #101221) 50%, var(--border, #343875) 75%);
+  background: linear-gradient(90deg, var(--border, #dedee5) 25%, var(--bg-panel, #f2f1f7) 50%, var(--border, #dedee5) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
 

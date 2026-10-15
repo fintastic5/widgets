@@ -1,21 +1,21 @@
 import { styled } from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-secondary, #5b5b63);
 `;
 const Title = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
 `;
 const Subtitle = styled.p`
-  margin: 0 0 16px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  margin: 0 0 14px;
+  font-weight: 400;
+  color: var(--text-secondary, #5b5b63);
 `;
 const Donut = styled.div`
-  width: 140px;
-  height: 140px;
-  margin: 0 auto 16px;
+  width: 114px;
+  height: 114px;
+  margin: 0 auto 12px;
   border-radius: 50%;
   background: conic-gradient(${(p) => p.$gradient});
   position: relative;
@@ -23,9 +23,9 @@ const Donut = styled.div`
   &::after {
     content: "";
     position: absolute;
-    inset: 22px;
+    inset: 36px;
     border-radius: 50%;
-    background: var(--bg-widget, linear-gradient(#222050, #181d3e));
+    background: var(--bg-widget, #ffffff);
   }
 `;
 const Legend = styled.ul`
@@ -35,7 +35,7 @@ const Legend = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  font-size: 13px;
+  font-size: 15px;
 `;
 const LegendItem = styled.li`
   display: flex;
@@ -43,16 +43,20 @@ const LegendItem = styled.li`
   gap: 6px;
 `;
 const Swatch = styled.span`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
   background: ${(p) => p.$color};
 `;
 
-const SEGMENT_COLORS = ["var(--purple-400, #7b5ffa)", "var(--purple-300, #9083cf)", "var(--purple-200, #c3b8f2)", "var(--purple-100, #e4defb)"];
+const SEGMENT_COLORS = ["#00a4ad", "#078bff", "#6254f5", "#ffae42"];
 
 export function Distribution({ title, subtitle, segments = [] }) {
-  const stops = segments.reduce((acc, seg, i) => {
+  const gradientOrder = segments.length >= 3
+    ? [segments[segments.length - 1], ...segments.slice(0, -1)]
+    : segments;
+  const stops = gradientOrder.reduce((acc, seg) => {
+    const i = segments.indexOf(seg);
     const color = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
     const start = acc.cursor;
     const end = start + seg.pct;

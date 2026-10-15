@@ -6,23 +6,29 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
-  color: var(--text-secondary, #c1c4e5);
+  gap: 16px;
+  color: var(--text-secondary, #5b5b63);
   min-width: 0;
+
+  > div {
+    flex: 0 0 184px;
+    min-width: 0;
+  }
 `;
 const Title = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
 `;
 const Subtitle = styled.p`
-  margin: 0 0 16px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  margin: 0 0 14px;
+  font-weight: 400;
+  color: var(--text-secondary, #5b5b63);
 `;
 const RingWrap = styled.div`
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 154px;
+  height: 154px;
+  margin: 0 auto;
   flex-shrink: 0;
 `;
 const Value = styled.div`
@@ -34,12 +40,12 @@ const Value = styled.div`
   justify-content: center;
 `;
 const BigNumber = styled.span`
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
-  color: var(--text-primary, #f9f9fa);
+  color: var(--text-primary, #111111);
 `;
 const SmallLabel = styled.span`
-  font-size: 12px;
+  font-size: 14px;
 `;
 const List = styled.ul`
   list-style: none;
@@ -47,10 +53,12 @@ const List = styled.ul`
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 13px;
-  min-width: 180px;
-  flex: 1;
+  gap: 16px;
+  font-size: 15px;
+  width: 240px;
+  min-width: 240px;
+  flex: 0 0 240px;
+  margin-left: 71px;
 `;
 const Row = styled.li`
   display: flex;
@@ -59,16 +67,16 @@ const Row = styled.li`
   min-width: 0;
 `;
 const Dot = styled.span`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
   background: ${(p) => p.$color};
 `;
 const Label = styled.span`
   flex: 1;
 `;
 const Amount = styled.span`
-  color: var(--text-primary, #f9f9fa);
+  color: var(--text-primary, #111111);
   font-weight: 600;
 `;
 const Badge = styled.span`
@@ -76,11 +84,11 @@ const Badge = styled.span`
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 999px;
-  background: ${(p) => (p.$direction === "up" ? "var(--success, #34d399)" : p.$direction === "down" ? "var(--error, #fca5a5)" : "var(--warning, #fde68a)")};
-  color: var(--bg-panel, #101221);
+  background: ${(p) => (p.$direction === "up" ? "#d9f1e2" : p.$direction === "down" ? "#f7d9dc" : "#fff0c2")};
+  color: ${(p) => (p.$direction === "up" ? "#16843c" : p.$direction === "down" ? "#bf303b" : "#9a6200")};
 `;
 
-const RING_COLORS = ["var(--purple-200, #c3b8f2)", "var(--purple-300, #9083cf)", "var(--purple-400, #7b5ffa)"];
+const RING_COLORS = ["#6254f5", "#078bff", "#00a4ad"];
 
 export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
   const radii = [70, 54, 38];
@@ -91,13 +99,13 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
         {title && <Title>{title}</Title>}
         {subtitle && <Subtitle>{subtitle}</Subtitle>}
         <RingWrap role="img" aria-label={`${overall}% overall`}>
-          <svg viewBox="0 0 160 160" width="160" height="160">
+          <svg viewBox="0 0 160 160" width="154" height="154">
             {items.slice(0, 3).map((item, i) => {
               const r = radii[i];
               const c = ringCircumference(r);
               return (
                 <React.Fragment key={item.label}>
-                  <circle cx="80" cy="80" r={r} fill="none" stroke="var(--border, #343875)" strokeWidth="10" />
+                  <circle cx="80" cy="80" r={r} fill="none" stroke="var(--border, #eeeeef)" strokeWidth="10" />
                   <circle
                     cx="80" cy="80" r={r} fill="none" stroke={RING_COLORS[i]} strokeWidth="10"
                     strokeLinecap="round" strokeDasharray={c} strokeDashoffset={ringOffset(r, item.pct)}
@@ -113,7 +121,7 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
       <List>
         {items.map((item, i) => (
           <Row key={item.label}>
-            <Dot $color={RING_COLORS[i % RING_COLORS.length]} />
+            <Dot $color={RING_COLORS[RING_COLORS.length - 1 - (i % RING_COLORS.length)]} />
             <Label>{item.label}</Label>
             <Amount>{item.amount}</Amount>
             {item.change !== undefined && (

@@ -1,42 +1,45 @@
 import { styled } from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--text-secondary, #5b5b63);
 `;
 
 const Title = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 20px;
 `;
 
 const Subtitle = styled.p`
   margin: 0 0 12px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  font-weight: 400;
+  color: var(--text-secondary, #5b5b63);
 `;
 
 const SvgWrap = styled.div`
   position: relative;
-  width: 160px;
-  height: 90px;
+  width: 220px;
+  height: 116px;
   margin: 0 auto;
 `;
 
 const Value = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 30px;
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  color: var(--text-primary, #f9f9fa);
+  color: var(--text-primary, #111111);
 `;
 
 const Footer = styled.p`
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 15px;
   text-align: center;
+
+  &:first-of-type { transform: translateY(-32px); }
+  &:last-of-type { margin-top: -4px; }
 `;
 
 function describeArc(cx, cy, r, startAngle, endAngle) {
@@ -63,9 +66,9 @@ export function Gauge({ title, subtitle, value, target, actualLabel }) {
       {title && <Title>{title}</Title>}
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
       <SvgWrap role="img" aria-label={`${title || "Gauge"}: ${pct}% of target${target ? `, target ${target}` : ""}`}>
-        <svg viewBox="0 0 160 90" width="160" height="90">
-          <path d={describeArc(80, 80, 70, 0, 180)} fill="none" stroke="var(--border, #343875)" strokeWidth="14" strokeLinecap="round" />
-          <path d={describeArc(80, 80, 70, 0, angle)} fill="none" stroke="var(--purple-400, #7b5ffa)" strokeWidth="14" strokeLinecap="round" />
+        <svg viewBox="0 0 160 90" width="220" height="116">
+          <path d={describeArc(80, 80, 70, 0, 180)} fill="none" stroke="var(--border, #eeeeef)" strokeWidth="15" strokeLinecap="round" />
+          <path d={describeArc(80, 80, 70, 0, angle)} fill="none" stroke="var(--purple-400, #6254f5)" strokeWidth="15" strokeLinecap="round" />
         </svg>
         <Value>{pct}%</Value>
       </SvgWrap>
