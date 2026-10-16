@@ -154,7 +154,7 @@ const PanelGrid = styled.div`
     auto-fill,
     minmax(min(100%, ${CARD_SIZE}px), ${CARD_SIZE}px)
   );
-  grid-auto-rows: ${CARD_SIZE}px;
+  grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
   min-width: 0;
   width: 100%;
@@ -202,9 +202,9 @@ const Slot = styled.div`
   }
 
   /* Wide widgets stack vertically when only one column fits. */
-  @container panel-content (max-width: 523px) {
+  @container panel-content (max-width: 519px) {
     grid-column: span 1;
-    grid-row: span ${({ $size }) => ($size > 1 ? 2 : 1)};
+    grid-row: span 1;
   }
 `;
 

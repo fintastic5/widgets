@@ -34,12 +34,11 @@ const Wrapper = styled.div`
   padding: 0px 1em;
  
 
-  @container panel-content (max-width: 523px) { 
+  @container panel-content (max-width: 519px) {
     flex-direction: column;
-    flex-wrap: wrap; 
-    align-items: stretch; 
-    gap: 4rem;
-    padding: 0em;
+    align-items: stretch;
+    gap: 16px;
+    padding: 0;
   }
 `;
 
