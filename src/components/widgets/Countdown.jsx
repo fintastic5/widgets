@@ -1,104 +1,112 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Bell, Calendar } from "lucide-react";
+import { Bell, Calendar, Check } from "lucide-react";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary);
-`;
-
-const Title = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
   margin: 0;
-  font-size: 14px;
+  padding: 0;
+  box-sizing: border-box;
 `;
 
-const Subtitle = styled.p`
-  margin: 0 0 16px;
-  font-weight: 600;
-  color: var(--text-primary);
-`;
-
-const BoxRow = styled.div`
+const TimeContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 4px;
+  width: 100%;
+  height; 100%;
 `;
 
 const Box = styled.div`
-  background: var(--bg-panel);
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-countdown-border);
+  height: 100%;
+  width: 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 6px;
   border-radius: 12px;
-  padding: 18px 2px;
-  text-align: center;
-  min-width: 56px;
 `;
 
 const BoxValue = styled.div`
   font-size: 24px;
-  font-weight: 700;
-  color: var(--text-primary);
-  padding-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-font-primary);
 `;
 
 const BoxLabel = styled.div`
-  font-size: 11px;
-  color: var(--text-secondary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-);
+  color: var(--color-font-secondary);
 `;
 
 const Colon = styled.span`
   font-size: 24px;
   font-weight: 700;
-  color: var(--border);
+  (--color-countdown-btn-border);
 `;
 
 const DateRow = styled.p`
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 0 0 12px;
   font-size: 13px;
-  color: var(--text-primary);
+  color: var(--color-font-secondary);
 `;
 
 const Strong = styled.strong`
-  color: var(--text-secondary);
+  color: var(--color-font-primary);
   font-weight: var(--font-weight-medium) 
 `;
 
 const NotifyButton = styled.button`
+  background-color: var(--color-countdown-btn-bg);
+  color: var(--color-countdown-btn-text);
+  border: 1px solid var(--color-countdown-btn-border);
+  border-radius: 16px;
+  font-size: var(--font-size-body-sm);
+  font-weight: 500;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  background: var(--border);
-  color: var(--text-primary);
-  border: none;
-  border-radius: 16px;
-  padding: 8px 16px;
-  font-size: var(--font-size-body-sm);
   cursor: pointer;
+  padding: 8px 16px;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
-    background-color: var(--color-primary);
+    background-color: var(--color-countdown-btn-hover);
   }
 
   &:focus-visible {
     background-color: var(--color-button-focus);
-    outline: 3px solid var(--color-primary);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   &:active {
-    transform: translateY(1px);
+    background-color: var(--color-button-active);
+    color: var(--color-bg-panel);
+    border-color: transparent;
   }
 
   &[aria-disabled='true'],
   &:disabled {
-    opacity: 0.5;
+    color: var(--color-font-disabled);
     cursor: not-allowed;
-  }
-
-  @media (min-width: 640px) {
-    padding: 8px 16px;
-    font-size: 14px;
+    pointer-events: none;
   }
 `;
 
@@ -110,25 +118,34 @@ function timeRemaining(target) {
   return { days, hours, mins };
 }
 
-export function Countdown({ title, subtitle, launchDate, onNotify }) {
+export function Countdown({ launchDate, onNotify }) {
   const [time, setTime] = useState(() => timeRemaining(launchDate));
 
+  const [isTimerSet, setIsTimerSet] = useState(false);
+
   useEffect(() => {
-    const id = setInterval(() => setTime(timeRemaining(launchDate)), 60000);
-    return () => clearInterval(id);
-  }, [launchDate]);
+  if (!isTimerSet) return;
+
+  const id = setInterval(() => {
+    setTime(timeRemaining(launchDate));
+  }, 60000);
+
+  return () => clearInterval(id);
+}, [launchDate, isTimerSet]);
 
   const dateLabel = new Date(launchDate).toLocaleDateString(undefined, {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
+  
+  function handleTimerToggle() {
+    setIsTimerSet((prev) => !prev);
+  }
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <BoxRow role="timer" aria-label={`${time.days} days, ${time.hours} hours, ${time.mins} minutes remaining`} >
+      <TimeContainer role="timer" aria-label={`${time.days} days, ${time.hours} hours, ${time.mins} minutes remaining`} >
         <Box>
           <BoxValue>{time.days}</BoxValue>
           <BoxLabel>Days</BoxLabel>
@@ -143,19 +160,29 @@ export function Countdown({ title, subtitle, launchDate, onNotify }) {
           <BoxValue>{time.mins}</BoxValue>
           <BoxLabel>Mins</BoxLabel>
         </Box>
-      </BoxRow>
+      </TimeContainer>
       
       <DateRow>
-        <Calendar size={16} aria-hidden="true"/> Launch Date:  
+        <Calendar size={14} aria-hidden="true"/> Launch Date:  
         <Strong>{dateLabel}</Strong>
       </DateRow>
 
       <NotifyButton 
         type="button"
-        onClick={onNotify}
-        aria-label="Notify me when the timer begins"
+        onClick={handleTimerToggle}
+        aria-label={isTimerSet ? "Stop countdown" : "Start countdown"}
       >
-        <Bell size={16} aria-hidden="true"/> Notify Me
+        {isTimerSet ? (
+          <>
+            <Check size={14} aria-hidden="true" />
+            Countdown Running
+          </>
+      
+        ) : (
+          <>
+            <Bell size={14} aria-hidden="true"/> Notify Me
+          </>
+        )}
       </NotifyButton>
     </Wrapper>
   );

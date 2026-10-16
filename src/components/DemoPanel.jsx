@@ -46,9 +46,9 @@ export function DemoPanel() {
           <GoalRings
             overall={78}
             items={[
-              { label: "Website", amount: "$12,579", change: 12 },
-              { label: "Marketplace", amount: "$4,579", change: -12 },
-              { label: "Affiliates", amount: "$12,579", change: 0 },
+              { label: "Website", pct: 76, amount: "$12,579", change: 12 },
+              { label: "Marketplace", pct: 64, amount: "$4,579", change: -12 },
+              { label: "Affiliates", pct: 40, amount: "$12,579", change: 0 },
             ]}
           />
         </WidgetShell>

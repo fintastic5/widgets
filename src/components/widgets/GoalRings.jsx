@@ -2,35 +2,55 @@ import React from "react";
 import styled from "styled-components";
 import { ringCircumference, ringOffset } from "./ringMath";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 36px;
-  color: var(--text-secondary);
-  min-width: 0;
-  width: 100%;
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
-`;
-
 const Title = styled.p`
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-font-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
-  font-size: 14px;
 `;
 
 const Subtitle = styled.p`
-  margin: 0 0 16px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  color: var(--color-font-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
 `;
 
-const RingWrap = styled.div`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  gap: 16px;
+  padding: 0px 1em;
+ 
+
+  @container panel-content (max-width: 523px) { 
+    flex-direction: column;
+    flex-wrap: wrap; 
+    align-items: stretch; 
+    gap: 4rem;
+    padding: 0em;
+  }
+`;
+
+const RingSection = styled.div`
+  display: flex;
+  flex: 1;
+  height: 100%;
+`;
+
+const ValueContainer = styled.div`
   position: relative;
-  width: 160px;
-  height: 160px;
-  flex-shrink: 0;
 `;
 
 const Value = styled.div`
@@ -43,13 +63,13 @@ const Value = styled.div`
 `;
 
 const BigNumber = styled.span`
-  font-size: var(--font-size-display-sm);
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 `;
 
 const SmallLabel = styled.span`
-  font-size: 12px;
+  font-size: var(--font-size-body-sm);
 `;
 
 const List = styled.ul`
@@ -58,9 +78,7 @@ const List = styled.ul`
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 13px;
-  min-width: 180px;
+  gap: 14px;
   flex: 1;
 `;
 
@@ -68,14 +86,14 @@ const Row = styled.li`
   display: flex;
   align-items: center;
   gap: 8px;
-  min-width: 0;
 `;
 
 const Key = styled.span`
-  width: 12px;
   height: 12px;
+  aspect-ratio: 1;
   border-radius: 2px;
   background: ${(p) => p.$color};
+  width: 12px;
 `;
 
 const Label = styled.span`
@@ -90,35 +108,41 @@ const Amount = styled.span`
 `;
 
 const Badge = styled.span`
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
   padding: 2px 6px;
   border-radius: 999px;
-  background: ${(p) => (p.$direction === "up" ? "var(--success)" : p.$direction === "down" ? "var(--error)" : "var(--warning)")};
-  color: var(--bg-panel);
+
+  background: ${(p) => (p.$direction === "up" ? "var(--color-success-bg)" : p.$direction === "down" ? "var(--color-error-bg)" : "var(--color-warning-bg)")};
+
+  color: ${(p) => (p.$direction === "up" ? "var(--color-success)" : p.$direction === "down" ? "var(--color-error)" : "var(--color-warning)")};
 `;
 
-const RING_COLORS = ["var(--color-primary)", "var(--color-secondary)", "var(--color-tertiary)"];
+const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
 export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
-  const radii = [70, 54, 38];
+  const radii = [64, 48, 32];
 
   return (
     <Wrapper>
-      <div>
-        {title && <Title>{title}</Title>}
-        {subtitle && <Subtitle>{subtitle}</Subtitle>}
-        <RingWrap role="img" aria-label={`${overall}% overall`}>
-          <svg viewBox="0 0 160 160" width="160" height="160">
+      <RingSection>
+        <ValueContainer role="img" aria-label={`${overall}% overall`}>
+          <svg 
+            viewBox="0 0 140 140" 
+            width="100%"
+            height="100%"
+            preserveAspectRatio="xMidYMid meet"
+            aria-hidden="true"
+          >
             {items.slice(0, 3).map((item, i) => {
               const r = radii[i];
               const c = ringCircumference(r);
               return (
                 <React.Fragment key={item.label}>
-                  <circle cx="80" cy="80" r={r} fill="none" stroke="var(--border)" strokeWidth="10" />
+                  <circle cx="70" cy="70" r={r} fill="none" stroke="var(--color-track-ring)" strokeWidth="10" />
                   <circle
-                    cx="80"
-                    cy="80"
+                    cx="70"
+                    cy="70"
                     r={r}
                     fill="none"
                     stroke={RING_COLORS[i]}
@@ -126,7 +150,7 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
                     strokeLinecap="round"
                     strokeDasharray={c}
                     strokeDashoffset={ringOffset(r, item.pct)}
-                    transform="rotate(-90 80 80)"
+                    transform="rotate(-90 70 70)"
                   />
                 </React.Fragment>
               );
@@ -136,9 +160,9 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
             <BigNumber>{overall}%</BigNumber>
             <SmallLabel>Overall</SmallLabel>
           </Value>
-        </RingWrap>
-      </div>
-      <List role="list" aria-label="Goal list">
+        </ValueContainer>
+      </RingSection>
+      <List>
         {items.map((item, i) => (
           <Row key={item.label}>
             <Key 

@@ -1,24 +1,22 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
-const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
-`;
-
-const Subtitle = styled.p`
-  margin: 0 0 16px;
-  font-weight: 600;
-  color: var(--text-primary);
+const DonutArea = styled.div`
+  height: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 16px;
 `;
 
 const Donut = styled.div`
-  width: 140px;
-  height: 140px;
-  margin: 0 auto 16px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: conic-gradient(${(p) => p.$gradient});
   position: relative;
@@ -26,20 +24,18 @@ const Donut = styled.div`
   &::after {
     content: "";
     position: absolute;
-    inset: 22px;
+    inset: 26px;
     border-radius: 50%;
-    background: var(--bg-widget);
+    background: var(--color-bg-widget);
   }
 `;
 
 const Legend = styled.ul`
   list-style: none;
-  margin: 0;
-  padding: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: var(--font-size-body-sm)
 `;
 
 const LegendItem = styled.li`
@@ -53,11 +49,12 @@ const Key = styled.span`
   height: 12px;
   border-radius: 2px;
   background: ${(p) => p.$color};
+  aspect-ratio: 1;
 `;
 
-const SEGMENT_COLORS = ["var(--color-primary)", "var(--color-secondary)", "var(--color-tertiary)"];
+const SEGMENT_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function Distribution({ title, subtitle, segments = [] }) {
+export function Distribution({ segments = [] }) {
   const stops = segments.reduce((acc, seg, i) => {
     const color = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
     const start = acc.cursor;
@@ -69,13 +66,13 @@ export function Distribution({ title, subtitle, segments = [] }) {
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <Donut
+      <DonutArea>
+        <Donut
         $gradient={stops.join(", ")}
         role="img"
         aria-label={segments.map((s) => `${s.label} ${s.pct}%`).join(", ")}
       />
+      </DonutArea>
       <Legend>
         {segments.map((seg, i) => (
           <LegendItem key={seg.label}>

@@ -1,18 +1,24 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
 `;
 
 const Title = styled.p`
   margin: 0;
   font-size: 14px;
+  color: var(--color-font-econdary);
 `;
 
 const Subtitle = styled.p`
   margin: 0 0 12px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--color-font-primary);
 `;
 
 const SvgWrap = styled.div`
@@ -78,13 +84,13 @@ export function Gauge({ title, subtitle, value, target, actual }) {
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
       <SvgWrap
         role="img"
-        aria-label={`${title}: ${pct}% of target${target ? `, target ${target}` : ""}`}
+        aria-label={`${title}, ${subtitle}: ${pct}% of target${target ? `, target ${target}` : ""}`}
       >
         <svg viewBox="0 0 176 96" width="176" height="96" aria-hidden="true">
           <path
             d={describeArc(88, 88, 80, 0, 180)}
             fill="none"
-            stroke="var(--border)"
+            stroke="var(--color-track-ring)"
             strokeWidth="16"
             strokeLinecap="round"
           />
