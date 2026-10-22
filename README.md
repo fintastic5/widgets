@@ -55,3 +55,30 @@ Build the package and Storybook preview:
 npm run build
 npm run build-storybook
 ```
+
+## Documentation
+
+To use the local widgets package in the docs site, build it from the repository root first:
+
+```bash
+npm run build
+```
+
+**Rebuild it after changing widget source.** Then run the documentation site:
+
+```bash
+cd docs
+npm install
+npm run dev
+```
+
+From `docs/`, build and preview the production site with:
+
+```bash
+npm run build
+npm run preview
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENCE).
