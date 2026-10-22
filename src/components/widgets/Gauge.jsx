@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const Title = styled.p`
   margin: 0;
   font-size: 14px;
-  color: var(--color-font-econdary);
+  color: var(--color-font-secondary);
 `;
 
 const Subtitle = styled.p`
@@ -53,7 +53,7 @@ const FooterLabel = styled.span`
 const FooterValue = styled.span`
   font-size: 16px;
   color: var(--text-secondary);
-  font-weight: var(--font-weight-medium) 
+  font-weight: var(--font-weight-medium);
 `;
 
 function describeArc(cx, cy, r, startAngle, endAngle) {

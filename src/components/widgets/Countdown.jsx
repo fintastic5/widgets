@@ -22,7 +22,7 @@ const TimeContainer = styled.div`
   align-items: center;
   gap: 4px;
   width: 100%;
-  height; 100%;
+  height: 100%;
 `;
 
 const Box = styled.div`
@@ -48,14 +48,14 @@ const BoxValue = styled.div`
 
 const BoxLabel = styled.div`
   font-size: var(--font-size-body-lg);
-  font-weight: var(--font-weight-);
+  font-weight: var(--font-weight-medium);
   color: var(--color-font-secondary);
 `;
 
 const Colon = styled.span`
   font-size: 24px;
   font-weight: 700;
-  (--color-countdown-btn-border);
+  color: var(--color-countdown-btn-border);
 `;
 
 const DateRow = styled.p`
@@ -68,7 +68,7 @@ const DateRow = styled.p`
 
 const Strong = styled.strong`
   color: var(--color-font-primary);
-  font-weight: var(--font-weight-medium) 
+  font-weight: var(--font-weight-medium);
 `;
 
 const NotifyButton = styled.button`
