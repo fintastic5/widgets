@@ -1,69 +1,110 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const CARD_SIZE = 250;
+const CARD_SIZE = 248;
 const PANEL_PADDING = 32;
 const GRID_GAP = 24;
 const PANEL_BORDER = 1;
-const RESIZE_STEP = 10;
+const SCROLLBAR_WIDTH = 16;
 
 const DEFAULT_WIDTH =
-  CARD_SIZE * 2 + GRID_GAP + PANEL_PADDING * 2 + PANEL_BORDER * 2;
+  CARD_SIZE * 2 +
+  GRID_GAP +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2 +
+  SCROLLBAR_WIDTH; // 606px
 
 const DEFAULT_HEIGHT =
-  CARD_SIZE * 3 + GRID_GAP * 2 + PANEL_PADDING * 2 + PANEL_BORDER * 2;
+  CARD_SIZE * 3 +
+  GRID_GAP * 2 +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2; // 864px
 
-const MIN_WIDTH = CARD_SIZE + PANEL_PADDING * 2 + PANEL_BORDER * 2;
+const MIN_WIDTH =
+  CARD_SIZE +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2 +
+  SCROLLBAR_WIDTH; // 316px
 
-const MIN_HEIGHT = CARD_SIZE + PANEL_PADDING * 2 + PANEL_BORDER * 2;
+const MIN_HEIGHT =
+  CARD_SIZE +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2; // 316px
 
-// Keep a dimension within its minimum and maximum.
+const MAX_WIDTH = window.innerWidth;
+
+const RESIZE_STEP = 10;
+
+// Keep dimension within its minimum and maximum.
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), Math.max(min, max));
 }
 
-// Snap a dimension to the nearest card boundary.
+/* Snap panel dimension to the nearest card boundary. */
 function snapPanelSize(value, max) {
-  const availableSize = max - PANEL_PADDING * 2 - PANEL_BORDER * 2;
+  const availableSize =
+    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - SCROLLBAR_WIDTH;
 
+  // Find the maximum number of cards that can fit.
   const maxTracks = Math.max(
     1,
-    Math.floor((availableSize + GRID_GAP) / (CARD_SIZE + GRID_GAP)),
+    Math.floor(
+      (availableSize + GRID_GAP) /
+        (CARD_SIZE + GRID_GAP)
+    )
   );
 
+  // Find the nearest number of cards to the current size.
   const nearest = Math.round(
-    (value - PANEL_PADDING * 2 - PANEL_BORDER * 2 + GRID_GAP) /
-      (CARD_SIZE + GRID_GAP),
+    (
+      value -
+      PANEL_PADDING * 2 -
+      PANEL_BORDER * 2 +
+      GRID_GAP
+    ) /
+      (CARD_SIZE + GRID_GAP)
   );
 
-  const tracks = Math.min(Math.max(nearest, 1), maxTracks);
+  // Keep the result between one card and the maximum.
+  const safeTracks = Math.min(
+    Math.max(nearest, 1),
+    maxTracks
+  );
 
+  // Return the exact panel size for that number of cards.
   return (
-    tracks * CARD_SIZE +
-    (tracks - 1) * GRID_GAP +
+    safeTracks * CARD_SIZE +
+    (safeTracks - 1) * GRID_GAP +
     PANEL_PADDING * 2 +
-    PANEL_BORDER * 2
+    PANEL_BORDER * 2 +
+    SCROLLBAR_WIDTH
   );
 }
 
-// Load a saved size or use the default.
+// Load a saved size, or use the default.
 function getSavedSize(key, fallback, min, dimension) {
   if (typeof window === "undefined") return fallback;
 
-  const savedValue = localStorage.getItem(key);
-  const saved = Number(savedValue);
+  const viewport = dimension === "width"
+    ? window.innerWidth
+    : window.innerHeight;
 
-  const viewport =
-    dimension === "width" ? window.innerWidth : window.innerHeight;
+  const saved = Number(window.localStorage.getItem(key));
 
   return clamp(
-    savedValue !== null && Number.isFinite(saved) ? saved : fallback,
+    Number.isFinite(saved) && window.localStorage.getItem(key) !== null
+      ? saved
+      : fallback,
     min,
-    viewport,
+    viewport
   );
 }
 
-// Resizable panel frame.
+/* =========================
+   Resizable panel
+========================= */
+
 const PanelFrame = styled.div`
   position: relative;
 
@@ -73,18 +114,21 @@ const PanelFrame = styled.div`
   min-width: ${MIN_WIDTH}px;
   min-height: ${MIN_HEIGHT}px;
 
-  max-width: 100vw;
+  max-width: ${MAX_WIDTH}px;
   max-height: 100vh;
 
   box-sizing: border-box;
   background: var(--color-bg-panel);
   border: 1px solid var(--color-border);
-  border-radius: var(--widget-border-radius);
+  border-radius: 24px;
 
   overflow: hidden;
 `;
 
-// Panel content. The browser handles scrollbar visibility.
+/* =========================
+   Panel content
+========================= */
+
 const PanelContent = styled.div`
   position: relative;
   z-index: 1;
@@ -93,34 +137,37 @@ const PanelContent = styled.div`
   height: 100%;
   padding: ${PANEL_PADDING}px;
   box-sizing: border-box;
-
   overflow: auto;
 
+  scrollbar-gutter: stable;
   container-type: inline-size;
   container-name: panel-content;
 `;
 
-// Responsive widget grid.
+/* =========================
+   Responsive widget grid
+========================= */
+
 const PanelGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, ${CARD_SIZE}px);
-  grid-auto-rows: ${CARD_SIZE}px;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, ${CARD_SIZE}px), ${CARD_SIZE}px)
+  );
+  grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
-
   min-width: 0;
   width: 100%;
   align-content: start;
-
-  @container panel-content (max-width: 519px) {
-    grid-auto-rows: minmax(${CARD_SIZE}px, auto);
-  }
 `;
 
-// Widget slot.
+/* =========================
+   Widget slot
+========================= */
+
 const Slot = styled.div`
   grid-column: span ${(p) => p.$size};
   grid-row: span ${(p) => p.$rows};
-
   cursor: grab;
 
   transition:
@@ -129,7 +176,7 @@ const Slot = styled.div`
     transform 0.15s,
     opacity 0.15s;
 
-  ${(p) =>
+  ${(p) => 
     p.$dragOver &&
     `
       border: 2px dashed var(--color-chart-3);
@@ -154,13 +201,17 @@ const Slot = styled.div`
     outline-offset: 2px;
   }
 
-  /* Wide widgets stack when only one column fits. */
+  /* Wide widgets stack vertically when only one column fits. */
   @container panel-content (max-width: 519px) {
     grid-column: span 1;
+    grid-row: span 1;
   }
 `;
 
-// Widget card.
+/* =========================
+   Widget card
+========================= */
+
 const WidgetCard = styled.div`
   container-type: inline-size;
   container-name: widget-card;
@@ -169,11 +220,12 @@ const WidgetCard = styled.div`
   border: 1px solid var(--color-border);
   border-radius: var(--widget-border-radius);
   padding: 24px;
-
   box-sizing: border-box;
+
   width: 100%;
   height: 100%;
   min-width: 0;
+  min-height: 0;
 
   display: flex;
   flex-direction: column;
@@ -184,9 +236,13 @@ const WidgetCard = styled.div`
   }
 `;
 
-// Empty state.
+/* =========================
+   Empty state
+========================= */
+
 const EmptyState = styled.div`
   grid-column: 1 / -1;
+
   min-height: ${CARD_SIZE}px;
 
   border: 2px dashed
@@ -201,17 +257,15 @@ const EmptyState = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 
   color: var(--text-secondary, #c1c4e5);
-  gap: 8px;
   font-size: 14px;
 
   background: ${({ $dragOver }) =>
     $dragOver ? "var(--bg-panel, #101221)" : "transparent"};
 
-  transition:
-    border-color 0.15s,
-    background-color 0.15s;
+  transition: border-color 0.15s, background-color 0.15s;
 `;
 
 const EmptyStateIcon = styled.div`
@@ -219,7 +273,10 @@ const EmptyStateIcon = styled.div`
   opacity: 0.5;
 `;
 
-// Drop indicator.
+/* =========================
+   Drop indicator
+========================= */
+
 const DropIndicator = styled.div`
   grid-column: 1 / -1;
   height: 60px;
@@ -237,7 +294,10 @@ const DropIndicator = styled.div`
   font-size: 13px;
 `;
 
-// Resize handles.
+/* =========================
+   Resize handles
+========================= */
+
 const ResizeHandle = styled.div`
   position: absolute;
   z-index: 2;
@@ -360,16 +420,19 @@ const RESIZE_HANDLES = [
   "bottom-right",
 ];
 
-// Panel.
+/* =========================
+   Panel
+========================= */
+
 export function Panel({ children }) {
   const items = React.Children.toArray(children);
 
   const [panelWidth, setPanelWidth] = useState(() =>
-    getSavedSize("panel-width", DEFAULT_WIDTH, MIN_WIDTH, "width"),
+    getSavedSize("panel-width", DEFAULT_WIDTH, MIN_WIDTH, "width")
   );
 
   const [panelHeight, setPanelHeight] = useState(() =>
-    getSavedSize("panel-height", DEFAULT_HEIGHT, MIN_HEIGHT, "height"),
+    getSavedSize("panel-height", DEFAULT_HEIGHT, MIN_HEIGHT, "height")
   );
 
   const [dragOrderKeys, setDragOrderKeys] = useState(null);
@@ -378,20 +441,23 @@ export function Panel({ children }) {
 
   const dragIndex = useRef(null);
   const resizeRef = useRef(null);
-  const gridRef = useRef(null);
 
-  // Save panel dimensions.
+  // Save the panel dimensions.
   useEffect(() => {
     localStorage.setItem("panel-width", panelWidth);
     localStorage.setItem("panel-height", panelHeight);
   }, [panelWidth, panelHeight]);
 
-  // Keep the panel within the viewport.
+  // Keep the panel within the viewport when the window changes size.
   useEffect(() => {
     function handleViewportResize() {
-      setPanelWidth((width) => clamp(width, MIN_WIDTH, window.innerWidth));
+      setPanelWidth((width) =>
+        clamp(width, MIN_WIDTH, window.innerWidth)
+      );
 
-      setPanelHeight((height) => clamp(height, MIN_HEIGHT, window.innerHeight));
+      setPanelHeight((height) =>
+        clamp(height, MIN_HEIGHT, window.innerHeight)
+      );
     }
 
     window.addEventListener("resize", handleViewportResize);
@@ -401,7 +467,8 @@ export function Panel({ children }) {
     };
   }, []);
 
-  // Restore saved widget order and append newly added widgets.
+  // Restore the user's saved widget order.
+  // New widgets are appended instead of being omitted.
   const ordered = dragOrderKeys
     ? [
         ...dragOrderKeys
@@ -411,7 +478,10 @@ export function Panel({ children }) {
       ]
     : items;
 
-  // Start resizing.
+  /* -------------------------
+     Resizing
+  ------------------------- */
+
   function startResize(event, handle) {
     event.preventDefault();
 
@@ -430,7 +500,6 @@ export function Panel({ children }) {
     window.addEventListener("pointercancel", stopResize);
   }
 
-  // Update dimensions while dragging.
   function handleResize(event) {
     const resize = resizeRef.current;
 
@@ -447,9 +516,11 @@ export function Panel({ children }) {
     if (resize.handle.includes("bottom")) height += dy;
     if (resize.handle.includes("top")) height -= dy;
 
-    width = clamp(width, MIN_WIDTH, window.innerWidth);
+    // Keep the dimensions within the allowed limits.
+    width = clamp(width, MIN_WIDTH, MAX_WIDTH);
     height = clamp(height, MIN_HEIGHT, window.innerHeight);
 
+    // Store the latest dimensions for the pointer-up event.
     resize.currentWidth = width;
     resize.currentHeight = height;
 
@@ -457,39 +528,20 @@ export function Panel({ children }) {
     setPanelHeight(height);
   }
 
-  // Snap dimensions and clamp excess space below the grid.
   function stopResize() {
-    const resize = resizeRef.current;
+  const resize = resizeRef.current;
 
-    if (resize) {
-      const snappedWidth = clamp(
-        snapPanelSize(
-          resize.currentWidth ?? resize.startWidth,
-          window.innerWidth,
-        ),
-        MIN_WIDTH,
-        window.innerWidth,
-      );
+  if (resize) {
+    // Snap to the nearest complete column or row.
+    const snappedWidth = snapPanelSize(
+      resize.currentWidth ?? resize.startWidth,
+      Math.min(MAX_WIDTH, window.innerWidth)
+    );
 
-      // Measure the grid's content height.
-      const gridHeight = gridRef.current?.getBoundingClientRect().height;
-
-      const requiredHeight =
-        gridHeight == null
-          ? MIN_HEIGHT
-          : gridHeight + PANEL_PADDING * 2 + PANEL_BORDER * 2;
-
-      const snappedHeight = clamp(
-        Math.min(
-          snapPanelSize(
-            resize.currentHeight ?? resize.startHeight,
-            window.innerHeight,
-          ),
-          requiredHeight,
-        ),
-        MIN_HEIGHT,
-        window.innerHeight,
-      );
+    const snappedHeight = snapPanelSize(
+      resize.currentHeight ?? resize.startHeight,
+      window.innerHeight
+    );
 
       setPanelWidth(snappedWidth);
       setPanelHeight(snappedHeight);
@@ -502,7 +554,7 @@ export function Panel({ children }) {
     window.removeEventListener("pointercancel", stopResize);
   }
 
-  // Keyboard resizing.
+  // Allow keyboard users to resize using the arrow keys.
   function handleResizeKeyDown(event, handle) {
     let width = panelWidth;
     let height = panelHeight;
@@ -537,11 +589,13 @@ export function Panel({ children }) {
     event.preventDefault();
 
     setPanelWidth(clamp(width, MIN_WIDTH, window.innerWidth));
-
     setPanelHeight(clamp(height, MIN_HEIGHT, window.innerHeight));
   }
 
-  // Drag and drop.
+  /* -------------------------
+     Drag and drop
+  ------------------------- */
+
   function handleDragStart(index) {
     dragIndex.current = index;
     setDraggingIndex(index);
@@ -563,6 +617,7 @@ export function Panel({ children }) {
   function handleGridDragOver(event) {
     event.preventDefault();
 
+    // Show the end-of-list indicator when dragging over empty grid space.
     if (event.target === event.currentTarget) {
       setDragOverIndex(ordered.length);
     }
@@ -578,16 +633,16 @@ export function Panel({ children }) {
 
     setDragOrderKeys((previousOrder) => {
       const order = previousOrder
-        ? previousOrder.filter((key) =>
-            ordered.some((item) => item.key === key),
-          )
+        ? [
+            ...previousOrder.filter((key) =>
+              ordered.some((item) => item.key === key)
+            ),
+          ]
         : ordered.map((item) => item.key);
 
-      // Include newly added widgets.
+      // Include any new items that were added after the order was saved.
       for (const item of ordered) {
-        if (!order.includes(item.key)) {
-          order.push(item.key);
-        }
+        if (!order.includes(item.key)) order.push(item.key);
       }
 
       const [moved] = order.splice(sourceIndex, 1);
@@ -602,7 +657,10 @@ export function Panel({ children }) {
     handleDragEnd();
   }
 
-  // Render the panel.
+  /* -------------------------
+     Render
+  ------------------------- */
+
   return (
     <PanelFrame
       $width={panelWidth}
@@ -620,11 +678,23 @@ export function Panel({ children }) {
             role="separator"
             tabIndex={0}
             aria-label={`Resize panel ${handle}`}
-            aria-orientation={isHorizontal ? "vertical" : "horizontal"}
-            aria-valuenow={isHorizontal ? panelWidth : panelHeight}
-            aria-valuemin={isHorizontal ? MIN_WIDTH : MIN_HEIGHT}
+            aria-orientation={
+              isHorizontal ? "vertical" : "horizontal"
+            }
+            aria-valuenow={
+              isHorizontal ? panelWidth : panelHeight
+            }
+            aria-valuemin={
+              isHorizontal ? MIN_WIDTH : MIN_HEIGHT
+            }
             aria-valuemax={
-              isHorizontal ? window.innerWidth : window.innerHeight
+              typeof window === "undefined"
+                ? isHorizontal
+                  ? panelWidth
+                  : panelHeight
+                : isHorizontal
+                  ? window.innerWidth
+                  : window.innerHeight
             }
             onPointerDown={(event) => startResize(event, handle)}
             onKeyDown={(event) => handleResizeKeyDown(event, handle)}
@@ -634,7 +704,6 @@ export function Panel({ children }) {
 
       <PanelContent>
         <PanelGrid
-          ref={gridRef}
           role="list"
           aria-label="Widgets dashboard"
           onDragOver={handleGridDragOver}
@@ -656,7 +725,6 @@ export function Panel({ children }) {
           ) : (
             ordered.map((item, index) => {
               const size = Math.max(1, Number(item.props?.size) || 1);
-
               const rows = Math.max(1, Number(item.props?.rows) || 1);
 
               return (
@@ -686,16 +754,17 @@ export function Panel({ children }) {
             })
           )}
 
-          {items.length > 0 && dragOverIndex === ordered.length && (
-            <DropIndicator>Drop here</DropIndicator>
-          )}
+          {items.length > 0 &&
+            dragOverIndex === ordered.length && (
+              <DropIndicator>Drop here</DropIndicator>
+            )}
         </PanelGrid>
       </PanelContent>
     </PanelFrame>
   );
 }
 
-// Wrapper that applies the widget card styling.
+// Simple wrapper that applies the card styling.
 export function Widget({ children }) {
   return <WidgetCard>{children}</WidgetCard>;
 }

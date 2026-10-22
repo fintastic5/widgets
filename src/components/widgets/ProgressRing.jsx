@@ -13,6 +13,7 @@ const Title = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 `;
 
 const Subtitle = styled.p`
@@ -22,7 +23,9 @@ const Subtitle = styled.p`
   color: var(--color-font-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 `;
+
 
 const RingWrap = styled.div`
   position: relative;
@@ -47,8 +50,10 @@ export function ProgressRing({ title, subtitle, value = 0 }) {
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
+      <div>
+          <Title>{title}</Title>
+          <Subtitle>{subtitle}</Subtitle>
+        </div>
       <RingWrap 
         role="progressbar" 
         aria-label={`${title || "Progress"} ${subtitle}: ${value}%`}

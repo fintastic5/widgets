@@ -6,26 +6,6 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  min-width: 0;
-  min-height: 0;
-`;
-
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const DonutArea = styled.div`
@@ -37,9 +17,9 @@ const DonutArea = styled.div`
 const Donut = styled.div`
   width: 100%;
   aspect-ratio: 1;
-  position: relative;
   border-radius: 50%;
   background: conic-gradient(${(p) => p.$gradient});
+  position: relative;
 
   &::after {
     content: "";
@@ -51,11 +31,11 @@ const Donut = styled.div`
 `;
 
 const Legend = styled.ul`
+  list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
-  list-style: none;
-  font-size: var(--font-size-body-sm);
+  font-size: var(--font-size-body-sm)
 `;
 
 const LegendItem = styled.li`
@@ -67,14 +47,14 @@ const LegendItem = styled.li`
 const Key = styled.span`
   width: 12px;
   height: 12px;
-  flex-shrink: 0;
   border-radius: 2px;
   background: ${(p) => p.$color};
+  aspect-ratio: 1;
 `;
 
 const SEGMENT_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function Distribution({ title, subtitle,segments = [] }) {
+export function Distribution({ segments = [] }) {
   const stops = segments.reduce((acc, seg, i) => {
     const color = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
     const start = acc.cursor;
@@ -86,8 +66,6 @@ export function Distribution({ title, subtitle,segments = [] }) {
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
       <DonutArea>
         <Donut
         $gradient={stops.join(", ")}

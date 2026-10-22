@@ -4,6 +4,8 @@ import { ringCircumference, ringOffset } from "./ringMath";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -15,32 +17,14 @@ const Wrapper = styled.div`
   @container panel-content (max-width: 519px) {
     flex-direction: column;
     align-items: stretch;
+    gap: 16px;
     padding: 0;
   }
-`;
-
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const RingSection = styled.div`
   display: flex;
   flex: 1;
-  min-width: 0;
   height: 100%;
 `;
 
@@ -58,24 +42,23 @@ const Value = styled.div`
 `;
 
 const BigNumber = styled.span`
-  font-size: var(--font-size-body-lg);
+  font-size: 17px;
   font-weight: var(--font-weight-bold);
-  color: var(--color-font-primary);
+  color: var(--text-primary);
 `;
 
 const SmallLabel = styled.span`
   font-size: var(--font-size-body-sm);
-  color: var(--color-font-secondary);
 `;
 
 const List = styled.ul`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 14px;
+  list-style: none;
   margin: 0;
   padding: 0;
-  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
 `;
 
 const Row = styled.li`
@@ -85,11 +68,11 @@ const Row = styled.li`
 `;
 
 const Key = styled.span`
-  width: 12px;
   height: 12px;
-  flex-shrink: 0;
+  aspect-ratio: 1;
   border-radius: 2px;
   background: ${(p) => p.$color};
+  width: 12px;
 `;
 
 const Label = styled.span`
@@ -98,7 +81,7 @@ const Label = styled.span`
 `;
 
 const Amount = styled.span`
-  color: var(--color-font-primary);
+  color: var(--text-primary);
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-body-lg)
 `;
@@ -116,13 +99,11 @@ const Badge = styled.span`
 
 const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
+export function GoalRings({ overall = 0, items = [] }) {
   const radii = [64, 48, 32];
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
       <RingSection>
         <ValueContainer role="img" aria-label={`${overall}% overall`}>
           <svg 
