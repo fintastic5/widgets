@@ -2,26 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { ringCircumference, ringOffset } from "./ringMath";
 
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 0;
-`;
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -119,7 +99,7 @@ const Badge = styled.span`
 
 const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
+export function GoalRings({ overall = 0, items = [] }) {
   const radii = [64, 48, 32];
 
   return (

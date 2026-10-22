@@ -140,6 +140,7 @@ export function Countdown({ launchDate, onNotify }) {
   });
   
   function handleTimerToggle() {
+    onNotify?.();
     setIsTimerSet((prev) => !prev);
   }
 
