@@ -22,6 +22,7 @@
     --font-weight-bold: 700;
 }
 
+:root,
 [data-theme="light"] {
     --color-bg-app: #F8F9FA;
     --color-bg-panel: #E5E7EB;

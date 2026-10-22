@@ -9,6 +9,7 @@ npm install @holmesdev/widgets
 ```
 
 ```jsx
+import "@holmesdev/widgets/style.css";
 import { Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
 
 export function Dashboard() {
@@ -31,6 +32,8 @@ export function Dashboard() {
   );
 }
 ```
+
+Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
 
 ## Available widgets
 
