@@ -24,12 +24,15 @@ const Wrapper = styled.div`
 
 const RingSection = styled.div`
   display: flex;
-  flex: 1;
-  height: 100%;
+  flex: 0 0 140px;
+  width: 140px;
+  height: 140px;
 `;
 
 const ValueContainer = styled.div`
   position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 const Value = styled.div`
