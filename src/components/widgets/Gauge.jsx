@@ -1,24 +1,36 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
 `;
 
 const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-font-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Subtitle = styled.p`
-  margin: 0 0 12px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  color: var(--color-font-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SvgWrap = styled.div`
   position: relative;
-  width: 160px;
-  height: 90px;
+  width: 176px;
+  height: 74px;
   margin: 0 auto;
 `;
 
@@ -30,13 +42,25 @@ const Value = styled.div`
   text-align: center;
   font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary, #f9f9fa);
+  color: var(--color-font-primary);
 `;
 
 const Footer = styled.p`
   margin: 8px 0 0;
-  font-size: 13px;
   text-align: center;
+  padding-bottom: 16px;
+`;
+
+const FooterLabel = styled.span`
+  font-size: 14px;
+  color: var(--color-font-secondary)
+  
+`;
+
+const FooterValue = styled.span`
+  font-size: 16px;
+  color: var(--color-font-primary);
+  font-weight: var(--font-weight-medium);
 `;
 
 function describeArc(cx, cy, r, startAngle, endAngle) {
@@ -54,7 +78,10 @@ function polarToCartesian(cx, cy, r, angleInDegrees) {
   };
 }
 
-export function Gauge({ title, subtitle, value, target, actualLabel }) {
+/**
+ * Gauge. Semicircular radial dial. Widget 4, confirmed via the Sprint 1 prototype.
+ */
+export function Gauge({ title, subtitle, value, target, actual }) {
   const pct = Math.max(0, Math.min(100, value));
   const angle = (pct / 100) * 180;
 
@@ -62,15 +89,41 @@ export function Gauge({ title, subtitle, value, target, actualLabel }) {
     <Wrapper>
       {title && <Title>{title}</Title>}
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <SvgWrap role="img" aria-label={`${title || "Gauge"}: ${pct}% of target${target ? `, target ${target}` : ""}`}>
-        <svg viewBox="0 0 160 90" width="160" height="90">
-          <path d={describeArc(80, 80, 70, 0, 180)} fill="none" stroke="var(--border, #343875)" strokeWidth="14" strokeLinecap="round" />
-          <path d={describeArc(80, 80, 70, 0, angle)} fill="none" stroke="var(--purple-400, #7b5ffa)" strokeWidth="14" strokeLinecap="round" />
+      <SvgWrap
+        role="img"
+        aria-label={`${title}, ${subtitle}: ${pct}% of target${target ? `, target ${target}` : ""}`}
+      >
+        <svg viewBox="0 0 176 96" width="176" height="96" aria-hidden="true">
+          <path
+            d={describeArc(88, 88, 80, 0, 180)}
+            fill="none"
+            stroke="var(--color-track-ring)"
+            strokeWidth="16"
+            strokeLinecap="round"
+          />
+          <path
+            d={describeArc(88, 88, 80, 0, angle)}
+            fill="none"
+            stroke="var(--color-primary)"
+            strokeWidth="16"
+            strokeLinecap="round"
+          />
         </svg>
-        <Value>{pct}%</Value>
+        <Value aria-hidden="true">{pct}%</Value>
       </SvgWrap>
-      {actualLabel && <Footer>{actualLabel}</Footer>}
-      {target && <Footer>Sales target: {target}</Footer>}
+      {actual && (
+        <Footer>
+          <FooterLabel>Actual: </FooterLabel>
+          <FooterValue>{actual}</FooterValue>
+        </Footer>
+      )}
+
+      {target && (
+        <Footer>
+          <FooterLabel>Sales target: </FooterLabel>
+          <FooterValue>{target}</FooterValue>
+        </Footer>
+      )}
     </Wrapper>
   );
 }

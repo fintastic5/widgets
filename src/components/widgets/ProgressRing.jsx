@@ -1,26 +1,33 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import { ringCircumference, ringOffset } from "./ringMath";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
+  display: flex;  
+  height: 100%;
 `;
 
 const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-font-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Subtitle = styled.p`
-  margin: 0 0 12px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  color: var(--color-font-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const RingWrap = styled.div`
   position: relative;
-  width: 160px;
-  height: 160px;
-  margin: 0 auto;
+  width: 100%;
+  aspect-ratio: 1;
 `;
 
 const Value = styled.div`
@@ -29,9 +36,9 @@ const Value = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--text-primary, #f9f9fa);
+  font-size: var(--font-size-display-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-font-primary);
 `;
 
 export function ProgressRing({ title, subtitle, value = 0 }) {
@@ -42,16 +49,30 @@ export function ProgressRing({ title, subtitle, value = 0 }) {
     <Wrapper>
       {title && <Title>{title}</Title>}
       {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <RingWrap role="img" aria-label={`${title || "Progress"}: ${value}%`}>
-        <svg viewBox="0 0 160 160" width="160" height="160">
-          <circle cx="80" cy="80" r={radius} fill="none" stroke="var(--border, #343875)" strokeWidth="14" />
+      <RingWrap 
+        role="progressbar" 
+        aria-label={`${title || "Progress"} ${subtitle}: ${value}%`}
+        aria-valuenow={value}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        
+      >
+        <svg viewBox="0 0 160 160" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <circle cx="80" cy="80" r={radius} fill="none" stroke="var(--color-track-ring)" strokeWidth="16" />
           <circle
-            cx="80" cy="80" r={radius} fill="none" stroke="var(--purple-400, #7b5ffa)"
-            strokeWidth="14" strokeLinecap="round" strokeDasharray={c}
-            strokeDashoffset={ringOffset(radius, value)} transform="rotate(-90 80 80)"
+            cx="80"
+            cy="80"
+            r={radius}
+            fill="none"
+            stroke="var(--color-primary)"
+            strokeWidth="16"
+            strokeLinecap="round"
+            strokeDasharray={c}
+            strokeDashoffset= {ringOffset(radius, value)}
+            transform="rotate(-90 80 80)"
           />
         </svg>
-        <Value>{value}%</Value>
+        <Value aria-hidden="true">{value}%</Value>
       </RingWrap>
     </Wrapper>
   );
