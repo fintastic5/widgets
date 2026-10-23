@@ -2,8 +2,13 @@ import styled from "styled-components";
 import { ringCircumference, ringOffset } from "./ringMath";
 
 const Wrapper = styled.div`
-  display: flex;  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
   height: 100%;
+  min-height: 0;
+  gap: 12px;
 `;
 
 const Title = styled.p`
@@ -29,8 +34,10 @@ const Subtitle = styled.p`
 
 const RingWrap = styled.div`
   position: relative;
-  width: 100%;
+  width: min(100%, 144px);
   aspect-ratio: 1;
+  flex: 0 0 144px;
+  align-self: center;
 `;
 
 const Value = styled.div`
