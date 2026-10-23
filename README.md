@@ -10,26 +10,31 @@ npm install @holmesdev/widgets
 
 ```jsx
 import "@holmesdev/widgets/style.css";
-import { Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
+import { WidgetShell, Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
 
 export function Dashboard() {
-  return (
-    <Panel>
-      <Widget title="Revenue" subtitle="This week">
-        <Gauge value={42} actualLabel="$17,640" target="$42,000" />
-      </Widget>
+  return (
+      <Panel>
+        <Widget size={1}>
+          <WidgetShell title="Revenue" subtitle="This week">
+            <Gauge value={42} actual="$17,640" target="$42,000" />
+          </WidgetShell>
+        </Widget>
 
-      <Widget size="full" title="Goals" subtitle="This week">
-        <GoalRings
-          overall={78}
-          items={[
-            { label: "Website", amount: "$12,579", change: 12, pct: 78 },
-            { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
-          ]}
-        />
-      </Widget>
-    </Panel>
-  );
+        <Widget size={2}>
+          <WidgetShell title="Goals" subtitle="This week">
+            <GoalRings
+              overall={78}
+              items={[
+                { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+                { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+                { label: "Affiliates", amount: "$8,240", change: 6, pct: 64 },
+              ]}
+            />
+          </WidgetShell>
+        </Widget>
+      </Panel>
+  );
 }
 ```
 
