@@ -9,6 +9,7 @@ const Shell = styled.div`
   min-width: 0;
   min-height: 0;
   width: 100%;
+  height: 100%;
 `;
 
 const Header = styled.div`
@@ -42,14 +43,14 @@ const Subtitle = styled.p`
 const MenuButton = styled.button`
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: var(--color-font-secondary);
   cursor: pointer;
   padding: 4px;
   display: flex;
 `;
 
 const StateMessage = styled.div`
-  color: var(--text-secondary);
+  color: var(--color-font-secondary);
   font-size: 13px;
   padding: 24px 0;
   text-align: center;
@@ -58,7 +59,7 @@ const StateMessage = styled.div`
 const Skeleton = styled.div`
   height: 140px;
   border-radius: 12px;
-  background: linear-gradient(90deg, var(--border) 25%, var(--color-bg-panel) 50%, var(--border) 75%);
+  background: var(--color-bg-panel);
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
 

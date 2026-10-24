@@ -1,0 +1,202 @@
+:root {
+  /* Border Radius */
+  --border-radius-xs: 4px;
+  --border-radius-sm: 8px; 
+  --border-radius-md: 16px; 
+  --border-radius-lg: 20px;
+  --border-radius-xl: 24px;
+
+  --widget-border-radius: var(--border-radius-xl);
+
+  /* Typography */
+  --font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-body-sm: 12px;
+  --font-size-body-md: 14px;
+  --font-size-heading: 16px;
+  --font-size-display: 24px;
+  --font-size-display-lg: 32px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+[data-theme="light"] {
+  --color-bg-panel: #E5E7EB;
+  --color-bg-widget: #FFFFFF;
+  --color-border: #D1D5DB;
+
+  --color-font-primary: #111827;
+  --color-font-secondary: #4B5563;
+  --color-font-disabled: #9CA3AF;
+
+  /* Countdown Specific Tokens */
+  --color-countdown-bg: #18181B;
+  --color-countdown-border: #27272A;
+  --color-countdown-digit: #F1F1F1;
+  --color-countdown-label: #CBD5E1;
+
+  --color-button-default: #F3F4F6; /* x must be over 3:1*/
+  --color-button-hover: #E5E7EB; 
+  --color-button-focus: #DBEAFE; 
+  --color-button-active: #1D4ED8;
+  --color-button-disabled: #F3F4F6; 
+
+  --color-primary: #2563EB;
+  --color-track-ring: #E5E7EB;
+
+  /* Chart Slices & Rings */
+  --color-chart-1: #3B49DF; 
+  --color-chart-2: #009EAA;
+  --color-chart-3: #9333EA;
+  --color-chart-4: #F59E0B;
+
+  --color-success: #047857;
+  --color-success-bg: rgba(4, 120, 87, 0.1);
+  --color-error: #B91C1C;
+  --color-error-bg: rgba(185, 28, 28, 0.1);
+  --color-warning: #B45309;
+  --color-warning-bg: rgba(180, 83, 9, 0.1);
+  --color-info: #0369A1;
+  --color-info-bg: rgba(3, 105, 161, 0.1);
+}
+
+[data-theme="dark"] {
+  --color-bg-panel: #0A0A0C;
+  --color-bg-widget: #161618;
+  --color-border: #3A3A42;
+
+  --color-font-primary: #F1F1F1;
+  --color-font-secondary: #9CA3AF;
+  --color-font-disabled: #6B7280;
+
+  /* Countdown Specific Tokens */
+  --color-countdown-bg: var(--color-bg-panel);
+  --color-countdown-border: #2E323D;
+  --color-countdown-digit: var(--color-font-primary);
+  --color-countdown-label: var(--color-font-secondary);
+
+  --color-button-default: #22242B;
+  --color-button-hover: #2C2E38; 
+  --color-button-focus: #353947; 
+  --color-button-active: #3B82F6;
+  --color-button-disabled: #1E2026;
+
+  --color-primary: #60A5FA;
+  --color-track-ring: #26262B;
+
+  /* Chart Slices & Rings */
+  --color-chart-1: #3B82F6;
+  --color-chart-2: #00D2FF;
+  --color-chart-3: #818CF8;
+  --color-chart-4: #FBBF24;
+
+  --color-success: #34D399;
+  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-error: #F87171;
+  --color-error-bg: rgba(248, 113, 113, 0.15);
+  --color-warning: #FBBF24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-info: #38BDF8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+}
+
+[data-theme="midnight"] {
+  --color-bg-panel: #101428;
+  --color-bg-widget: #1B1E38;
+  --color-border: #2B3056;
+
+  --color-font-primary: #F8F9FA;
+  --color-font-secondary: #A5B4FC;
+  --color-font-disabled: #64748B; 
+
+  /* Countdown Specific Tokens */
+  --color-countdown-bg: #13162A;
+  --color-countdown-border: #222644;
+  --color-countdown-digit: var(--color-font-primary);
+  --color-countdown-label: var(--color-font-secondary);
+
+  --color-button-default: #252A4E;
+  --color-button-hover: #323868;
+  --color-button-focus: #3E4682;
+  --color-button-active: #6366F1;
+  --color-button-disabled: #1E2240;
+  
+  --color-primary: #818CF8;
+  --color-track-ring: #272C4D;
+
+  /* Chart Slices & Rings */
+  --color-chart-1: #8B5CF6;
+  --color-chart-2: #6366F1;
+  --color-chart-3: #A78BFA;
+  --color-chart-4: #C084FC;
+
+  --color-success: #34D399;
+  --color-success-bg: rgba(52, 211, 153, 0.15);
+  --color-error: #F87171;
+  --color-error-bg: rgba(248, 113, 113, 0.15);
+  --color-warning: #FBBF24;
+  --color-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-info: #38BDF8;
+  --color-info-bg: rgba(56, 189, 248, 0.15);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  color: var(--color-font-primary);
+  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background 0.15s ease, color 0.15s ease;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--color-bg-panel);
+  color: var(--color-font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Universal high-contrast focus indicator for keyboard users (WCAG AA 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2pxƒ !important;
+  border-radius: var(--widget-border-radius);
+  padding: 2px;
+}
+
+/* Screen reader only utility class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: gitstatus 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 6px;
+}
+
+
+

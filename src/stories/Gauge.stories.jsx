@@ -9,3 +9,7 @@ export const Default = {
 export const FullValue = {
   render: () => <Panel><Widget title="Gauge" subtitle="Target met"><Gauge value={100} actualLabel="Actual: $42,000" target="$42,000" /></Widget></Panel>,
 };
+
+export const CustomColor = {
+  render: () => <Panel><Widget title="Gauge" subtitle="Target met"><Gauge value={78} actualLabel="Actual: $42,000" target="$42,000" color="orange" /></Widget></Panel>,
+};

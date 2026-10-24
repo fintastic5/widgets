@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styled-components";
 
 const ErrorMessage = styled.div`
-  color: var(--error, #fca5a5);
+  color: var(--color-error, #fca5a5);
   font-size: 13px;
   padding: 12px;
 `;
