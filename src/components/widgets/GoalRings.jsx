@@ -4,35 +4,22 @@ import { ringCircumference, ringOffset } from "./ringMath";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   width: 100%;
   height: 100%;
   min-width: 0;
   gap: 16px;
+  padding: 0px 1em;
+ 
 
   @container panel-content (max-width: 519px) {
     flex-direction: column;
     align-items: stretch;
+    gap: 16px;
     padding: 0;
   }
-`;
-
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const RingSection = styled.div`
@@ -40,12 +27,6 @@ const RingSection = styled.div`
   flex: 0 0 140px;
   width: 140px;
   height: 140px;
-  min-width: 0;
-
-  @container panel-content (max-width: 519px) {
-    align-self: center;
-    flex: 0 0 140px;
-  }
 `;
 
 const ValueContainer = styled.div`
@@ -64,14 +45,13 @@ const Value = styled.div`
 `;
 
 const BigNumber = styled.span`
-  font-size: var(--font-size-body-md);
+  font-size: 17px;
   font-weight: var(--font-weight-bold);
-  color: var(--color-font-primary);
+  color: var(--text-primary);
 `;
 
 const SmallLabel = styled.span`
   font-size: var(--font-size-body-sm);
-  color: var(--color-font-secondary);
 `;
 
 const List = styled.ul`
@@ -91,9 +71,8 @@ const Row = styled.li`
 `;
 
 const Key = styled.span`
-  width: 12px;
   height: 12px;
-  flex-shrink: 0;
+  aspect-ratio: 1;
   border-radius: 2px;
   background: ${(p) => p.$color};
   width: 12px;
@@ -105,9 +84,9 @@ const Label = styled.span`
 `;
 
 const Amount = styled.span`
-  color: var(--color-font-primary);
+  color: var(--text-primary);
   font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-body-md)
+  font-size: var(--font-size-body-lg)
 `;
 
 const Badge = styled.span`
@@ -121,22 +100,13 @@ const Badge = styled.span`
   color: ${(p) => (p.$direction === "up" ? "var(--color-success)" : p.$direction === "down" ? "var(--color-error)" : "var(--color-warning)")};
 `;
 
-const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)"];
+const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
-  
-  const getColor = (item, i) => {
-    return item.color || RING_COLORS[i % RING_COLORS.length];
-  }
-
+export function GoalRings({ overall = 0, items = [] }) {
   const radii = [64, 48, 32];
 
   return (
     <Wrapper>
-      <div>
-        {title && <Title>{title}</Title>}
-        {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      </div>
       <RingSection>
         <ValueContainer role="img" aria-label={`${overall}% overall`}>
           <svg 
@@ -157,7 +127,7 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
                     cy="70"
                     r={r}
                     fill="none"
-                    stroke={getColor(item, i)}
+                    stroke={RING_COLORS[i]}
                     strokeWidth="10"
                     strokeLinecap="round"
                     strokeDasharray={c}
@@ -178,7 +148,7 @@ export function GoalRings({ title, subtitle, overall = 0, items = [] }) {
         {items.map((item, i) => (
           <Row key={item.label}>
             <Key 
-              $color={getColor(item, i)}
+              $color={RING_COLORS[i % RING_COLORS.length]} 
               aria-hidden="true"
             />
             <Label>{item.label}</Label>

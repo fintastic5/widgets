@@ -9,26 +9,12 @@ const Wrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
+  flex: 1;
   min-width: 0;
   min-height: 0;
-`;
-
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 `;
 
 const TimeContainer = styled.div`
@@ -36,13 +22,15 @@ const TimeContainer = styled.div`
   align-items: center;
   gap: 4px;
   width: 100%;
+  height: 100%;
 `;
 
 const Box = styled.div`
-  background: var(--color-countdown-bg);
+  background: var(--color-bg-panel);
   border: 1px solid var(--color-countdown-border);
   height: 100%;
   width: 60px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,20 +41,21 @@ const Box = styled.div`
 `;
 
 const BoxValue = styled.div`
-  font-size: var(--font-size-display);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-countdown-digit);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-font-primary);
 `;
 
 const BoxLabel = styled.div`
-  font-size: var(--font-size-body-md);
-  color: var(--color-countdown-label);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-font-secondary);
 `;
 
 const Colon = styled.span`
-  font-size: var(--font-size-display);
-  font-weight: var(--font-weight-bold);
-  (--color-countdown-btn-border);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-countdown-btn-border);
 `;
 
 const DateRow = styled.p`
@@ -83,21 +72,22 @@ const Strong = styled.strong`
 `;
 
 const NotifyButton = styled.button`
+  background-color: var(--color-countdown-btn-bg);
+  color: var(--color-countdown-btn-text);
+  border: 1px solid var(--color-countdown-btn-border);
+  border-radius: 16px;
+  font-size: var(--font-size-body-sm);
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 16px;
-  background-color: var(--color-button-default);
-  color: var(--color-font-primary);
-  border: 1px solid var(--color-countdown-border);
-  border-radius: var(--border-radius-md);
-  font-size: var(--font-size-body-sm);
   cursor: pointer;
+  padding: 8px 16px;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 
   &:hover {
-    background-color: var(--color-button-hover);
+    background-color: var(--color-countdown-btn-hover);
   }
 
   &:focus-visible {
@@ -115,7 +105,6 @@ const NotifyButton = styled.button`
   &[aria-disabled='true'],
   &:disabled {
     color: var(--color-font-disabled);
-    background-color: var(--color-button-disabled);
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -129,7 +118,7 @@ function timeRemaining(target) {
   return { days, hours, mins };
 }
 
-export function Countdown({ title, subtitle, launchDate, onNotify }) {
+export function Countdown({ launchDate, onNotify }) {
   const [time, setTime] = useState(() => timeRemaining(launchDate));
 
   const [isTimerSet, setIsTimerSet] = useState(false);
@@ -157,10 +146,6 @@ export function Countdown({ title, subtitle, launchDate, onNotify }) {
 
   return (
     <Wrapper>
-      <div>
-        {title && <Title>{title}</Title>}
-        {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      </div>
       <TimeContainer role="timer" aria-label={`${time.days} days, ${time.hours} hours, ${time.mins} minutes remaining`} >
         <Box>
           <BoxValue>{time.days}</BoxValue>
@@ -193,6 +178,7 @@ export function Countdown({ title, subtitle, launchDate, onNotify }) {
             <Check size={14} aria-hidden="true" />
             Countdown Running
           </>
+      
         ) : (
           <>
             <Bell size={14} aria-hidden="true"/> Notify Me

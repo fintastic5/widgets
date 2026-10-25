@@ -8,24 +8,6 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 const DonutArea = styled.div`
   height: 100%;
   aspect-ratio: 1;
@@ -70,16 +52,11 @@ const Key = styled.span`
   aspect-ratio: 1;
 `;
 
-const SEGMENT_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"];
+const SEGMENT_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-export function Distribution({ title, subtitle, segments = [] }) {
-
-  const getColor = (seg, i) => {
-    return seg.color || SEGMENT_COLORS[i % SEGMENT_COLORS.length];
-  }
-
-  const stops = segments.reduce((acc, seg, i) => { 
-    const color = getColor(seg, i);
+export function Distribution({ segments = [] }) {
+  const stops = segments.reduce((acc, seg, i) => {
+    const color = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
     const start = acc.cursor;
     const end = start + seg.pct;
     acc.stops.push(`${color} ${start}% ${end}%`);
@@ -89,10 +66,6 @@ export function Distribution({ title, subtitle, segments = [] }) {
 
   return (
     <Wrapper>
-      <div>
-        {title && <Title>{title}</Title>}
-        {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      </div>
       <DonutArea>
         <Donut
         $gradient={stops.join(", ")}
@@ -104,7 +77,7 @@ export function Distribution({ title, subtitle, segments = [] }) {
         {segments.map((seg, i) => (
           <LegendItem key={seg.label}>
             <Key 
-              $color={getColor(seg, i)} 
+              $color={SEGMENT_COLORS[i % SEGMENT_COLORS.length]} 
               aria-hidden="true"
             />
             {seg.label} {seg.pct}%

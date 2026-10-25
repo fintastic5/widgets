@@ -10,21 +10,15 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.p`
-  font-size: var(--font-size-heading);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-font-secondary);
 `;
 
 const Subtitle = styled.p`
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  color: var(--color-font-secondary);
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--color-font-primary);
 `;
 
 const SvgWrap = styled.div`
@@ -42,7 +36,7 @@ const Value = styled.div`
   text-align: center;
   font-size: 28px;
   font-weight: 700;
-  color: var(--color-font-primary);
+  color: var(--text-primary);
 `;
 
 const Footer = styled.p`
@@ -52,13 +46,13 @@ const Footer = styled.p`
 `;
 
 const FooterLabel = styled.span`
-  font-size: var(--font-size-body-md);
-  color: var(--color-font-secondary)
+  font-size: 14px;
+  color: var(--text-primary);
 `;
 
 const FooterValue = styled.span`
   font-size: 16px;
-  color: var(--color-font-primary);
+  color: var(--text-secondary);
   font-weight: var(--font-weight-medium);
 `;
 
@@ -80,7 +74,7 @@ function polarToCartesian(cx, cy, r, angleInDegrees) {
 /**
  * Gauge. Semicircular radial dial. Widget 4, confirmed via the Sprint 1 prototype.
  */
-export function Gauge({ title, subtitle, value, target, actual, color }) {
+export function Gauge({ title, subtitle, value, target, actual }) {
   const pct = Math.max(0, Math.min(100, value));
   const angle = (pct / 100) * 180;
 
@@ -103,7 +97,7 @@ export function Gauge({ title, subtitle, value, target, actual, color }) {
           <path
             d={describeArc(88, 88, 80, 0, angle)}
             fill="none"
-            stroke={color || "var(--color-primary, #7b5ffa)"}
+            stroke="var(--color-primary)"
             strokeWidth="16"
             strokeLinecap="round"
           />

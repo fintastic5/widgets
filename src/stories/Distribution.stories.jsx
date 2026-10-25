@@ -4,28 +4,8 @@ export default { title: "Widgets/Distribution", component: Distribution, tags: [
 
 export const Default = {
   render: () => (
-    <Panel>
-      <Widget title="Distribution" subtitle="This week">
-        <Distribution segments={[
-          { label: "HTML", pct: 26 }, 
-          { label: "CSS", pct: 34 }, 
-          { label: "JavaScript", pct: 40 },
-        ]} />
-      </Widget>
-    </Panel>
-  ),
-};
-
-export const CustomColors = {
-  render: () => (
-    <Panel>
-      <Widget title="Distribution" subtitle="This week">
-        <Distribution segments={[
-          { label: "HTML", pct: 26, color: "#3B82F6" }, 
-          { label: "CSS", pct: 34, color: "#A855F7" }, 
-          { label: "JavaScript", pct: 40, color: "#22D3EE" },
-        ]} />
-      </Widget>
-    </Panel>
+    <Panel><Widget title="Distribution" subtitle="This week">
+      <Distribution segments={[{ label: "HTML", pct: 26 }, { label: "CSS", pct: 34 }, { label: "JavaScript", pct: 40 }]} />
+    </Widget></Panel>
   ),
 };
