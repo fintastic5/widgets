@@ -18,26 +18,48 @@ import { THEMES } from "./themes";
 const WIDGET_CONFIG = {
   gauge: {
     name: "Gauge",
-    description: "Semicircular percentage gauge. Clamps value to 0–100.",
+    description: `Semicircular percentage gauge. Clamps value to 0–100.
+
+    The Gauge widget displays a percentage value as a semicircular arc, providing a simple visual representation of progress towards a goal or target. 
+    
+    It can display an actual value label and a sales target beneath the gauge, making it useful for dashboards that track sales, performance or other measurable targets.`,
+  
+    propsExplanation: `The value property sets the percentage displayed by the gauge. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
+    
+    The actual property lets you display a custom label beneath the gauge, while the target property allows you to show a sales target or goal below the percentage value. The title and subtitle properties allow you to customise the widget headings.`,
+
+    codeExample: `import { Gauge } from "@holmesdev/widgets";
+    export default function GaugeDashboard() {
+      return (
+      <Gauge
+        title="Revenue"
+        subtitle="This week"
+        value={42}
+        actual="Actual: $17,640"
+        target="$42,000"
+      />
+      );
+    }`,
+
     fields: [
       { key: "value", label: "Value", type: "number", min: 0, max: 100 },
       { key: "title", label: "Title", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "text" },
-      { key: "actualLabel", label: "Actual Label", type: "text" },
+      { key: "actual", label: "Actual", type: "text" },
       { key: "target", label: "Target", type: "text" },
     ],
     defaults: {
       value: 42,
       title: "Gauge",
       subtitle: "This week",
-      actualLabel: "Actual: $17,640",
+      actual: "Actual: $17,640",
       target: "$42,000",
     },
     render: (values) => (
       <Widget title={values.title} subtitle={values.subtitle}>
         <Gauge
           value={values.value}
-          actualLabel={values.actualLabel}
+          actual={values.actual}
           target={values.target}
         />
       </Widget>
@@ -46,13 +68,35 @@ const WIDGET_CONFIG = {
       { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
       { prop: "title", type: "string", default: "undefined", description: "Widget title shown above the arc." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle shown below the title." },
-      { prop: "actualLabel", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
+      { prop: "actual", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
+      { prop: "actualLabel", type: "string", default: "undefined", description: "Deprecated alias for actual, retained for compatibility." },
       { prop: "target", type: "string", default: "undefined", description: "Optional 'Sales target: …' footer line." },
     ],
   },
   progressring: {
     name: "Progress Ring",
-    description: "Circular progress ring using SVG stroke-dasharray.",
+    description: `Circular progress ring using SVG stroke-dasharray.
+    
+    The progress ring widget displays a percentage value as a circular ring, providing a simple visual representation of completion towards a goal or target.
+
+    The ring fills according to the supplied percentage value, from 0 to 100, making it easy to see progress at a glance. The widget can be customised with a title and a subtitle and is suitable for dashboards tracking tasks, goals or performance metrics.`,
+
+    propsExplanation: `The value property sets the progress percentage displayed by the circular ring. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
+    
+    The title and subtitle properties allow you to customise the widget headings.`,
+
+    codeExample: `import { ProgressRing } from "@holmesdev/widgets";
+
+    export default function ProgressDashboard() {
+      return (
+      <ProgressRing
+        title="Progress"
+        subtitle="This week"
+        value={78}
+      />
+      );
+    }`,
+
     fields: [
       { key: "value", label: "Value", type: "number", min: 0, max: 100 },
       { key: "title", label: "Title", type: "text" },
@@ -76,7 +120,29 @@ const WIDGET_CONFIG = {
   },
   countdown: {
     name: "Countdown",
-    description: "Days/hours/minutes timer counting down to a launch date.",
+    description: `The countdown widget displays the time remaining until a specified launch date in days, hours and minutes. 
+
+    It can be customised with a title and subtitle to suit different events, product launches or deadlines. 
+    The countdown updates every minute and stops at zero once the target date is reached.`,
+
+    propsExplanation: `The launchDate property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings. 
+
+    The optional onNotify property accepts a callback function that is triggered when the user clicks the Notify Me button, allowing the parent component to handle the user's request.
+    `,
+
+    codeExample: `import { Countdown } from "@holmesdev/widgets";
+
+    export default function CountdownDashboard() {
+      return (
+      <Countdown
+        title="Countdown"
+        subtitle="Product launch"
+        launchDate="2026-10-28"
+        onNotify={() => console.log("Notify me clicked")}
+      />
+      );
+    }`,
+
     fields: [
       { key: "launchDate", label: "Launch Date", type: "text" },
       { key: "title", label: "Title", type: "text" },
@@ -96,11 +162,35 @@ const WIDGET_CONFIG = {
       { prop: "launchDate", type: "string", default: "undefined", description: "Target ISO date string." },
       { prop: "title", type: "string", default: "undefined", description: "Widget title." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
+      { prop: "onNotify", type: "function", default: "undefined", description: "Optional callback function triggered when the user clicks the Notify Me button." },
     ],
   },
   distribution: {
     name: "Distribution",
-    description: "Donut chart using a conic-gradient with a two-column legend.",
+    description: `Donut chart using a conic-gradient with a two-column legend.
+    
+    The distribution widget displays a breakdown of percentages represented as a circular chart with distinct segments. Each segment is colour-coded and labelled, providing a clear visual representation of the distribution of values, making it easy to compare proportions at a glance.
+    
+    The widget can be customised with a title and subtitle and is useful for displaying category breakdowns or dashboard statistics. `,
+
+    propsExplanation: `The segments property accepts an array of objects, each containing a label and a pct value representing the percentage for that segment. Segment colors are selected from the theme palette. The title and subtitle properties allow you to customise the widget headings.`,
+
+    codeExample: `import { Distribution } from "@holmesdev/widgets";
+
+    export default function DistributionDashboard() {
+      return(
+      <Distribution
+        title="Distribution"
+        subtitle="This week"
+        segments={[
+          { label: "HTML", pct: 26 },
+          { label: "CSS", pct: 34 },
+          { label: "JavaScript", pct: 40 },
+        ]}
+      />
+      );
+    }`,
+
     fields: [
       { key: "segments", label: "Segments (JSON)", type: "textarea" },
       { key: "title", label: "Title", type: "text" },
@@ -133,7 +223,35 @@ const WIDGET_CONFIG = {
   },
   goalrings: {
     name: "Goal Rings",
-    description: "Concentric goal-progress rings with a detail list.",
+    description: `Concentric goal-progress rings with a detail list.
+    
+    The Goal Rings widget displays overall progress alongside individual goals. Each goal is represented by a coloured ring and a list entry showing its label, amount and percentage change.
+    
+    This widget can be used in dashboards to track sales targets, business goals or other measurable results. The overall percentage appears in the center of the rings, while individual goal percentages show progress towards each target.`,
+
+    propsExplanation: `The overall property sets the progress percentage displayed in the center of the rings. 
+    
+    The items property accepts an array of goal objects. Each goal contains a label to identify it, an amount to display its value, and a pct value representing its progress percentage. An optional change property indicates whether performance has increased, decreased or remained unchanged. Ring and list marker colors are selected from the theme palette.
+
+    The widget displays visual progress rings for up to three goals, based on their pct values. The list displays the supplied goal items, including their labels, amounts and change values.`,
+
+    codeExample: `import { GoalRings } from "@holmesdev/widgets";
+
+    export function GoalsDashboard() {
+    return (
+    <GoalRings
+      title="Goal Rings"
+      subtitle="This week"
+      overall={78}
+      items={[
+        { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+        { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+        { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 }
+      ]}
+    />
+    );
+    }`,
+
     fields: [
       { key: "overall", label: "Overall", type: "number", min: 0, max: 100 },
       { key: "items", label: "Items (JSON)", type: "textarea" },
@@ -166,6 +284,7 @@ const WIDGET_CONFIG = {
       { prop: "title", type: "string", default: "undefined", description: "Widget title." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
     ],
+    
   },
 };
 
@@ -177,7 +296,7 @@ export function Dashboard() {
   return (
     <Panel>
       <Widget title="Revenue" subtitle="This week">
-        <Gauge value={42} actualLabel="$17,640" target="$42,000" />
+        <Gauge value={42} actual="$17,640" target="$42,000" />
       </Widget>
       <Widget size="full" title="Goals" subtitle="This week">
         <GoalRings
@@ -317,7 +436,7 @@ export default function App() {
                 <Widget title="Gauge" subtitle="This week">
                   <Gauge
                     value={42}
-                    actualLabel="Actual: $17,640"
+                    actual="Actual: $17,640"
                     target="$42,000"
                   />
                 </Widget>
@@ -397,7 +516,7 @@ export default function App() {
                 <h3 className="text-base font-semibold text-gray-900">
                   {config.name}
                 </h3>
-                <p className="text-gray-500 text-sm">{config.description}</p>
+                <p className="text-gray-500 text-sm whitespace-pre-line">{config.description}</p>
                 <PropsEditor
                   fields={config.fields}
                   values={values}
@@ -419,6 +538,18 @@ export default function App() {
 
             {/* Documentation table listing each prop with type, default and description */}
             <PropsTable props={config.table} />
+            {config.propsExplanation && (
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line mt-3">{config.propsExplanation}</p>
+            )}
+
+            {config.codeExample && (
+              <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-gray-900">Code Example</h4>
+              <CodeBlock code={config.codeExample} language="jsx" />
+              </div>
+            )}
+
+
           </div>
         </section>
 
@@ -433,6 +564,12 @@ export default function App() {
           </a>
 
           <h2 className="text-lg font-semibold text-gray-900">Installation</h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            The Widgets library is a reusable React component package that provides dashboard widgets and a panel layout for displaying information clearly. It is designed for React developers who want to add customisable widgets to their dashboards and applications.
+          </p>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            Get started by installing the Widgets package in your React project. You can import individual widgets or bundle them inside the resizable Panel component. The widgets are designed to be lightweight and easy to integrate into your existing dashboard or application.
+          </p>
 
           {/* Step 1: install via package manager */}
           <div className="space-y-2">
