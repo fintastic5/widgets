@@ -1,4 +1,6 @@
 // Public API for the reusable panel, shell, and dashboard widgets.
+import "./styles/token.css";
+
 export { Panel, Widget } from "./components/Panel";
 export { Countdown } from "./components/widgets/Countdown";
 export { Distribution } from "./components/widgets/Distribution";

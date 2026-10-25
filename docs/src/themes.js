@@ -1,54 +1,6 @@
-// Colour variables for each theme, applied to the widget panel via inline styles
+// Theme names and labels mirror the package's data-theme token setup.
 export const THEMES = {
-  light: {
-    label: "Light",
-    vars: {
-      "--bg-panel": "#f3f4f6",
-      "--bg-widget": "linear-gradient(#ffffff, #f9fafb)",
-      "--border": "#d1d5db",
-      "--text-primary": "#111827",
-      "--text-secondary": "#4b5563",
-      "--purple-400": "#7c3aed",
-      "--purple-300": "#8b5cf6",
-      "--purple-200": "#c4b5fd",
-      "--purple-100": "#ede9fe",
-      "--success": "#10b981",
-      "--error": "#ef4444",
-      "--warning": "#f59e0b",
-    },
-  },
-  dark: {
-    label: "Dark",
-    vars: {
-      "--bg-panel": "#101221",
-      "--bg-widget": "linear-gradient(#222050, #181d3e)",
-      "--border": "#343875",
-      "--text-primary": "#f9f9fa",
-      "--text-secondary": "#c1c4e5",
-      "--purple-400": "#7b5ffa",
-      "--purple-300": "#9083cf",
-      "--purple-200": "#c3b8f2",
-      "--purple-100": "#e4defb",
-      "--success": "#34d399",
-      "--error": "#fca5a5",
-      "--warning": "#fde68a",
-    },
-  },
-  midnight: {
-    label: "Midnight",
-    vars: {
-      "--bg-panel": "#0a0c1a",
-      "--bg-widget": "linear-gradient(#12142b, #0d0f20)",
-      "--border": "#1e2248",
-      "--text-primary": "#e8e9f0",
-      "--text-secondary": "#8e94c6",
-      "--purple-400": "#6d4aff",
-      "--purple-300": "#8b6fff",
-      "--purple-200": "#b09fff",
-      "--purple-100": "#d4c8ff",
-      "--success": "#059669",
-      "--error": "#dc2626",
-      "--warning": "#d97706",
-    },
-  },
+  light: { label: "Light" },
+  dark: { label: "Dark" },
+  midnight: { label: "Midnight" },
 };
