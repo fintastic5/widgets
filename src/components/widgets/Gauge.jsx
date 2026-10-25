@@ -54,9 +54,10 @@ function polarToCartesian(cx, cy, r, angleInDegrees) {
   };
 }
 
-export function Gauge({ title, subtitle, value, target, actual, }) {
+export function Gauge({ title, subtitle, value, target, actual, actualLabel }) {
   const pct = Math.max(0, Math.min(100, value));
   const angle = (pct / 100) * 180;
+  const actualText = actual ?? actualLabel;
 
   return (
     <Wrapper>
@@ -69,7 +70,7 @@ export function Gauge({ title, subtitle, value, target, actual, }) {
         </svg>
         <Value>{pct}%</Value>
       </SvgWrap>
-      {actual && <Footer>{actual}</Footer>}
+      {actualText && <Footer>{actualText}</Footer>}
       {target && <Footer>Sales target: {target}</Footer>}
     </Wrapper>
   );

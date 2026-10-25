@@ -26,7 +26,7 @@ const WIDGET_CONFIG = {
   
     propsExplanation: `The value property sets the percentage displayed by the gauge. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
     
-    The actual property lets you display a custom label beneath the gauge, while the target property allows you to show a sales target or goal below the percentage value. The title and subtitle properties allow you to customise the widget headings. The optional color property lets you set a custom color for the gauge arc, otherwise the default colour is used.`, 
+    The actual property lets you display a custom label beneath the gauge, while the target property allows you to show a sales target or goal below the percentage value. The title and subtitle properties allow you to customise the widget headings.`,
 
     codeExample: `import { Gauge } from "@holmesdev/widgets";
     export default function GaugeDashboard() {
@@ -37,7 +37,6 @@ const WIDGET_CONFIG = {
         value={42}
         actual="Actual: $17,640"
         target="$42,000"
-        color="#785FFA"
       />
       );
     }`,
@@ -48,7 +47,6 @@ const WIDGET_CONFIG = {
       { key: "subtitle", label: "Subtitle", type: "text" },
       { key: "actual", label: "Actual", type: "text" },
       { key: "target", label: "Target", type: "text" },
-      { key: "color", label: "Colour", type: "text" },
     ],
     defaults: {
       value: 42,
@@ -56,7 +54,6 @@ const WIDGET_CONFIG = {
       subtitle: "This week",
       actual: "Actual: $17,640",
       target: "$42,000",
-      color: "",
     },
     render: (values) => (
       <Widget title={values.title} subtitle={values.subtitle}>
@@ -64,7 +61,6 @@ const WIDGET_CONFIG = {
           value={values.value}
           actual={values.actual}
           target={values.target}
-          color={values.color || undefined}
         />
       </Widget>
     ),
@@ -73,8 +69,8 @@ const WIDGET_CONFIG = {
       { prop: "title", type: "string", default: "undefined", description: "Widget title shown above the arc." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle shown below the title." },
       { prop: "actual", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
+      { prop: "actualLabel", type: "string", default: "undefined", description: "Deprecated alias for actual, retained for compatibility." },
       { prop: "target", type: "string", default: "undefined", description: "Optional 'Sales target: …' footer line." },
-      { prop: "color", type: "string", default: "undefined", description: "Optional custom color for the gauge arc." },
     ],
   },
   progressring: {
@@ -87,7 +83,7 @@ const WIDGET_CONFIG = {
 
     propsExplanation: `The value property sets the progress percentage displayed by the circular ring. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
     
-    The title and subtitle properties allow you to customise the widget headings. The color property allows you to set a custom color for the progress ring, otherwise the default colour is used.`,
+    The title and subtitle properties allow you to customise the widget headings.`,
 
     codeExample: `import { ProgressRing } from "@holmesdev/widgets";
 
@@ -97,7 +93,6 @@ const WIDGET_CONFIG = {
         title="Progress"
         subtitle="This week"
         value={78}
-        color="#785FFA"
       />
       );
     }`,
@@ -106,24 +101,21 @@ const WIDGET_CONFIG = {
       { key: "value", label: "Value", type: "number", min: 0, max: 100 },
       { key: "title", label: "Title", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "text" },
-      { key: "color", label: "Colour", type: "text" },
     ],
     defaults: {
       value: 78,
       title: "Progress",
       subtitle: "This week",
-      color: "",
     },
     render: (values) => (
       <Widget title={values.title} subtitle={values.subtitle}>
-        <ProgressRing value={values.value} color={values.color || undefined} />
+        <ProgressRing value={values.value} />
       </Widget>
     ),
     table: [
       { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
       { prop: "title", type: "string", default: "undefined", description: "Widget title." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
-      { prop: "color", type: "string", default: "undefined", description: "Custom color for the progress ring." },
     ],
   },
   countdown: {
@@ -146,7 +138,7 @@ const WIDGET_CONFIG = {
         title="Countdown"
         subtitle="Product launch"
         launchDate="2026-10-28"
-        onNotify
+        onNotify={() => console.log("Notify me clicked")}
       />
       );
     }`,
@@ -181,7 +173,7 @@ const WIDGET_CONFIG = {
     
     The widget can be customised with a title and subtitle and is useful for displaying category breakdowns or dashboard statistics. `,
 
-    propsExplanation: `The segments property accepts an array of objects, each containing a label and a pct value representing the percentage for that segment. Each segment can also include an optional color property to customise its colour. If no colour is provided, the widget uses the theme palette. The title and subtitle properties allow you to customise the widget headings.`,
+    propsExplanation: `The segments property accepts an array of objects, each containing a label and a pct value representing the percentage for that segment. Segment colors are selected from the theme palette. The title and subtitle properties allow you to customise the widget headings.`,
 
     codeExample: `import { Distribution } from "@holmesdev/widgets";
 
@@ -191,9 +183,9 @@ const WIDGET_CONFIG = {
         title="Distribution"
         subtitle="This week"
         segments={[
-          { label: "HTML", pct: 26, color: "#f5c5f7" },
-          { label: "CSS", pct: 34, color: "#3a18d4" },
-          { label: "JavaScript", pct: 40, color: "#94e0a7" },
+          { label: "HTML", pct: 26 },
+          { label: "CSS", pct: 34 },
+          { label: "JavaScript", pct: 40 },
         ]}
       />
       );
@@ -224,7 +216,7 @@ const WIDGET_CONFIG = {
       );
     },
     table: [
-      { prop: "segments", type: "array", default: "[]", description: "Array of {label, pct, color} objects." },
+      { prop: "segments", type: "array", default: "[]", description: "Array of {label, pct} objects." },
       { prop: "title", type: "string", default: "undefined", description: "Widget title." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
     ],
@@ -239,7 +231,7 @@ const WIDGET_CONFIG = {
 
     propsExplanation: `The overall property sets the progress percentage displayed in the center of the rings. 
     
-    The items property accepts an array of goal objects. Each goal contains a label to identify it, an amount to display its value, and a pct value representing its progress percentage. An optional change property indicates whether performance has increased, decreased or remained unchanged. Each goal can also include an optional color property to customise its ring and list marker color. If no colour is provided, the theme palette is used.
+    The items property accepts an array of goal objects. Each goal contains a label to identify it, an amount to display its value, and a pct value representing its progress percentage. An optional change property indicates whether performance has increased, decreased or remained unchanged. Ring and list marker colors are selected from the theme palette.
 
     The widget displays visual progress rings for up to three goals, based on their pct values. The list displays the supplied goal items, including their labels, amounts and change values.`,
 
@@ -252,7 +244,7 @@ const WIDGET_CONFIG = {
       subtitle="This week"
       overall={78}
       items={[
-        { label: "Website", amount: "$12,579", change: 12, pct: 78, color: "#ff6b6b" },
+        { label: "Website", amount: "$12,579", change: 12, pct: 78 },
         { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
         { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 }
       ]}
@@ -288,7 +280,7 @@ const WIDGET_CONFIG = {
     },
     table: [
       { prop: "overall", type: "number", default: "0", description: "Overall percentage shown in the center." },
-      { prop: "items", type: "array", default: "[]", description: "Array of {label, amount, change, pct, color}." },
+      { prop: "items", type: "array", default: "[]", description: "Array of {label, amount, change, pct}." },
       { prop: "title", type: "string", default: "undefined", description: "Widget title." },
       { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
     ],
