@@ -1,0 +1,248 @@
+:root {
+    /* Border Radius */
+    --border-radius-xs: 4px;
+    --border-radius-sm: 8px; 
+    --border-radius-md: 16px; 
+    --border-radius-lg: 20px;
+    --border-radius-xl: 24px;
+
+    --widget-border-radius: var(--border-radius-xl);
+
+    /* Typography */
+    --font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-size-body-sm: 12px;
+    --font-size-body-md: 14px;
+    --font-size-heading: 16px;
+    --font-size-display: 24px;
+    --font-size-display-lg: 32px;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+}
+
+:root,
+[data-theme="light"] {
+    --color-bg-app: #F8F9FA;
+    --color-bg-panel: #E5E7EB;
+    --color-bg-widget: #FFFFFF;
+
+    --color-border: #D1D5DB;
+    --color-track-ring: #E5E7EB;
+
+    --color-font-primary: #111827;
+    --color-font-secondary: #4B5563;
+    --color-font-disabled: #9CA3AF;
+
+    --color-button-default: #E5E7EB;
+    --color-button-hover: #D1D5DB;
+    --color-button-focus: #CBD5E1;
+    --color-button-active: #1F2937;
+    --color-button-disabled: #F3F4F6;
+
+    --color-success: #047857;
+    --color-success-bg: rgba(4, 120, 87, 0.1);
+    --color-error: #B91C1C;
+    --color-error-bg: rgba(185, 28, 28, 0.1);
+    --color-warning: #B45309;
+    --color-warning-bg: rgba(180, 83, 9, 0.1);
+    --color-info: #0369A1;
+    --color-info-bg: rgba(3, 105, 161, 0.1);
+
+    --color-primary: #3B49DF;
+
+    /* Chart Slices & Rings */
+    --color-chart-1: var(--color-primary);
+    --color-chart-2: #009EAA;
+    --color-chart-3: #9333EA;
+    --color-chart-4: #F59E0B;
+    --color-chart-5: #EC4899;
+}
+
+[data-theme="dark"] {
+  --color-bg-app: #000000;
+  --color-bg-panel: #0A0A0C;
+    --color-bg-widget: #161618;
+    --color-bg-muted: #22242B;
+    --color-bg-card-subtle: #1C1C20;
+
+    --color-border: #26262B;
+    --color-border-subtle: #1A1A1E;
+    --color-border-hover: #3A3A42;
+    --color-border-focus: #60A5FA;
+
+    --color-font-primary: #FFFFFF;
+    --color-font-secondary: #9CA3AF;
+    --color-font-muted: #9CA3AF;
+    --color-font-disabled: #6B7280;
+    --color-font-inverse: #000000;
+
+    --color-primary: #60A5FA;
+    --color-primary-hover: #93C5FD;
+    --color-primary-foreground: #0A0A0C;
+
+    --color-button-default: #22242B;
+    --color-button-hover: #2C2E38;
+    --color-button-focus: #353947;
+    --color-button-active: #3B82F6;
+    --color-button-disabled: #1E2026;
+
+    /* Countdown Specific Tokens */
+    --color-countdown-bg: #22242B;
+    --color-countdown-border: #2E323D;
+    --color-countdown-digit: #FFFFFF;
+    --color-countdown-label: #9CA3AF;
+    --color-countdown-btn-bg: #262933;
+    --color-countdown-btn-border: #333742;
+    --color-countdown-btn-text: #FFFFFF;
+    --color-countdown-btn-hover: #323644;
+
+    --color-track-ring: #26262B;
+
+    --color-success: #34D399;
+    --color-success-bg: rgba(52, 211, 153, 0.15);
+    --color-error: #F87171;
+    --color-error-bg: rgba(248, 113, 113, 0.15);
+    --color-warning: #FBBF24;
+    --color-warning-bg: rgba(251, 191, 36, 0.15);
+    --color-info: #38BDF8;
+    --color-info-bg: rgba(56, 189, 248, 0.15);
+
+    /* Chart Slices & Rings */
+    --color-chart-1: #3B82F6;
+    --color-chart-2: #00D2FF;
+    --color-chart-3: #818CF8;
+    --color-chart-4: #FBBF24;
+    --color-chart-5: #F472B6;
+  
+}
+
+[data-theme="midnight"] {
+  --color-bg-app: #0B0E1E;
+    --color-bg-panel: #101428;
+    --color-bg-widget: #1B1E38;
+    --color-bg-muted: #252A4E;
+    --color-bg-card-subtle: #151830;
+
+    --color-border: #2B3056;
+    --color-border-subtle: #212544;
+    --color-border-hover: #3F477A;
+    --color-border-focus: #A78BFA;
+
+    --color-font-primary: #FFFFFF;
+    --color-font-secondary: #A5B4FC;
+    --color-font-muted: #94A3B8;
+    --color-font-disabled: #64748B;
+    --color-font-inverse: #0B0E1E;
+
+    --color-primary: #818CF8;
+    --color-primary-hover: #A5B4FC;
+    --color-primary-foreground: #0B0E1E;
+
+    --color-button-default: #252A4E;
+    --color-button-hover: #323868;
+    --color-button-focus: #3E4682;
+    --color-button-active: #6366F1;
+    --color-button-disabled: #1E2240;
+
+    /* Countdown Specific Tokens */
+    --color-countdown-bg: #13162A;
+    --color-countdown-border: #222644;
+    --color-countdown-digit: #FFFFFF;
+    --color-countdown-label: #A5B4FC;
+    --color-countdown-btn-bg: #252A4E;
+    --color-countdown-btn-border: #323868;
+    --color-countdown-btn-text: #FFFFFF;
+    --color-countdown-btn-hover: #343B6E;
+
+    --color-track-ring: #272C4D;
+
+    --color-success: #34D399;
+    --color-success-bg: rgba(52, 211, 153, 0.15);
+    --color-error: #F87171;
+    --color-error-bg: rgba(248, 113, 113, 0.15);
+    --color-warning: #FBBF24;
+    --color-warning-bg: rgba(251, 191, 36, 0.15);
+    --color-info: #38BDF8;
+    --color-info-bg: rgba(56, 189, 248, 0.15);
+
+    /* Chart Slices & Rings */
+    --color-chart-1: #8B5CF6;
+    --color-chart-2: #6366F1;
+    --color-chart-3: #A78BFA;
+    --color-chart-4: #FBBF24;
+    --color-chart-5: #F472B6;
+  
+}
+
+/* Legacy widget tokens remain available while components migrate to the package tokens. */
+:root,
+[data-theme="light"] {
+    --bg-panel: var(--color-bg-panel);
+    --bg-widget: var(--color-bg-widget);
+    --border: var(--color-border);
+    --text-primary: var(--color-font-primary);
+    --text-secondary: var(--color-font-secondary);
+    --purple-400: var(--color-chart-1);
+    --purple-300: var(--color-chart-2);
+    --purple-200: var(--color-chart-3);
+    --purple-100: var(--color-chart-4);
+    --success: var(--color-success);
+    --error: var(--color-error);
+    --warning: var(--color-warning);
+}
+
+[data-theme="dark"],
+[data-theme="midnight"] {
+    --bg-panel: var(--color-bg-panel);
+    --bg-widget: var(--color-bg-widget);
+    --border: var(--color-border);
+    --text-primary: var(--color-font-primary);
+    --text-secondary: var(--color-font-secondary);
+    --purple-400: var(--color-chart-1);
+    --purple-300: var(--color-chart-2);
+    --purple-200: var(--color-chart-3);
+    --purple-100: var(--color-chart-4);
+    --success: var(--color-success);
+    --error: var(--color-error);
+    --warning: var(--color-warning);
+}
+
+  /* High-contrast focus indicator for keyboard users (WCAG AA 2.4.7) */
+  [data-theme] :focus-visible {
+    outline: 2px solid var(--color-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 16px;
+    padding: 2px;
+  }
+
+  /* Screen reader only utility class */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Scrollbar polish */
+  [data-theme] ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  [data-theme] ::-webkit-scrollbar-track {
+    background: transparent;
+
+  }
+  [data-theme] ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 6px;
+  }
+
+
+

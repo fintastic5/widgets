@@ -337,9 +337,6 @@ export default function App() {
   // Use stored edits if they exist, otherwise use the default values
   const values = propValues[activeTab] || config.defaults;
 
-  // Pull the CSS variables for the currently selected theme
-  const themeVars = THEMES[theme].vars;
-
   // Updates a single prop value for the active widget tab
   const handlePropChange = (key, value) => {
     setPropValues((previous) => ({
@@ -427,7 +424,7 @@ export default function App() {
           {/* Panel with all five widgets, themed via inline CSS variables */}
           <div
             className="rounded-2xl border border-gray-200 p-4"
-            style={themeVars}
+            data-theme={theme}
           >
               <Panel>
                 <Widget title="Progress" subtitle="This week">
@@ -530,7 +527,7 @@ export default function App() {
                   rounded-xl border border-gray-200 bg-gray-50 p-4
                   flex items-center justify-center min-h-[260px]
                 `}
-                style={themeVars}
+                data-theme={theme}
               >
                 {config.render(values)}
               </div>
