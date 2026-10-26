@@ -16,6 +16,19 @@ export const Default = {
   ),
 };
 
+export const FullValue = {
+  render: () => 
+    <Panel>
+      <Widget size="full" title="Goal Rings" subtitle="This week">
+        <GoalRings overall={100} items={[
+          { label: "Website", amount: "$12,579", change: 12, pct: 100 }, 
+          { label: "Marketplace", amount: "$4,579", change: -12, pct: 100 }, 
+          { label: "Affiliates", amount: "$12,579", change: 0, pct: 100 }
+        ]} />
+      </Widget>
+    </Panel>
+};
+
 export const CustomColors = {
   render: () => (
     <Panel>

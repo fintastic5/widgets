@@ -31,6 +31,7 @@ const Footer = styled.p`
   text-align: center;
   font-size: var(--font-size-body-md);
   color: var(--color-font-secondary);
+  font-weight: var(--font-weight-medium);
 `;
 
 const FooterValue = styled.span`

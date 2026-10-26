@@ -132,13 +132,10 @@ const PanelContent = styled.div`
 /* Responsive widget grid */
 const PanelGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(min(100%, ${CARD_SIZE}px), ${CARD_SIZE}px)
-  );
+  grid-template-columns: repeat(auto-fit, ${CARD_SIZE}px);
   grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
-  min-width: 0;
+  width: max-content;
   width: 100%;
   align-content: start;
 `;
@@ -147,6 +144,8 @@ const PanelGrid = styled.div`
 const Slot = styled.div`
   grid-column: span ${(p) => p.$size};
   grid-row: span ${(p) => p.$rows};
+  min-width: ${CARD_SIZE}px;
+  min-height: ${CARD_SIZE}px;
   cursor: grab;
 
   transition:
@@ -197,9 +196,10 @@ const WidgetCard = styled.div`
   padding: 24px;
 
   box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
+width: 100%;
+height: 100%;
+min-width: 250px;
+min-height: 250px;
 
   display: flex;
   flex-direction: column;

@@ -48,6 +48,7 @@ const BigNumber = styled.span`
 const SmallLabel = styled.span`
   font-size: var(--font-size-body-sm);
   color: var(--color-font-secondary);
+  font-weight: var(--font-weight-medium);
 `;
 
 const List = styled.ul`

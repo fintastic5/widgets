@@ -42,6 +42,7 @@ const BoxValue = styled.div`
 
 const BoxLabel = styled.div`
   font-size: var(--font-size-body-md);
+  font-weight: var(--font-weight-medium);
   color: var(--color-countdown-label);
 `;
 
@@ -57,6 +58,7 @@ const DateRow = styled.p`
   gap: 6px;
   font-size: 13px;
   color: var(--color-font-secondary);
+  font-weight: var(--font-weight-medium);
 `;
 
 const Strong = styled.strong`
