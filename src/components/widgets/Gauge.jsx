@@ -3,22 +3,9 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  justify-content: center;
+  align-items: center;
   flex: 1;
-  min-height: 0;
-`;
-
-const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
-  color: var(--color-font-secondary);
-`;
-
-const Subtitle = styled.p`
-  margin: 0 0 12px;
-  font-weight: 600;
-  color: var(--color-font-primary);
 `;
 
 const SvgWrap = styled.div`
@@ -36,23 +23,19 @@ const Value = styled.div`
   text-align: center;
   font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--color-font-primary);
 `;
 
 const Footer = styled.p`
-  margin: 8px 0 0;
+  margin: ${({ $isTarget }) => ($isTarget ? "16px 0 0" : "8px 0 0")};
   text-align: center;
-  padding-bottom: 16px;
-`;
-
-const FooterLabel = styled.span`
-  font-size: 14px;
-  color: var(--text-primary);
+  font-size: var(--font-size-body-md);
+  color: var(--color-font-secondary);
 `;
 
 const FooterValue = styled.span`
   font-size: 16px;
-  color: var(--text-secondary);
+  color: var(--color-font-primary);
   font-weight: var(--font-weight-medium);
 `;
 
@@ -71,20 +54,15 @@ function polarToCartesian(cx, cy, r, angleInDegrees) {
   };
 }
 
-/**
- * Gauge. Semicircular radial dial. Widget 4, confirmed via the Sprint 1 prototype.
- */
-export function Gauge({ title, subtitle, value, target, actual }) {
+export function Gauge({ value, target, actualLabel, color }) {
   const pct = Math.max(0, Math.min(100, value));
   const angle = (pct / 100) * 180;
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
       <SvgWrap
         role="img"
-        aria-label={`${title}, ${subtitle}: ${pct}% of target${target ? `, target ${target}` : ""}`}
+        aria-label={`${pct}% of target${target != null ? `, target ${target}` : ""}`}
       >
         <svg viewBox="0 0 176 96" width="176" height="96" aria-hidden="true">
           <path
@@ -97,24 +75,22 @@ export function Gauge({ title, subtitle, value, target, actual }) {
           <path
             d={describeArc(88, 88, 80, 0, angle)}
             fill="none"
-            stroke="var(--color-primary)"
+            stroke={color || "var(--color-primary, #7b5ffa)"}
             strokeWidth="16"
             strokeLinecap="round"
           />
         </svg>
         <Value aria-hidden="true">{pct}%</Value>
       </SvgWrap>
-      {actual && (
+      {actualLabel && (
         <Footer>
-          <FooterLabel>Actual: </FooterLabel>
-          <FooterValue>{actual}</FooterValue>
+          Actual: <FooterValue>{actualLabel}</FooterValue>
         </Footer>
       )}
 
       {target && (
-        <Footer>
-          <FooterLabel>Sales target: </FooterLabel>
-          <FooterValue>{target}</FooterValue>
+        <Footer $isTarget>
+          Sales target: <FooterValue>{target}</FooterValue>
         </Footer>
       )}
     </Wrapper>

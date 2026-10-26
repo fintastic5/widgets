@@ -1,5 +1,5 @@
 // Public API for the reusable panel, shell, and dashboard widgets.
-import "./styles/token.css";
+import "./styles/tokens.css";
 
 export { Panel, Widget } from "./components/Panel";
 export { WidgetShell } from "./components/WidgetShell";

@@ -4,21 +4,14 @@ import { ringCircumference, ringOffset } from "./ringMath";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
-  width: 100%;
   height: 100%;
-  min-width: 0;
-  gap: 16px;
-  padding: 0px 1em;
- 
+  gap: 36px;
 
   @container panel-content (max-width: 519px) {
     flex-direction: column;
-    align-items: stretch;
     gap: 16px;
-    padding: 0;
   }
 `;
 
@@ -27,6 +20,8 @@ const RingSection = styled.div`
   flex: 0 0 140px;
   width: 140px;
   height: 140px;
+  min-width: 0;
+  margin-inline: auto;
 `;
 
 const ValueContainer = styled.div`
@@ -45,13 +40,14 @@ const Value = styled.div`
 `;
 
 const BigNumber = styled.span`
-  font-size: 17px;
+  font-size: var(--font-size-heading);
   font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
+  color: var(--color-font-primary);
 `;
 
 const SmallLabel = styled.span`
   font-size: var(--font-size-body-sm);
+  color: var(--color-font-secondary);
 `;
 
 const List = styled.ul`
@@ -71,11 +67,11 @@ const Row = styled.li`
 `;
 
 const Key = styled.span`
+  width: 12px;
   height: 12px;
-  aspect-ratio: 1;
+  flex-shrink: 0;
   border-radius: 2px;
   background: ${(p) => p.$color};
-  width: 12px;
 `;
 
 const Label = styled.span`
@@ -84,9 +80,9 @@ const Label = styled.span`
 `;
 
 const Amount = styled.span`
-  color: var(--text-primary);
+  color: var(--color-font-primary);
   font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-body-lg)
+  font-size: var(--font-size-body-md)
 `;
 
 const Badge = styled.span`
@@ -100,9 +96,14 @@ const Badge = styled.span`
   color: ${(p) => (p.$direction === "up" ? "var(--color-success)" : p.$direction === "down" ? "var(--color-error)" : "var(--color-warning)")};
 `;
 
-const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
+const RING_COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)"];
 
 export function GoalRings({ overall = 0, items = [] }) {
+  
+  const getColor = (item, i) => {
+    return item.color || RING_COLORS[i % RING_COLORS.length];
+  }
+
   const radii = [64, 48, 32];
 
   return (
@@ -127,7 +128,7 @@ export function GoalRings({ overall = 0, items = [] }) {
                     cy="70"
                     r={r}
                     fill="none"
-                    stroke={RING_COLORS[i]}
+                    stroke={getColor(item, i)}
                     strokeWidth="10"
                     strokeLinecap="round"
                     strokeDasharray={c}
@@ -148,7 +149,7 @@ export function GoalRings({ overall = 0, items = [] }) {
         {items.map((item, i) => (
           <Row key={item.label}>
             <Key 
-              $color={RING_COLORS[i % RING_COLORS.length]} 
+              $color={getColor(item, i)}
               aria-hidden="true"
             />
             <Label>{item.label}</Label>
