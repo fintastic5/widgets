@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Panel,
   Widget,
+  WidgetShell,
   Gauge,
   ProgressRing,
   Countdown,
@@ -14,6 +15,12 @@ import PropsTable from "./components/PropsTable";
 import PropsEditor from "./components/PropsEditor";
 import { THEMES } from "./themes";
 
+const DEFAULT_LAUNCH_DATE = (() => {
+  const date = new Date();
+  date.setDate(date.getDate() + 30);
+  return date.toISOString().slice(0, 10);
+})();
+
 // Configuration for each widget tab, including editor fields, defaults and prop docs
 const WIDGET_CONFIG = {
   gauge: {
@@ -24,20 +31,16 @@ const WIDGET_CONFIG = {
     
     It can display an actual value label and a sales target beneath the gauge, making it useful for dashboards that track sales, performance or other measurable targets.`,
   
-    propsExplanation: `The value property sets the percentage displayed by the gauge. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
-    
-    The actual property lets you display a custom label beneath the gauge, while the target property allows you to show a sales target or goal below the percentage value. The title and subtitle properties allow you to customise the widget headings.`,
+    propsExplanation: `The value property sets the percentage displayed by the gauge. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. The actual and target properties display optional values below the gauge. Use WidgetShell to add a title and subtitle.`,
 
-    codeExample: `import { Gauge } from "@holmesdev/widgets";
+    codeExample: `import { Widget, WidgetShell, Gauge } from "@holmesdev/widgets";
     export default function GaugeDashboard() {
       return (
-      <Gauge
-        title="Revenue"
-        subtitle="This week"
-        value={42}
-        actual="Actual: $17,640"
-        target="$42,000"
-      />
+        <Widget>
+          <WidgetShell title="Revenue" subtitle="This week">
+            <Gauge value={42} actual="Actual: $17,640" target="$42,000" />
+          </WidgetShell>
+        </Widget>
       );
     }`,
 
@@ -56,18 +59,20 @@ const WIDGET_CONFIG = {
       target: "$42,000",
     },
     render: (values) => (
-      <Widget title={values.title} subtitle={values.subtitle}>
-        <Gauge
-          value={values.value}
-          actual={values.actual}
-          target={values.target}
-        />
+      <Widget>
+        <WidgetShell title={values.title} subtitle={values.subtitle}>
+          <Gauge
+            value={values.value}
+            actual={values.actual}
+            target={values.target}
+          />
+        </WidgetShell>
       </Widget>
     ),
     table: [
       { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
-      { prop: "title", type: "string", default: "undefined", description: "Widget title shown above the arc." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle shown below the title." },
+      { prop: "title", type: "string", default: "undefined", description: "WidgetShell title shown above the arc." },
+      { prop: "subtitle", type: "string", default: "undefined", description: "WidgetShell subtitle." },
       { prop: "actual", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
       { prop: "actualLabel", type: "string", default: "undefined", description: "Deprecated alias for actual, retained for compatibility." },
       { prop: "target", type: "string", default: "undefined", description: "Optional 'Sales target: …' footer line." },
@@ -81,19 +86,17 @@ const WIDGET_CONFIG = {
 
     The ring fills according to the supplied percentage value, from 0 to 100, making it easy to see progress at a glance. The widget can be customised with a title and a subtitle and is suitable for dashboards tracking tasks, goals or performance metrics.`,
 
-    propsExplanation: `The value property sets the progress percentage displayed by the circular ring. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. 
-    
-    The title and subtitle properties allow you to customise the widget headings.`,
+    propsExplanation: `The value property sets the progress percentage displayed by the circular ring. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. Use WidgetShell to add a title and subtitle.`,
 
-    codeExample: `import { ProgressRing } from "@holmesdev/widgets";
+    codeExample: `import { Widget, WidgetShell, ProgressRing } from "@holmesdev/widgets";
 
     export default function ProgressDashboard() {
       return (
-      <ProgressRing
-        title="Progress"
-        subtitle="This week"
-        value={78}
-      />
+        <Widget>
+          <WidgetShell title="Progress" subtitle="This week">
+            <ProgressRing value={78} />
+          </WidgetShell>
+        </Widget>
       );
     }`,
 
@@ -108,14 +111,16 @@ const WIDGET_CONFIG = {
       subtitle: "This week",
     },
     render: (values) => (
-      <Widget title={values.title} subtitle={values.subtitle}>
-        <ProgressRing value={values.value} />
+      <Widget>
+        <WidgetShell title={values.title} subtitle={values.subtitle}>
+          <ProgressRing value={values.value} />
+        </WidgetShell>
       </Widget>
     ),
     table: [
       { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
-      { prop: "title", type: "string", default: "undefined", description: "Widget title." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
+      { prop: "title", type: "string", default: "undefined", description: "WidgetShell title." },
+      { prop: "subtitle", type: "string", default: "undefined", description: "WidgetShell subtitle." },
     ],
   },
   countdown: {
@@ -130,16 +135,18 @@ const WIDGET_CONFIG = {
     The optional onNotify property accepts a callback function that is triggered when the user clicks the Notify Me button, allowing the parent component to handle the user's request.
     `,
 
-    codeExample: `import { Countdown } from "@holmesdev/widgets";
+    codeExample: `import { Widget, WidgetShell, Countdown } from "@holmesdev/widgets";
 
     export default function CountdownDashboard() {
       return (
-      <Countdown
-        title="Countdown"
-        subtitle="Product launch"
-        launchDate="2026-10-28"
-        onNotify={() => console.log("Notify me clicked")}
-      />
+        <Widget>
+          <WidgetShell title="Countdown" subtitle="Product launch">
+            <Countdown
+              launchDate="${DEFAULT_LAUNCH_DATE}"
+              onNotify={() => console.log("Notify me clicked")}
+            />
+          </WidgetShell>
+        </Widget>
       );
     }`,
 
@@ -149,13 +156,15 @@ const WIDGET_CONFIG = {
       { key: "subtitle", label: "Subtitle", type: "text" },
     ],
     defaults: {
-      launchDate: "2026-10-28",
+      launchDate: DEFAULT_LAUNCH_DATE,
       title: "Countdown",
       subtitle: "Product Launch",
     },
     render: (values) => (
-      <Widget title={values.title} subtitle={values.subtitle}>
-        <Countdown launchDate={values.launchDate} />
+      <Widget>
+        <WidgetShell title={values.title} subtitle={values.subtitle}>
+          <Countdown launchDate={values.launchDate} />
+        </WidgetShell>
       </Widget>
     ),
     table: [
@@ -175,19 +184,21 @@ const WIDGET_CONFIG = {
 
     propsExplanation: `The segments property accepts an array of objects, each containing a label and a pct value representing the percentage for that segment. Segment colors are selected from the theme palette. The title and subtitle properties allow you to customise the widget headings.`,
 
-    codeExample: `import { Distribution } from "@holmesdev/widgets";
+    codeExample: `import { Widget, WidgetShell, Distribution } from "@holmesdev/widgets";
 
     export default function DistributionDashboard() {
       return(
-      <Distribution
-        title="Distribution"
-        subtitle="This week"
-        segments={[
-          { label: "HTML", pct: 26 },
-          { label: "CSS", pct: 34 },
-          { label: "JavaScript", pct: 40 },
-        ]}
-      />
+        <Widget>
+          <WidgetShell title="Distribution" subtitle="This week">
+            <Distribution
+              segments={[
+                { label: "HTML", pct: 26 },
+                { label: "CSS", pct: 34 },
+                { label: "JavaScript", pct: 40 },
+              ]}
+            />
+          </WidgetShell>
+        </Widget>
       );
     }`,
 
@@ -210,8 +221,10 @@ const WIDGET_CONFIG = {
         // Fall back to an empty array if the JSON is malformed
       }
       return (
-        <Widget title={values.title} subtitle={values.subtitle}>
-          <Distribution segments={segments} />
+        <Widget>
+          <WidgetShell title={values.title} subtitle={values.subtitle}>
+            <Distribution segments={segments} />
+          </WidgetShell>
         </Widget>
       );
     },
@@ -235,21 +248,23 @@ const WIDGET_CONFIG = {
 
     The widget displays visual progress rings for up to three goals, based on their pct values. The list displays the supplied goal items, including their labels, amounts and change values.`,
 
-    codeExample: `import { GoalRings } from "@holmesdev/widgets";
+    codeExample: `import { Widget, WidgetShell, GoalRings } from "@holmesdev/widgets";
 
     export function GoalsDashboard() {
-    return (
-    <GoalRings
-      title="Goal Rings"
-      subtitle="This week"
-      overall={78}
-      items={[
-        { label: "Website", amount: "$12,579", change: 12, pct: 78 },
-        { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
-        { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 }
-      ]}
-    />
-    );
+      return (
+        <Widget size={2}>
+          <WidgetShell title="Goal Rings" subtitle="This week">
+            <GoalRings
+              overall={78}
+              items={[
+                { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+                { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+                { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 }
+              ]}
+            />
+          </WidgetShell>
+        </Widget>
+      );
     }`,
 
     fields: [
@@ -273,8 +288,10 @@ const WIDGET_CONFIG = {
         // Fall back to an empty array if the JSON is malformed
       }
       return (
-        <Widget size="full" title={values.title} subtitle={values.subtitle}>
-          <GoalRings overall={values.overall} items={items} />
+        <Widget size={2}>
+          <WidgetShell title={values.title} subtitle={values.subtitle}>
+            <GoalRings overall={values.overall} items={items} />
+          </WidgetShell>
         </Widget>
       );
     },
@@ -289,23 +306,27 @@ const WIDGET_CONFIG = {
 };
 
 // Example code shown in the Getting Started section
-const CODE_EXAMPLE = `import "@holmesdev/widgets";
-import { Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
+const CODE_EXAMPLE = `import "@holmesdev/widgets/style.css";
+import { Panel, Widget, WidgetShell, Gauge, GoalRings } from "@holmesdev/widgets";
 
 export function Dashboard() {
   return (
     <Panel>
-      <Widget title="Revenue" subtitle="This week">
-        <Gauge value={42} actual="$17,640" target="$42,000" />
+      <Widget>
+        <WidgetShell title="Revenue" subtitle="This week">
+          <Gauge value={42} actual="Actual: $17,640" target="$42,000" />
+        </WidgetShell>
       </Widget>
-      <Widget size="full" title="Goals" subtitle="This week">
-        <GoalRings
-          overall={78}
-          items={[
-            { label: "Website", amount: "$12,579", change: 12, pct: 78 },
-            { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
-          ]}
-        />
+      <Widget size={2}>
+        <WidgetShell title="Goals" subtitle="This week">
+          <GoalRings
+            overall={78}
+            items={[
+              { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+              { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+            ]}
+          />
+        </WidgetShell>
       </Widget>
     </Panel>
   );
@@ -427,37 +448,47 @@ export default function App() {
             data-theme={theme}
           >
               <Panel>
-                <Widget title="Progress" subtitle="This week">
-                  <ProgressRing value={78} />
+                <Widget>
+                  <WidgetShell title="Progress" subtitle="This week">
+                    <ProgressRing value={78} />
+                  </WidgetShell>
                 </Widget>
-                <Widget title="Gauge" subtitle="This week">
-                  <Gauge
-                    value={42}
-                    actual="Actual: $17,640"
-                    target="$42,000"
-                  />
+                <Widget>
+                  <WidgetShell title="Gauge" subtitle="This week">
+                    <Gauge
+                      value={42}
+                      actual="Actual: $17,640"
+                      target="$42,000"
+                    />
+                  </WidgetShell>
                 </Widget>
-                <Widget title="Countdown" subtitle="Product Launch">
-                  <Countdown launchDate="2026-10-28" />
+                <Widget>
+                  <WidgetShell title="Countdown" subtitle="Product Launch">
+                    <Countdown launchDate={DEFAULT_LAUNCH_DATE} />
+                  </WidgetShell>
                 </Widget>
-                <Widget title="Distribution" subtitle="This week">
-                  <Distribution
-                    segments={[
-                      { label: "HTML", pct: 26 },
-                      { label: "CSS", pct: 34 },
-                      { label: "JavaScript", pct: 40 },
-                    ]}
-                  />
+                <Widget>
+                  <WidgetShell title="Distribution" subtitle="This week">
+                    <Distribution
+                      segments={[
+                        { label: "HTML", pct: 26 },
+                        { label: "CSS", pct: 34 },
+                        { label: "JavaScript", pct: 40 },
+                      ]}
+                    />
+                  </WidgetShell>
                 </Widget>
-                <Widget size="full" title="Goal Rings" subtitle="This week">
-                  <GoalRings
-                    overall={78}
-                    items={[
-                      { label: "Website", amount: "$12,579", change: 12, pct: 78 },
-                      { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
-                      { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 },
-                    ]}
-                  />
+                <Widget size={2}>
+                  <WidgetShell title="Goal Rings" subtitle="This week">
+                    <GoalRings
+                      overall={78}
+                      items={[
+                        { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+                        { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+                        { label: "Affiliates", amount: "$12,579", change: 0, pct: 55 },
+                      ]}
+                    />
+                  </WidgetShell>
                 </Widget>
               </Panel>
           </div>

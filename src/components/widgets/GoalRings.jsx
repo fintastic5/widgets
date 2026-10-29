@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   align-items: center;
   height: 100%;
   gap: 36px;
+  color: var(--color-font-primary);
 
   @container panel-content (max-width: 519px) {
     flex-direction: column;
@@ -78,6 +79,7 @@ const Key = styled.span`
 const Label = styled.span`
   flex: 1;
   font-size: var(--font-size-body-sm)
+  color: var(--color-font-secondary);
 `;
 
 const Amount = styled.span`
