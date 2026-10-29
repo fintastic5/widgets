@@ -556,11 +556,20 @@ export default function App() {
               <div
                 className={`
                   rounded-xl border border-gray-200 bg-gray-50 p-4
-                  flex items-center justify-center min-h-[260px]
+                  flex min-h-[282px] items-center justify-center self-start
                 `}
                 data-theme={theme}
               >
-                {config.render(values)}
+                <div
+                  className="w-[250px] max-w-full shrink-0"
+                  style={{
+                    containerType: "inline-size",
+                    containerName: "panel-content",
+                    height: activeTab === "goalrings" ? "auto" : 250,
+                  }}
+                >
+                  {config.render(values)}
+                </div>
               </div>
             </div>
 
