@@ -1,38 +1,32 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const CARD_SIZE = 248;
+const CARD_SIZE = 250;
 const PANEL_PADDING = 32;
 const GRID_GAP = 24;
 const PANEL_BORDER = 1;
-const SCROLLBAR_WIDTH = 16;
 
 const DEFAULT_WIDTH =
   CARD_SIZE * 2 +
   GRID_GAP +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2 +
-  SCROLLBAR_WIDTH; // 606px
+  PANEL_BORDER * 2; 
 
 const DEFAULT_HEIGHT =
   CARD_SIZE * 3 +
   GRID_GAP * 2 +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2; // 864px
+  PANEL_BORDER * 2;
 
 const MIN_WIDTH =
   CARD_SIZE +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2 +
-  SCROLLBAR_WIDTH; // 316px
+  PANEL_BORDER * 2;
 
 const MIN_HEIGHT =
   CARD_SIZE +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2; // 316px
-
-const MAX_WIDTH = window.innerWidth;
+  PANEL_BORDER * 2;
 
 const RESIZE_STEP = 10;
 
@@ -44,7 +38,7 @@ function clamp(value, min, max) {
 /* Snap panel dimension to the nearest card boundary. */
 function snapPanelSize(value, max) {
   const availableSize =
-    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - SCROLLBAR_WIDTH;
+    max - PANEL_PADDING * 2 - PANEL_BORDER * 2;
 
   // Find the maximum number of cards that can fit.
   const maxTracks = Math.max(
@@ -67,18 +61,17 @@ function snapPanelSize(value, max) {
   );
 
   // Keep the result between one card and the maximum.
-  const safeTracks = Math.min(
+  const tracks = Math.min(
     Math.max(nearest, 1),
     maxTracks
   );
 
   // Return the exact panel size for that number of cards.
   return (
-    safeTracks * CARD_SIZE +
-    (safeTracks - 1) * GRID_GAP +
+    tracks * CARD_SIZE +
+    (tracks - 1) * GRID_GAP +
     PANEL_PADDING * 2 +
-    PANEL_BORDER * 2 +
-    SCROLLBAR_WIDTH
+    PANEL_BORDER * 2
   );
 }
 
@@ -101,10 +94,7 @@ function getSavedSize(key, fallback, min, dimension) {
   );
 }
 
-/* =========================
-   Resizable panel
-========================= */
-
+/* Resizable panel */
 const PanelFrame = styled.div`
   position: relative;
 
@@ -114,21 +104,17 @@ const PanelFrame = styled.div`
   min-width: ${MIN_WIDTH}px;
   min-height: ${MIN_HEIGHT}px;
 
-  max-width: ${MAX_WIDTH}px;
+  max-width: 100vw;
   max-height: 100vh;
 
-  box-sizing: border-box;
   background: var(--color-bg-panel);
   border: 1px solid var(--color-border);
-  border-radius: 24px;
+  border-radius: var(--widget-border-radius);
 
   overflow: hidden;
 `;
 
-/* =========================
-   Panel content
-========================= */
-
+/* Panel content */
 const PanelContent = styled.div`
   position: relative;
   z-index: 1;
@@ -139,35 +125,27 @@ const PanelContent = styled.div`
   box-sizing: border-box;
   overflow: auto;
 
-  scrollbar-gutter: stable;
   container-type: inline-size;
   container-name: panel-content;
 `;
 
-/* =========================
-   Responsive widget grid
-========================= */
-
+/* Responsive widget grid */
 const PanelGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(min(100%, ${CARD_SIZE}px), ${CARD_SIZE}px)
-  );
+  grid-template-columns: repeat(auto-fit, ${CARD_SIZE}px);
   grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
-  min-width: 0;
+  width: max-content;
   width: 100%;
   align-content: start;
 `;
 
-/* =========================
-   Widget slot
-========================= */
-
+/* Widget slot */
 const Slot = styled.div`
   grid-column: span ${(p) => p.$size};
   grid-row: span ${(p) => p.$rows};
+  min-width: ${CARD_SIZE}px;
+  min-height: ${CARD_SIZE}px;
   cursor: grab;
 
   transition:
@@ -179,10 +157,10 @@ const Slot = styled.div`
   ${(p) => 
     p.$dragOver &&
     `
-      border: 2px dashed var(--color-chart-3);
+      border: 2px dashed var(--color-primary);
       border-radius: var(--widget-border-radius);
       outline-offset: 2px;
-      background: var(--bg-panel);
+      background: var(--color-bg-panel);
     `}
 
   ${(p) =>
@@ -204,14 +182,10 @@ const Slot = styled.div`
   /* Wide widgets stack vertically when only one column fits. */
   @container panel-content (max-width: 519px) {
     grid-column: span 1;
-    grid-row: span 1;
   }
 `;
 
-/* =========================
-   Widget card
-========================= */
-
+/* Widget card */
 const WidgetCard = styled.div`
   container-type: inline-size;
   container-name: widget-card;
@@ -220,12 +194,12 @@ const WidgetCard = styled.div`
   border: 1px solid var(--color-border);
   border-radius: var(--widget-border-radius);
   padding: 24px;
-  box-sizing: border-box;
 
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
+  box-sizing: border-box;
+width: 100%;
+height: 100%;
+min-width: 250px;
+min-height: 250px;
 
   display: flex;
   flex-direction: column;
@@ -236,20 +210,16 @@ const WidgetCard = styled.div`
   }
 `;
 
-/* =========================
-   Empty state
-========================= */
-
+/* Empty state */
 const EmptyState = styled.div`
   grid-column: 1 / -1;
-
   min-height: ${CARD_SIZE}px;
 
   border: 2px dashed
     ${({ $dragOver }) =>
       $dragOver
-        ? "var(--purple-400, #7b5ffa)"
-        : "var(--color-border, var(--border, #343875))"};
+        ? "var(--color-primary, #7b5ffa)"
+        : "var(--color-border, #343875)"};
 
   border-radius: var(--widget-border-radius);
 
@@ -259,11 +229,11 @@ const EmptyState = styled.div`
   justify-content: center;
   gap: 8px;
 
-  color: var(--text-secondary, #c1c4e5);
+  color: var(--color-font-secondary, #c1c4e5);
   font-size: 14px;
 
   background: ${({ $dragOver }) =>
-    $dragOver ? "var(--bg-panel, #101221)" : "transparent"};
+    $dragOver ? "var(--color-bg-panel, #101221)" : "transparent"};
 
   transition: border-color 0.15s, background-color 0.15s;
 `;
@@ -273,19 +243,17 @@ const EmptyStateIcon = styled.div`
   opacity: 0.5;
 `;
 
-/* =========================
-   Drop indicator
-========================= */
+/* Drop indicator */
 
 const DropIndicator = styled.div`
   grid-column: 1 / -1;
   height: 60px;
 
-  border: 2px dashed var(--purple-400);
-  border-radius: var(--widget-border-radius);
+  border: 2px dashed var(--color-primary, #7b5ffa);
+  border-radius: var(--widget-border-radius, );
 
-  background: var(--bg-panel, #101221);
-  color: var(--purple-400, #7b5ffa);
+  background: var(--color-bg-panel, #101221);
+  color: var(--color-primary, #7b5ffa);
 
   display: flex;
   align-items: center;
@@ -294,10 +262,7 @@ const DropIndicator = styled.div`
   font-size: 13px;
 `;
 
-/* =========================
-   Resize handles
-========================= */
-
+/* Resize handles */
 const ResizeHandle = styled.div`
   position: absolute;
   z-index: 2;
@@ -420,10 +385,7 @@ const RESIZE_HANDLES = [
   "bottom-right",
 ];
 
-/* =========================
-   Panel
-========================= */
-
+/* Panel */
 export function Panel({ children }) {
   const items = React.Children.toArray(children);
 
@@ -468,7 +430,6 @@ export function Panel({ children }) {
   }, []);
 
   // Restore the user's saved widget order.
-  // New widgets are appended instead of being omitted.
   const ordered = dragOrderKeys
     ? [
         ...dragOrderKeys
@@ -478,10 +439,7 @@ export function Panel({ children }) {
       ]
     : items;
 
-  /* -------------------------
-     Resizing
-  ------------------------- */
-
+  /* Resizing */
   function startResize(event, handle) {
     event.preventDefault();
 
@@ -517,7 +475,7 @@ export function Panel({ children }) {
     if (resize.handle.includes("top")) height -= dy;
 
     // Keep the dimensions within the allowed limits.
-    width = clamp(width, MIN_WIDTH, MAX_WIDTH);
+    width = clamp(width, MIN_WIDTH, window.innerWidth);
     height = clamp(height, MIN_HEIGHT, window.innerHeight);
 
     // Store the latest dimensions for the pointer-up event.
@@ -535,7 +493,7 @@ export function Panel({ children }) {
     // Snap to the nearest complete column or row.
     const snappedWidth = snapPanelSize(
       resize.currentWidth ?? resize.startWidth,
-      Math.min(MAX_WIDTH, window.innerWidth)
+      window.innerWidth
     );
 
     const snappedHeight = snapPanelSize(
@@ -592,10 +550,7 @@ export function Panel({ children }) {
     setPanelHeight(clamp(height, MIN_HEIGHT, window.innerHeight));
   }
 
-  /* -------------------------
-     Drag and drop
-  ------------------------- */
-
+  /* Drag and drop */
   function handleDragStart(index) {
     dragIndex.current = index;
     setDraggingIndex(index);
@@ -656,10 +611,6 @@ export function Panel({ children }) {
 
     handleDragEnd();
   }
-
-  /* -------------------------
-     Render
-  ------------------------- */
 
   return (
     <PanelFrame

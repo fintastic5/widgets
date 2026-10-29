@@ -6,8 +6,6 @@ import { Gauge } from "./widgets/Gauge";
 import { Distribution } from "./widgets/Distribution";
 import { GoalRings } from "./widgets/GoalRings";
 
-// Two column grid, four widgets at size 1 (half width), Goal Rings
-// at size 2 (full width) since it needs the room for the ring plus list.
 export function DemoPanel() {
   return (
     <Panel>
@@ -25,7 +23,7 @@ export function DemoPanel() {
 
       <Widget size={1}>
         <WidgetShell title="Gauge" subtitle="This week">
-          <Gauge value={42} actual="$17,640" target="$42,000" />
+          <Gauge value={42} actualLabel="$17,640" target="$42,000" />
         </WidgetShell>
       </Widget>
 
