@@ -1,24 +1,17 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
-  color: var(--text-secondary, #c1c4e5);
-`;
-
-const Title = styled.p`
-  margin: 0;
-  font-size: 14px;
-`;
-
-const Subtitle = styled.p`
-  margin: 0 0 12px;
-  font-weight: 600;
-  color: var(--text-primary, #f9f9fa);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 `;
 
 const SvgWrap = styled.div`
   position: relative;
-  width: 160px;
-  height: 90px;
+  width: 176px;
+  height: 74px;
   margin: 0 auto;
 `;
 
@@ -30,13 +23,21 @@ const Value = styled.div`
   text-align: center;
   font-size: 28px;
   font-weight: 700;
-  color: var(--text-primary, #f9f9fa);
+  color: var(--color-font-primary);
 `;
 
 const Footer = styled.p`
-  margin: 8px 0 0;
-  font-size: 13px;
+  margin: ${({ $isTarget }) => ($isTarget ? "16px 0 0" : "8px 0 0")};
   text-align: center;
+  font-size: var(--font-size-body-md);
+  color: var(--color-font-secondary);
+  font-weight: var(--font-weight-medium);
+`;
+
+const FooterValue = styled.span`
+  font-size: 16px;
+  color: var(--color-font-primary);
+  font-weight: var(--font-weight-medium);
 `;
 
 function describeArc(cx, cy, r, startAngle, endAngle) {
@@ -54,24 +55,46 @@ function polarToCartesian(cx, cy, r, angleInDegrees) {
   };
 }
 
-export function Gauge({ title, subtitle, value, target, actual, actualLabel }) {
+export function Gauge({ value, target, actual, actualLabel, color }) {
   const pct = Math.max(0, Math.min(100, value));
   const angle = (pct / 100) * 180;
-  const actualText = actual ?? actualLabel;
 
   return (
     <Wrapper>
-      {title && <Title>{title}</Title>}
-      {subtitle && <Subtitle>{subtitle}</Subtitle>}
-      <SvgWrap role="img" aria-label={`${title || "Gauge"}: ${pct}% of target${target ? `, target ${target}` : ""}`}>
-        <svg viewBox="0 0 160 90" width="160" height="90">
-          <path d={describeArc(80, 80, 70, 0, 180)} fill="none" stroke="var(--border, #343875)" strokeWidth="14" strokeLinecap="round" />
-          <path d={describeArc(80, 80, 70, 0, angle)} fill="none" stroke="var(--purple-400, #7b5ffa)" strokeWidth="14" strokeLinecap="round" />
+      <SvgWrap
+        role="img"
+        aria-label={`${pct}% of target${target != null ? `, target ${target}` : ""}`}
+      >
+        <svg viewBox="0 0 176 96" width="176" height="96" aria-hidden="true">
+          <path
+            d={describeArc(88, 88, 80, 0, 180)}
+            fill="none"
+            stroke="var(--color-track-ring)"
+            strokeWidth="16"
+            strokeLinecap="round"
+          />
+          <path
+            d={describeArc(88, 88, 80, 0, angle)}
+            fill="none"
+            stroke={color || "var(--color-primary, #7b5ffa)"}
+            strokeWidth="16"
+            strokeLinecap="round"
+          />
         </svg>
-        <Value>{pct}%</Value>
+        <Value aria-hidden="true">{pct}%</Value>
       </SvgWrap>
-      {actualText && <Footer>{actualText}</Footer>}
-      {target && <Footer>Sales target: {target}</Footer>}
+      {actual != null ? (
+        <Footer>{actual}</Footer>
+      ) : actualLabel != null ? (
+        <Footer>
+          Actual: <FooterValue>{actualLabel}</FooterValue>
+        </Footer>
+      ) : null}
+      {target != null && (
+        <Footer $isTarget>
+          Sales target: <FooterValue>{target}</FooterValue>
+        </Footer>
+      )}
     </Wrapper>
   );
 }
