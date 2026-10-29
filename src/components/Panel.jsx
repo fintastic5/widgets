@@ -5,12 +5,14 @@ const CARD_SIZE = 250;
 const PANEL_PADDING = 32;
 const GRID_GAP = 24;
 const PANEL_BORDER = 1;
+const SCROLLBAR_WIDTH = 16;
 
 const DEFAULT_WIDTH =
   CARD_SIZE * 2 +
   GRID_GAP +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2; 
+  PANEL_BORDER * 2 +
+  SCROLLBAR_WIDTH;
 
 const DEFAULT_HEIGHT =
   CARD_SIZE * 3 +
@@ -21,7 +23,8 @@ const DEFAULT_HEIGHT =
 const MIN_WIDTH =
   CARD_SIZE +
   PANEL_PADDING * 2 +
-  PANEL_BORDER * 2;
+  PANEL_BORDER * 2 +
+  SCROLLBAR_WIDTH;
 
 const MIN_HEIGHT =
   CARD_SIZE +
@@ -38,7 +41,7 @@ function clamp(value, min, max) {
 /* Snap panel dimension to the nearest card boundary. */
 function snapPanelSize(value, max) {
   const availableSize =
-    max - PANEL_PADDING * 2 - PANEL_BORDER * 2;
+    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - SCROLLBAR_WIDTH;
 
   // Find the maximum number of cards that can fit.
   const maxTracks = Math.max(
@@ -54,7 +57,8 @@ function snapPanelSize(value, max) {
     (
       value -
       PANEL_PADDING * 2 -
-      PANEL_BORDER * 2 +
+      PANEL_BORDER * 2 -
+      SCROLLBAR_WIDTH +
       GRID_GAP
     ) /
       (CARD_SIZE + GRID_GAP)
@@ -71,7 +75,8 @@ function snapPanelSize(value, max) {
     tracks * CARD_SIZE +
     (tracks - 1) * GRID_GAP +
     PANEL_PADDING * 2 +
-    PANEL_BORDER * 2
+    PANEL_BORDER * 2 +
+    SCROLLBAR_WIDTH
   );
 }
 
@@ -84,9 +89,12 @@ function getSavedSize(key, fallback, min, dimension) {
     : window.innerHeight;
 
   const saved = Number(window.localStorage.getItem(key));
+  const hasSavedValue = window.localStorage.getItem(key) !== null;
+  const isPreviousDefaultWidth =
+    dimension === "width" && saved === fallback - SCROLLBAR_WIDTH;
 
   return clamp(
-    Number.isFinite(saved) && window.localStorage.getItem(key) !== null
+    Number.isFinite(saved) && hasSavedValue && !isPreviousDefaultWidth
       ? saved
       : fallback,
     min,
