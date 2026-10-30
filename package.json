@@ -9,7 +9,8 @@
     ".": {
       "import": "./dist/widgets.js",
       "require": "./dist/widgets.umd.cjs"
-    }
+    },
+    "./style.css": "./dist/widgets.css"
   },
   "files": [
     "dist"

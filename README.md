@@ -9,28 +9,36 @@ npm install @holmesdev/widgets
 ```
 
 ```jsx
-import { Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
+import "@holmesdev/widgets/style.css";
+import { WidgetShell, Panel, Widget, Gauge, GoalRings } from "@holmesdev/widgets";
 
 export function Dashboard() {
-  return (
-    <Panel>
-      <Widget title="Revenue" subtitle="This week">
-        <Gauge value={42} actualLabel="$17,640" target="$42,000" />
-      </Widget>
+  return (
+      <Panel>
+        <Widget size={1}>
+          <WidgetShell title="Revenue" subtitle="This week">
+            <Gauge value={42} actual="$17,640" target="$42,000" />
+          </WidgetShell>
+        </Widget>
 
-      <Widget size="full" title="Goals" subtitle="This week">
-        <GoalRings
-          overall={78}
-          items={[
-            { label: "Website", amount: "$12,579", change: 12, pct: 78 },
-            { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
-          ]}
-        />
-      </Widget>
-    </Panel>
-  );
+        <Widget size={2}>
+          <WidgetShell title="Goals" subtitle="This week">
+            <GoalRings
+              overall={78}
+              items={[
+                { label: "Website", amount: "$12,579", change: 12, pct: 78 },
+                { label: "Marketplace", amount: "$4,579", change: -12, pct: 42 },
+                { label: "Affiliates", amount: "$8,240", change: 6, pct: 64 },
+              ]}
+            />
+          </WidgetShell>
+        </Widget>
+      </Panel>
+  );
 }
 ```
+
+Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
 
 ## Available widgets
 
@@ -55,3 +63,30 @@ Build the package and Storybook preview:
 npm run build
 npm run build-storybook
 ```
+
+## Documentation
+
+To use the local widgets package in the docs site, build it from the repository root first:
+
+```bash
+npm run build
+```
+
+**Rebuild it after changing widget source.** Then run the documentation site:
+
+```bash
+cd docs
+npm install
+npm run dev
+```
+
+From `docs/`, build and preview the production site with:
+
+```bash
+npm run build
+npm run preview
+```
+
+## License
+
+This project is licensed under the [MIT License](LICENCE).

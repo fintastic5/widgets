@@ -3,5 +3,24 @@ import { Panel, Widget, ProgressRing } from "../index";
 export default { title: "Widgets/Progress", component: ProgressRing, tags: ["autodocs"] };
 
 export const Default = {
-  render: () => <Panel><Widget title="Progress" subtitle="This week"><ProgressRing value={78} /></Widget></Panel>,
+  render: () => 
+    <Panel>
+      <Widget title="Progress" subtitle="This week">
+        <ProgressRing 
+          value={78} 
+        />
+      </Widget>
+    </Panel>,
+};
+
+export const CustomColor = {
+  render: () => 
+    <Panel>
+      <Widget title="Progress" subtitle="This week">
+        <ProgressRing 
+          value={78} 
+          color="orange" 
+        />
+      </Widget>
+    </Panel>,
 };
