@@ -2,19 +2,21 @@
 export default function PropsEditor({ fields, values, onChange }) {
   // Renders the correct input type based on the field definition
   const renderInput = (field) => {
+    const inputClass = `
+      w-full rounded-lg border border-gray-300 bg-white
+      px-3 py-2 text-sm text-gray-800
+      focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100
+    `;
+
     // Textarea for JSON array props like segments and items
     if (field.type === "textarea") {
       return (
         <textarea
+          id={field.key}
           value={values[field.key]}
           onChange={(event) => onChange(field.key, event.target.value)}
-          rows={3}
-          className={`
-            w-full px-3 py-2 rounded-lg border border-gray-300
-            text-sm font-mono text-gray-800 bg-white
-            focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent
-            resize-y
-          `}
+          rows={4}
+          className={`${inputClass} resize-y font-mono`}
         />
       );
     }
@@ -23,16 +25,15 @@ export default function PropsEditor({ fields, values, onChange }) {
     if (field.type === "number") {
       return (
         <input
+          id={field.key}
           type="number"
           min={field.min}
           max={field.max}
           value={values[field.key]}
-          onChange={(event) => onChange(field.key, Number(event.target.value))}
-          className={`
-            w-full px-3 py-2 rounded-lg border border-gray-300
-            text-sm text-gray-800 bg-white
-            focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent
-          `}
+          onChange={(event) =>
+            onChange(field.key, Number(event.target.value))
+          }
+          className={inputClass}
         />
       );
     }
@@ -40,27 +41,26 @@ export default function PropsEditor({ fields, values, onChange }) {
     // Text input for string props like title, subtitle and labels
     return (
       <input
+        id={field.key}
         type="text"
         value={values[field.key]}
         onChange={(event) => onChange(field.key, event.target.value)}
-        className={`
-          w-full px-3 py-2 rounded-lg border border-gray-300
-          text-sm text-gray-800 bg-white
-          focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent
-        `}
+        className={inputClass}
       />
     );
   };
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-        Editor
-      </p>
-
+    <div className="space-y-2">
       {fields.map((field) => (
-        <div key={field.key} className="space-y-1">
-          <label className="text-xs text-gray-500">{field.label}</label>
+        <div key={field.key} className="space-y-1.5">
+          <label
+            htmlFor={field.key}
+            className="text-xs font-medium text-gray-600"
+          >
+            {field.label}
+          </label>
+
           {renderInput(field)}
         </div>
       ))}
