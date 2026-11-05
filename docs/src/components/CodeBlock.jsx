@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { Code, Copy, Check } from "lucide-react";
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export default function CodeBlock({ code, language = "jsx" }) {
+function CodeBlock({ code, language = "jsx" }) {
   const [copied, setCopied] = useState(false);
 
   // Copy code to clipboard
@@ -64,3 +64,5 @@ export default function CodeBlock({ code, language = "jsx" }) {
     </div>
   );
 }
+
+export default memo(CodeBlock);
