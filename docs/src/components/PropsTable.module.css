@@ -1,0 +1,32 @@
+.propBadge {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: rgba(37, 99, 235, 0.08);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-family: monospace; 
+}
+
+.propTypeBadge {
+  font-family: monospace;
+  font-size: 11px;
+  color: #9333ea;
+  background-color: rgba(147, 51, 234, 0.08);
+  padding: 2px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.propDefaultBadge {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--color-font-secondary);
+  background-color: var(--color-grey);
+  padding: 2px 6px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+

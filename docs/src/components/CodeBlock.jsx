@@ -1,44 +1,62 @@
 import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Code, Copy, Check } from "lucide-react";
+import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-// Code block with syntax highlighting and a copy button that appears on hover
 export default function CodeBlock({ code, language = "jsx" }) {
   const [copied, setCopied] = useState(false);
 
-  // Copies the code to the clipboard and shows a brief confirmation
-  const handleCopy = () => {
-    navigator.clipboard?.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  // Copy code to clipboard
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (error) {
+      console.error("Failed to copy code:", error);
+    }
   };
 
   return (
-    <div className="relative group">
-      {/* Copy button, hidden until the user hovers over the code block */}
-      <button
-        onClick={handleCopy}
-        className={`
-          absolute top-2 right-2 z-10
-          px-2.5 py-1 rounded-md text-xs font-medium
-          bg-white/10 text-gray-300
-          hover:bg-white/20 hover:text-white transition-colors
-          opacity-0 group-hover:opacity-100 cursor-pointer
-        `}
-      >
-        {copied ? "Copied!" : "Copy"}
-      </button>
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+      {/* Code block header */}
+      <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-2">
+        <div className="flex items-center gap-2 text-gray-500">
+          <Code size={18} />
+          <span className="text-xs font-medium tracking-wide">
+            {language}
+          </span>
+        </div>
 
-      {/* Syntax-highlighted code display using the oneDark colour theme */}
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="flex items-center gap-1.5 rounded-md p-1.5 text-gray-500 transition-colors hover:bg-blue-50 hover:text-blue-600 cursor-pointer"
+          aria-label={copied ? "Code copied" : "Copy code to clipboard"}
+        >
+          {copied ? (
+            <>
+              <Check size={18} />
+              <span className="text-xs">Copied!</span>
+            </>
+          ) : (
+            <Copy size={18} />
+          )}
+        </button>
+      </div>
+
+      {/* Syntax-highlighted code */}
       <SyntaxHighlighter
         language={language}
-        style={oneDark}
+        style={prism}
         customStyle={{
           margin: 0,
-          borderRadius: "0.75rem",
+          borderRadius: 0,
           fontSize: "0.8125rem",
           lineHeight: "1.6",
           padding: "1rem",
+          background: "#FFFFFF",
+          color: "#374151",
         }}
       >
         {code}
