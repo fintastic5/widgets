@@ -1,5 +1,4 @@
-import { Button } from "flowbite-react";
-import { ArrowRight, Terminal } from "lucide-react";
+import { Terminal } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 //import CodeBlock from "./CodeBlock";
 
