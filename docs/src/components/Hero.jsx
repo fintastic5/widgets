@@ -1,5 +1,4 @@
-import { Button } from "flowbite-react";
-import { ArrowRight, Terminal } from "lucide-react";
+import { Terminal } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 //import CodeBlock from "./CodeBlock";
 
@@ -18,7 +17,12 @@ function Hero() {
 
         {/* Hero CTAs */}
         <div className="heroCtaGroup">
-          <a href="#get-started" className="primaryCta">
+          <a 
+            href="#get-started" 
+            className="primaryCta"
+            title="Get Started: Installation"
+            aria-label="Get Started: Installation"
+          >
             <Terminal size={13} />
             Get Started
           </a>

@@ -27,7 +27,7 @@ const DEFAULT_LAUNCH_DATE = (() => {
   return date.toISOString().slice(0, 10);
 })();
 
-import { Component, MonitorPlay, SquareTerminal, Palette, Save, Move, ShieldCheck } from "lucide-react";
+import { BookOpen, Component, MonitorPlay, SquareTerminal, Palette, Save, Move, ShieldCheck } from "lucide-react";
 
 // Configuration for each widget tab, including editor fields, defaults and prop docs
 const WIDGET_CONFIG = {
@@ -191,9 +191,9 @@ const WIDGET_CONFIG = {
       </Widget>
     ),
     table: [
-      { prop: "launchDate", type: "string", default: "undefined", description: "Target ISO date string." },
-      { prop: "title", type: "string", default: "undefined", description: "Widget title." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
+      { prop: "launchDate", type: "string", default: "2026-10-28", description: "Target ISO date string." },
+      { prop: "title", type: "string", default: "Countdown", description: "Widget title." },
+      { prop: "subtitle", type: "string", default: "Product launch", description: "Widget subtitle." },
       { prop: "onNotify", type: "function", default: "undefined", description: "Optional callback function triggered when the user clicks the Notify Me button." },
     ],
   },
@@ -215,9 +215,9 @@ const WIDGET_CONFIG = {
           <WidgetShell title="Distribution" subtitle="This week">
             <Distribution
               segments={[
-                { label: "HTML", pct: 26 },
-                { label: "CSS", pct: 34 },
-                { label: "JavaScript", pct: 40 },
+                { label: "HTML", pct: 26, color: "#3B82F6" }, 
+                { label: "CSS", pct: 34, color: "#A855F7" }, 
+                { label: "JavaScript", pct: 40, color: "#22D3EE" },
               ]}
             />
           </WidgetShell>
@@ -231,7 +231,7 @@ const WIDGET_CONFIG = {
       { key: "subtitle", label: "Subtitle", type: "text" },
     ],
     defaults: {
-      segments: '[{"label":"HTML","pct":26, "color":"#3B82F6"},{"label":"CSS","pct":34, "color":"#3B82F6"},{"label":"JavaScript","pct":40, "color":"#3B82F6"}]',
+      segments: '[{"label":"HTML","pct":26, "color":"#3B82F6"},{"label":"CSS","pct":34, "color":"#A855F7"},{"label":"JavaScript","pct":40, "color":"#22D3EE"}]',
       title: "Distribution",
       subtitle: "This week",
     },
@@ -386,24 +386,24 @@ export default function App() {
   return (
     <>
       <Header />
-      <main className="w-full max-w-6xl mx-auto">
+      <main className="w-full max-w-5xl mx-auto">
         <Hero />
         {/* Introduction section: overview label, mock dashboard and theme switcher */}
-        <section id="overview" className="pb-12 space-y-5 scroll-mt-20 flex flex-col gap-2">
+        <section id="overview">
           <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
-              <Component size={26} strokeWidth={2.5}className="text-blue-600" />
+              <BookOpen size={26} strokeWidth={2.5}className="text-blue-600" />
               <span>Overview</span>
             </h2>
             <p className="sectionSubtitle">
-            A customisable React widget library with five ready-to-use dashboard widgets and a flexible, resizable panel layout. Use widgets individually or mix and match to create a dashboard that works for you. Arrange, resize and customise your widgets, with your layout automatically saved.
+            A customisable React widget library with five ready-to-use dashboard widgets and a flexible, responsive panel layout. Use widgets individually or mix and match to create a dashboard that works for you. Arrange, resize and customise your widgets, with your layout automatically saved.
           </p>
           </div>
           {/* Key Feature Highlights */}
             <div className="featureGrid">
               <FeatureCard
                 icon={<Move size={20} />}
-                title="Resizable Panel"
+                title="Responsive Panel"
                 description="Responsive panel layout, designed for desktop and larger screens."
               />
               <FeatureCard
@@ -424,19 +424,19 @@ export default function App() {
             </div>
         </section>
 
-        <section id="live-demo" className="pb-12 space-y-5 scroll-mt-20 flex flex-col gap-2">
+        <section id="live-demo">
           <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
               <MonitorPlay size={26} strokeWidth={2.5}className="text-blue-600" />
               <span>Live Demo</span>
             </h2>
             <p className="sectionSubtitle">
-              Interact with the panel to explore its features. Resize it by dragging the borders and reorder widgets by dragging the cards.
+              Interact with the panel to explore its features and capabilities. Resize it by dragging the borders and reorder widgets by dragging the cards.
             </p>
           </div>
           {/* Panel with all five widgets, themed via inline CSS variables */}
           <div
-            className="w-full min-w-0 overflow-auto rounded-2xl bg-white border border-gray-200 p-7"
+            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7"
             data-theme={theme}
           >
             <Panel>
@@ -511,8 +511,8 @@ export default function App() {
         </section>
 
         {/* Live Demo section with the interactive widget explorer */}
-        <section id="components" className="pb-12 space-y-5 scroll-mt-20 flex flex-col gap-2">
-          <div className="sectionHeader mb-8">
+        <section id="components">
+          <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
               <Component size={26} strokeWidth={2.5}className="text-blue-600" />
               <span>Components</span>
@@ -526,7 +526,7 @@ export default function App() {
            
           {/* widgets tabs, prop editor, live preview and props table */}
           <div 
-            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7 container"
+            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7"
           >
             {/* TAB BAR for switching between widget demos */}
             <TabBar
@@ -546,7 +546,7 @@ export default function App() {
               {config.name}
             </h3>
 
-            <p className="whitespace-pre-line text-sm leading-7 text-gray-600">
+            <p>
               {config.description}
             </p>
 
@@ -567,7 +567,7 @@ export default function App() {
 
               <div
                 className={`
-                  flex min-h-[282px] h-full items-center justify-center rounded-xl border border-gray-200 bg-white p-5
+                  flex min-h-[282px] h-full items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-5
                 `}
                 data-theme={theme}
               >
@@ -611,26 +611,23 @@ export default function App() {
         </section>
 
         {/* Getting Started section with install command and usage example, no panel wrapper */}
-        <section id="get-started" className="pb-12 space-y-5 scroll-mt-20 flex flex-col gap-2">
+        <section id="get-started">
           <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
               <SquareTerminal size={26} strokeWidth={2.5}className="text-blue-600" />
               <span>Get Started</span>
             </h2>
             <p className="sectionSubtitle">
-              Install the package and follow the setup instructions to integrate widgets into your project.
+              Get started by installing the Widgets package in your React app. You can import individual widgets or bundle them inside the resizable Panel component. The widgets are designed to be lightweight and easy to integrate into your existing dashboard or application.
             </p>
           </div>
 
           <h3>Installation</h3>
-          <p>
-            Get started by installing the Widgets package in your React project. You can import individual widgets or bundle them inside the resizable Panel component. The widgets are designed to be lightweight and easy to integrate into your existing dashboard or application.
-          </p>
-
+  
           {/* Step 1: install via package manager */}
           <div className="space-y-2">
-            <h4>
-              1. Install Widgets via your package manager
+            <h4 className="text-sm font-semibold text-gray-900">
+              1. Install the Widgets npm package
             </h4>
             <p>
               Make sure you have {" "}
@@ -661,8 +658,8 @@ export default function App() {
 
           {/* Step 2: usage example showing how to import and render widgets */}
           <div className="space-y-2">
-            <p> 2. Code Implementation Example</p>
-            <p>Import widgets individually or bundle them inside the resizable panel</p>
+            <h4>2. Usage Example</h4>
+            <p>Import widgets individually or bundle them inside the resizable panel.</p>
             <CodeBlock code={CODE_EXAMPLE} />
           </div>
         </section>

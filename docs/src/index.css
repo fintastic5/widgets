@@ -5,33 +5,36 @@
 @source "../.flowbite-react/class-list.json";
 
 :root {
-  --color-font-primary: #111827;
-  --color-font-secondary: #4B5563;
-  --color-font-disabled: #767676;
-  
   --color-bg-panel: #F3F4F6;
   --color-bg-widget: #FFFFFF;
   --color-border: #D2D2D2;
 
+  --color-font-primary: #111827;
+  --color-font-secondary: #4B5563;
+  --color-font-disabled: #767676;
+
   --color-primary: #2563EB;
+  --color-track-ring: #E5E7EB;
   --color-grey: var(--color-bg-panel);
   --box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+
+  --color-button-default: #F3F4F6; 
+  --color-button-hover: #E5E7EB; 
+  --color-button-focus: #DBEAFE; 
+  --color-button-active: #1D4ED8;
+  --color-button-disabled: #F3F4F6; 
 
   /* Font Sizes */ 
   --font-size-h1: 56px; 
   --font-size-h2: 36px; 
   --font-size-h3: 24px;
-  --font-size-h4: 20px; 
-  --font-size-h5: 18px; 
-  --font-size-h6: 14px;
+  --font-size-h4: 18px; 
   
   /* Line Heights */ 
   --line-height-h1: 1.15; 
   --line-height-h2: 1.2; 
   --line-height-h3: 1.25; 
-  --line-height-h4: 1.35; 
-  --line-height-h5: 1.4; 
-  --line-height-h6: 1.45; 
+  --line-height-h4: 1.4; 
 }
 
 @layer base {
@@ -53,7 +56,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {  
+h1, h2, h3, h4 {  
   color: var(--color-font-primary); 
 } 
 
@@ -75,9 +78,9 @@ h3 {
   font-weight: 700;
 } 
 
-h5 {
-  font-size: var(--font-size-h6); 
-  font-weight: 700; 
+h4 {
+  font-size: var(--font-size-h4); 
+  font-weight: 600; 
   letter-spacing: 0.05em; 
 } 
 
@@ -86,12 +89,6 @@ p{
   line-height: 28px;
   color: var(--color-font-secondary);
   white-space: pre-line;
-}
-
-.subtitle{
-  color: var(--color-font-secondary);
-  font-size: 20px;
-  padding-bottom: 1em;;
 }
 
 .link{
@@ -263,10 +260,19 @@ main{
 }
 
 /* Section Header */
+section{
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  padding-bottom: 56px;
+  scroll-margin-top: 120px;
+}
+
 .sectionHeader {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
 .sectionTitle {
@@ -289,8 +295,13 @@ main{
 }
 
 .container {
+  border-radius: 14px;
+  border: 1px solid #D2D2D2;
+}
+
+.panel-container {
   border-radius: 12px;
-  background: var(--color-grey);
+  border: 1px solid #D2D2D2;
 }
 
 .componentContainer{
@@ -305,7 +316,7 @@ main{
 }
 
 /* Tabs Navigation List */
-.tabButton {
+.tabBtn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -319,18 +330,19 @@ main{
   color: var(--color-font-secondary);
   transition: all 0.15s ease;
   white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.tabButton:hover {
+.tabBtn:hover {
   color: var(--color-font-primary);
   background-color: var(--color-button-hover);
 }
 
-.tabButtonActive {
+.tabBtn.active {
   background-color: var(--color-track-ring);
   color: var(--color-primary);
   font-weight: 700;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 @media (min-width: 640px) {
