@@ -20,14 +20,13 @@ import PropsEditor from "./components/PropsEditor";
 import { THEMES } from "./themes";
 import FooterComponent from "./components/Footer";
 import { Button } from "flowbite-react";
+import { BookOpen, Component, MonitorPlay, SquareTerminal, Palette, Save, Move, ShieldCheck } from "lucide-react";
 
 const DEFAULT_LAUNCH_DATE = (() => {
   const date = new Date();
   date.setDate(date.getDate() + 30);
   return date.toISOString().slice(0, 10);
 })();
-
-import { BookOpen, Component, MonitorPlay, SquareTerminal, Palette, Save, Move, ShieldCheck } from "lucide-react";
 
 // Configuration for each widget tab, including editor fields, defaults and prop docs
 const WIDGET_CONFIG = {
@@ -48,7 +47,7 @@ const WIDGET_CONFIG = {
           <WidgetShell title="Revenue" subtitle="This week">
             <Gauge 
               value={42} 
-              actual=" $17,640" 
+              actual="Actual: $17,640" 
               target="$42,000" 
               color="#60A5FA"
             />
@@ -69,7 +68,7 @@ const WIDGET_CONFIG = {
       value: 42,
       title: "Gauge",
       subtitle: "This week",
-      actual: "$17,640",
+      actual: "Actual: $17,640",
       target: "$42,000",
       color: "#60A5FA",
     },
@@ -89,6 +88,7 @@ const WIDGET_CONFIG = {
       { prop: "value", type: "number", default: "42", description: "Percentage value (0–100)." },
       { prop: "title", type: "string", default: "Gauge", description: "WidgetShell title shown above the arc." },
       { prop: "subtitle", type: "string", default: "undefined", description: "WidgetShell subtitle." },
+      { prop: "actual", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
       { prop: "actualLabel", type: "string", default: "undefined", description: "Deprecated alias for actual, retained for compatibility." },
       { prop: "color", type: "string", default: "#60A5FA", description: "Custom CSS color or hex code for the active fill stroke." },
     ],
@@ -153,7 +153,7 @@ const WIDGET_CONFIG = {
     It can be customised with a title and subtitle to suit different events, product launches or deadlines. 
     The countdown updates every minute and stops at zero once the target date is reached.`,
 
-    propsExplanation: `The launchDate property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings. 
+    propsExplanation: `The launch Date property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings. 
 
     The optional onNotify property accepts a callback function that is triggered when the user clicks the Notify Me button, allowing the parent component to handle the user's request.
     `,
@@ -430,13 +430,13 @@ export default function App() {
               <MonitorPlay size={26} strokeWidth={2.5}className="text-blue-600" />
               <span>Live Demo</span>
             </h2>
-            <p className="sectionSubtitle">
+            <p className="sectionSubtitle w-full">
               Interact with the panel to explore its features and capabilities. Resize it by dragging the borders and reorder widgets by dragging the cards.
             </p>
           </div>
           {/* Panel with all five widgets, themed via inline CSS variables */}
           <div
-            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7"
+            className="w-full overflow-auto rounded-xl container p-7"
             data-theme={theme}
           >
             <Panel>
@@ -485,7 +485,7 @@ export default function App() {
             </Panel>
           </div>
 
-          {/* Theme switcher pill buttons, aligned to the right below the dashboard */}
+          {/* Theme switcher */}
           <div 
             className="themeContainer"
             aria-label="theme selector"
@@ -510,7 +510,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Live Demo section with the interactive widget explorer */}
         <section id="components">
           <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
@@ -567,7 +566,7 @@ export default function App() {
 
               <div
                 className={`
-                  flex min-h-[282px] h-full items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-5
+                  flex min-h-[282px] h-full items-center justify-center rounded-xl  border border-gray-200 bg-gray-50 p-5
                 `}
                 data-theme={theme}
               >
@@ -584,7 +583,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* Props documentation */}
             <div className="space-y-2">
               <h4 className="text-sm font-semibold text-gray-900">
                 Props
@@ -610,7 +608,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* Getting Started section with install command and usage example, no panel wrapper */}
         <section id="get-started">
           <div className="sectionHeader">
             <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
@@ -621,18 +618,13 @@ export default function App() {
               Get started by installing the Widgets package in your React app. You can import individual widgets or bundle them inside the resizable Panel component. The widgets are designed to be lightweight and easy to integrate into your existing dashboard or application.
             </p>
           </div>
-
-          <h3>Installation</h3>
   
-          {/* Step 1: install via package manager */}
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold text-gray-900">
-              1. Install the Widgets npm package
-            </h4>
+            <h3>Installation</h3>
             <p>
               Make sure you have {" "}
               <a
-                href="https://www.npmjs.com/package/styled-components"
+                href="https://nodejs.org/en"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="link"
@@ -658,7 +650,7 @@ export default function App() {
 
           {/* Step 2: usage example showing how to import and render widgets */}
           <div className="space-y-2">
-            <h4>2. Usage Example</h4>
+            <h3>Usage</h3>
             <p>Import widgets individually or bundle them inside the resizable panel.</p>
             <CodeBlock code={CODE_EXAMPLE} />
           </div>
