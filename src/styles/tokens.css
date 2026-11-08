@@ -161,13 +161,13 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Universal high-contrast focus indicator for keyboard users (WCAG AA 2.4.7) 
+/* Universal high-contrast focus indicator for keyboard users (WCAG AA 2.4.7) */
 :focus-visible {
-  outline: 3px solid var(--color-primary) !important;
-  outline-offset: 3px !important;
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
   border-radius: var(--widget-border-radius);
 }
-*/
+
 
 /* Scrollbar */
 ::-webkit-scrollbar {
