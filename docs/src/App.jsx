@@ -47,7 +47,7 @@ const WIDGET_CONFIG = {
           <WidgetShell title="Revenue" subtitle="This week">
             <Gauge 
               value={42} 
-              actual="Actual: $17,640" 
+              actual="$17,640" 
               target="$42,000" 
               color="#60A5FA"
             />
@@ -68,7 +68,7 @@ const WIDGET_CONFIG = {
       value: 42,
       title: "Gauge",
       subtitle: "This week",
-      actual: "Actual: $17,640",
+      actual: "$17,640",
       target: "$42,000",
       color: "#60A5FA",
     },
