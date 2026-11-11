@@ -34,10 +34,10 @@ const WIDGET_CONFIG = {
     name: "Gauge",
     description: `Semicircular percentage gauge. Clamps value to 0–100.
 
-    The Gauge widget displays a percentage value as a semicircular arc, providing a simple visual representation of progress towards a goal or target. 
-    
+    The Gauge widget displays a percentage value as a semicircular arc, providing a simple visual representation of progress towards a goal or target.
+
     It can display an actual value label and a sales target beneath the gauge, making it useful for dashboards that track sales, performance or other measurable targets.`,
-  
+
     propsExplanation: `The value property sets the percentage displayed by the gauge. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. The actual and target properties display optional values below the gauge. Use WidgetShell to add a title and subtitle.`,
 
     codeExample: `import { Widget, WidgetShell, Gauge } from "@holmesdev/widgets";
@@ -45,10 +45,10 @@ const WIDGET_CONFIG = {
       return (
         <Widget>
           <WidgetShell title="Revenue" subtitle="This week">
-            <Gauge 
-              value={42} 
-              actual="$17,640" 
-              target="$42,000" 
+            <Gauge
+              value={42}
+              actual="$17,640"
+              target="$42,000"
               color="#60A5FA"
             />
           </WidgetShell>
@@ -62,7 +62,7 @@ const WIDGET_CONFIG = {
       { key: "subtitle", label: "Subtitle", type: "text" },
       { key: "actual", label: "Actual", type: "text" },
       { key: "target", label: "Target", type: "text" },
-      { key: "color", label: "Color", type: "text" },
+      { key: "color", label: "Color (CSS)", type: "color" },
     ],
     defaults: {
       value: 42,
@@ -85,18 +85,17 @@ const WIDGET_CONFIG = {
       </Widget>
     ),
     table: [
-      { prop: "value", type: "number", default: "42", description: "Percentage value (0–100)." },
-      { prop: "title", type: "string", default: "Gauge", description: "WidgetShell title shown above the arc." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "WidgetShell subtitle." },
-      { prop: "actual", type: "string", default: "undefined", description: "Optional 'Actual: …' footer line." },
-      { prop: "actualLabel", type: "string", default: "undefined", description: "Deprecated alias for actual, retained for compatibility." },
-      { prop: "color", type: "string", default: "#60A5FA", description: "Custom CSS color or hex code for the active fill stroke." },
+      { prop: "value", type: "number", default: "undefined", description: "Percentage value, clamped to 0–100." },
+      { prop: "actual", type: "string", default: "undefined", description: "Optional value displayed after 'Actual:'." },
+      { prop: "actualLabel", type: "string", default: "undefined", description: "Fallback value shown after 'Actual:' when actual is not provided." },
+      { prop: "target", type: "string", default: "undefined", description: "Optional value displayed after 'Sales target:'." },
+      { prop: "color", type: "string", default: "theme primary", description: "CSS color for the active arc." },
     ],
   },
   progressring: {
     name: "Progress Ring",
     description: `Circular progress ring using SVG stroke-dasharray.
-    
+
     The progress ring widget displays a percentage value as a circular ring, providing a simple visual representation of completion towards a goal or target.
 
     The ring fills according to the supplied percentage value, from 0 to 100, making it easy to see progress at a glance. The widget can be customised with a title and a subtitle and is suitable for dashboards tracking tasks, goals or performance metrics.`,
@@ -109,8 +108,8 @@ const WIDGET_CONFIG = {
       return (
         <Widget>
           <WidgetShell title="Progress" subtitle="This week">
-            <ProgressRing 
-              value={78} 
+            <ProgressRing
+              value={78}
               color="#60A5FA"
             />
           </WidgetShell>
@@ -122,7 +121,7 @@ const WIDGET_CONFIG = {
       { key: "value", label: "Value", type: "number", min: 0, max: 100 },
       { key: "title", label: "Title", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "text" },
-      { key: "color", label: "Color", type: "text" },
+      { key: "color", label: "Color (CSS)", type: "color" },
     ],
     defaults: {
       value: 78,
@@ -133,29 +132,27 @@ const WIDGET_CONFIG = {
     render: (values) => (
       <Widget>
         <WidgetShell title={values.title} subtitle={values.subtitle}>
-          <ProgressRing 
-            value={values.value} 
+          <ProgressRing
+            value={values.value}
             color={values.color} />
         </WidgetShell>
       </Widget>
     ),
     table: [
-      { prop: "value", type: "number", default: "78", description: "Percentage value (0–100)." },
-      { prop: "title", type: "string", default: "Progress", description: "WidgetShell title." },
-      { prop: "subtitle", type: "string", default: "This Week", description: "WidgetShell subtitle." },
-      { prop: "color", type: "string", default: "#60A5FA", description: "Custom CSS color or hex code for the active fill stroke." },
+      { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
+      { prop: "color", type: "string", default: "theme primary", description: "CSS color for the progress ring." },
     ],
   },
   countdown: {
     name: "Countdown",
-    description: `The countdown widget displays the time remaining until a specified launch date in days, hours and minutes. 
+    description: `The countdown widget displays the time remaining until a specified launch date in days, hours and minutes.
 
-    It can be customised with a title and subtitle to suit different events, product launches or deadlines. 
-    The countdown updates every minute and stops at zero once the target date is reached.`,
+    It can be customised with a title and subtitle to suit different events, product launches or deadlines.
+    Click Notify Me to start updates every minute; click again to stop them. The displayed time does not go below zero.`,
 
-    propsExplanation: `The launch Date property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings. 
+    propsExplanation: `The launch Date property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings.
 
-    The optional onNotify property accepts a callback function that is triggered when the user clicks the Notify Me button, allowing the parent component to handle the user's request.
+    The optional onNotify callback is triggered whenever the user starts or stops the countdown.
     `,
 
     codeExample: `import { Widget, WidgetShell, Countdown } from "@holmesdev/widgets";
@@ -186,26 +183,24 @@ const WIDGET_CONFIG = {
     render: (values) => (
       <Widget>
         <WidgetShell title={values.title} subtitle={values.subtitle}>
-          <Countdown launchDate={values.launchDate} />
+          <Countdown key={values.launchDate} launchDate={values.launchDate} />
         </WidgetShell>
       </Widget>
     ),
     table: [
-      { prop: "launchDate", type: "string", default: "2026-10-28", description: "Target ISO date string." },
-      { prop: "title", type: "string", default: "Countdown", description: "Widget title." },
-      { prop: "subtitle", type: "string", default: "Product launch", description: "Widget subtitle." },
-      { prop: "onNotify", type: "function", default: "undefined", description: "Optional callback function triggered when the user clicks the Notify Me button." },
+      { prop: "launchDate", type: "string", default: "undefined", description: "Target ISO date string." },
+      { prop: "onNotify", type: "function", default: "undefined", description: "Called when the countdown is started or stopped." },
     ],
   },
   distribution: {
     name: "Distribution",
     description: `Donut chart using a conic-gradient with a two-column legend.
-    
-    The distribution widget displays a breakdown of percentages represented as a circular chart with distinct segments. Each segment is colour-coded and labelled, providing a clear visual representation of the distribution of values, making it easy to compare proportions at a glance.
-    
-    The widget can be customised with a title, subtitle color and and is useful for displaying category breakdowns or dashboard statistics. `,
 
-    propsExplanation: `The segments property accepts an array of objects, each containing a label, pct value and color representing the percentage for that segment. Segment colors are selected from the theme palette. The title and subtitle properties allow you to customise the widget headings.`,
+    The distribution widget displays a breakdown of percentages represented as a circular chart with distinct segments. Each segment is colour-coded and labelled, providing a clear visual representation of the distribution of values, making it easy to compare proportions at a glance.
+
+    Use WidgetShell to add a title and subtitle. The widget is useful for displaying category breakdowns or dashboard statistics. `,
+
+    propsExplanation: `The segments property accepts an array of objects, each containing a label and pct value. An optional color overrides the theme palette for that segment. Use WidgetShell for the title and subtitle.`,
 
     codeExample: `import { Widget, WidgetShell, Distribution } from "@holmesdev/widgets";
 
@@ -215,8 +210,8 @@ const WIDGET_CONFIG = {
           <WidgetShell title="Distribution" subtitle="This week">
             <Distribution
               segments={[
-                { label: "HTML", pct: 26, color: "#3B82F6" }, 
-                { label: "CSS", pct: 34, color: "#A855F7" }, 
+                { label: "HTML", pct: 26, color: "#3B82F6" },
+                { label: "CSS", pct: 34, color: "#A855F7" },
                 { label: "JavaScript", pct: 40, color: "#22D3EE" },
               ]}
             />
@@ -226,7 +221,7 @@ const WIDGET_CONFIG = {
     }`,
 
     fields: [
-      { key: "segments", label: "Segments (JSON)", type: "textarea" },
+      { key: "segments", label: "Segments (JSON)", type: "textarea", colorCount: 4 },
       { key: "title", label: "Title", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "text" },
     ],
@@ -239,7 +234,8 @@ const WIDGET_CONFIG = {
       // Parse the JSON string safely so invalid input does not crash the preview
       let segments = [];
       try {
-        segments = JSON.parse(values.segments);
+        const parsed = JSON.parse(values.segments);
+        if (Array.isArray(parsed)) segments = parsed.filter((segment) => segment && typeof segment === "object");
       } catch {
         // Fall back to an empty array if the JSON is malformed
       }
@@ -252,22 +248,20 @@ const WIDGET_CONFIG = {
       );
     },
     table: [
-      { prop: "segments", type: "array", default: "[]", description: "Array of {label, pct} objects." },
-      { prop: "title", type: "string", default: "undefined", description: "Widget title." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
+      { prop: "segments", type: "array", default: "[]", description: "Array of { label, pct, color? }; color is a CSS color overriding the theme palette." },
     ],
   },
   goalrings: {
     name: "Goal Rings",
     description: `Concentric goal-progress rings with a detail list.
-    
+
     The Goal Rings widget displays overall progress alongside individual goals. Each goal is represented by a coloured ring and a list entry showing its label, amount and percentage change.
-    
+
     This widget can be used in dashboards to track sales targets, business goals or other measurable results. The overall percentage appears in the center of the rings, while individual goal percentages show progress towards each target.`,
 
-    propsExplanation: `The overall property sets the progress percentage displayed in the center of the rings. 
-    
-    The items property accepts an array of goal objects. Each goal contains a label to identify it, an amount to display its value, and a pct value representing its progress percentage. An optional change property indicates whether performance has increased, decreased or remained unchanged. Ring and list marker colors are selected from the theme palette.
+    propsExplanation: `The overall property sets the progress percentage displayed in the center of the rings.
+
+    The items property accepts an array of goal objects. Each goal contains a label, amount and pct. An optional change indicates whether performance has increased, decreased or remained unchanged. An optional color overrides the theme palette for the ring and list marker.
 
     The widget displays visual progress rings for up to three goals, based on their pct values. The list displays the supplied goal items, including their labels, amounts and change values.`,
 
@@ -292,7 +286,7 @@ const WIDGET_CONFIG = {
 
     fields: [
       { key: "overall", label: "Overall", type: "number", min: 0, max: 100 },
-      { key: "items", label: "Items (JSON)", type: "textarea" },
+      { key: "items", label: "Items (JSON)", type: "textarea", colorCount: 3 },
       { key: "title", label: "Title", type: "text" },
       { key: "subtitle", label: "Subtitle", type: "text" },
     ],
@@ -306,7 +300,8 @@ const WIDGET_CONFIG = {
       // Parse the JSON string safely so invalid input does not crash the preview
       let items = [];
       try {
-        items = JSON.parse(values.items);
+        const parsed = JSON.parse(values.items);
+        if (Array.isArray(parsed)) items = parsed.filter((item) => item && typeof item === "object");
       } catch {
         // Fall back to an empty array if the JSON is malformed
       }
@@ -320,11 +315,9 @@ const WIDGET_CONFIG = {
     },
     table: [
       { prop: "overall", type: "number", default: "0", description: "Overall percentage shown in the center." },
-      { prop: "items", type: "array", default: "[]", description: "Array of {label, amount, change, pct, color}." },
-      { prop: "title", type: "string", default: "undefined", description: "Widget title." },
-      { prop: "subtitle", type: "string", default: "undefined", description: "Widget subtitle." },
+      { prop: "items", type: "array", default: "[]", description: "Array of { label, amount, pct, change?, color? }; color overrides the theme palette." },
     ],
-    
+
   },
 };
 
@@ -355,11 +348,7 @@ export function Dashboard() {
   );
 }`;
 
-export default function App() {
-
-  // Which colour theme is active for the mock dashboard and live previews
-  const [theme, setTheme] = useState("dark");
-
+function Components({ theme }) {
   // Which widget tab is selected in the components section
   const [activeTab, setActiveTab] = useState("progressring");
 
@@ -382,6 +371,122 @@ export default function App() {
       },
     }));
   };
+
+
+  return (
+    <>
+        {/* Live Demo section with the interactive widget explorer */}
+        <section id="components">
+          <div className="sectionHeader">
+            <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
+              <Component size={26} strokeWidth={2.5}className="text-blue-600" />
+              <span>Components</span>
+            </h2>
+            <p className="sectionSubtitle">
+              Explore each widget below. Click a tab to view the component,
+              description, props and live demo.
+            </p>
+          </div>
+
+
+          {/* widgets tabs, prop editor, live preview and props table */}
+          <div
+            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7"
+          >
+            {/* TAB BAR for switching between widget demos */}
+            <TabBar
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+
+            {/* Accessible content panel for the selected widget */}
+            <div
+              id={`panel-${activeTab}`}
+              className="space-y-5 p-5 sm:p-6 bg-white bg componentContainer"
+              role="tabpanel"
+              aria-labelledby={`tab-${activeTab}`}
+              tabIndex={0}
+            >
+            <h3>
+              {config.name}
+            </h3>
+
+            <p>
+              {config.description}
+            </p>
+
+            {/* Editor and live preview */}
+            <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2">
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+                <h4 className="text-sm font-semibold text-gray-900 pb-1">
+                  Editor
+                </h4>
+              <div className="space-y-3">
+                <PropsEditor
+                  fields={config.fields}
+                  values={values}
+                  onChange={handlePropChange}
+                  theme={theme}
+                />
+              </div>
+            </div>
+
+              <div
+                className={`
+                  flex min-h-[282px] h-full items-center justify-center rounded-xl border border-gray-200 bg-gray-50 p-5
+                `}
+                data-theme={theme}
+              >
+                <div
+                  className="w-[250px] max-w-full shrink-0"
+                  style={{
+                    containerType: "inline-size",
+                    containerName: "panel-content",
+                    height: activeTab === "goalrings" ? "auto" : 250,
+                  }}
+                >
+                  {config.render(values)}
+                </div>
+              </div>
+            </div>
+
+            {/* Props documentation */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold text-gray-900">
+                Props
+              </h4>
+              <p className="text-sm text-gray-600">Title and subtitle in the editor are passed to WidgetShell, not to the widget.</p>
+              <PropsTable props={config.table} />
+            </div>
+
+            {config.propsExplanation && (
+              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line mt-3">
+                {config.propsExplanation}
+              </p>
+            )}
+
+            {config.codeExample && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-gray-900">
+                  Usage
+                </h4>
+                <CodeBlock code={config.codeExample} language="jsx" />
+              </div>
+            )}
+            </div>
+          </div>
+        </section>
+
+    </>
+  );
+}
+
+export default function App() {
+
+  // Which colour theme is active for the mock dashboard and live previews
+  const [theme, setTheme] = useState("dark");
+
+
 
   return (
     <>
@@ -486,7 +591,7 @@ export default function App() {
           </div>
 
           {/* Theme switcher */}
-          <div 
+          <div
             className="themeContainer"
             aria-label="theme selector"
           >
@@ -510,103 +615,7 @@ export default function App() {
           </div>
         </section>
 
-        <section id="components">
-          <div className="sectionHeader">
-            <h2 className="sectionTitle flex items-center text-xl font-semibold text-gray-900">
-              <Component size={26} strokeWidth={2.5}className="text-blue-600" />
-              <span>Components</span>
-            </h2>
-            <p className="sectionSubtitle">
-              Explore each widget below. Click a tab to view the component,
-              description, props and live demo.
-            </p>
-          </div>
-            
-           
-          {/* widgets tabs, prop editor, live preview and props table */}
-          <div 
-            className="w-full min-w-0 overflow-auto rounded-xl  bg-gray-100 p-7"
-          >
-            {/* TAB BAR for switching between widget demos */}
-            <TabBar
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-           
-            {/* Accessible content panel for the selected widget */}
-            <div
-              id={`panel-${activeTab}`}
-              className="space-y-5 p-5 sm:p-6 bg-white bg componentContainer"
-              role="tabpanel"
-              aria-labelledby={`tab-${activeTab}`}
-              tabIndex={0}
-            >
-            <h3>
-              {config.name}
-            </h3>
-
-            <p>
-              {config.description}
-            </p>
-
-            {/* Editor and live preview */}
-            <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-2">
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
-                <h4 className="text-sm font-semibold text-gray-900 pb-1">
-                  Editor
-                </h4>
-              <div className="space-y-3">
-                <PropsEditor
-                  fields={config.fields}
-                  values={values}
-                  onChange={handlePropChange}
-                />
-              </div>
-            </div>
-
-              <div
-                className={`
-                  flex min-h-[282px] h-full items-center justify-center rounded-xl  border border-gray-200 bg-gray-50 p-5
-                `}
-                data-theme={theme}
-              >
-                <div
-                  className="w-[250px] max-w-full shrink-0"
-                  style={{
-                    containerType: "inline-size",
-                    containerName: "panel-content",
-                    height: activeTab === "goalrings" ? "auto" : 250,
-                  }}
-                >
-                  {config.render(values)}
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-gray-900">
-                Props
-              </h4>
-              <PropsTable props={config.table} />
-            </div>
-
-            {config.propsExplanation && (
-              <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line mt-3">
-                {config.propsExplanation}
-              </p>
-            )}
-
-            {config.codeExample && (
-              <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-gray-900">
-                  Usage
-                </h4>
-                <CodeBlock code={config.codeExample} language="jsx" />
-              </div>
-            )}
-            </div>
-          </div>
-        </section>
+        <Components theme={theme} />
 
         <section id="get-started">
           <div className="sectionHeader">
@@ -618,7 +627,7 @@ export default function App() {
               Get started by installing the Widgets package in your React app. You can import individual widgets or bundle them inside the resizable Panel component. The widgets are designed to be lightweight and easy to integrate into your existing dashboard or application.
             </p>
           </div>
-  
+
           <div className="space-y-2">
             <h3>Installation</h3>
             <p>
@@ -629,7 +638,7 @@ export default function App() {
                 rel="noopener noreferrer"
                 className="link"
               >
-                Node.js 
+                Node.js
               </a>
               {" "}and{" "}
               <a
