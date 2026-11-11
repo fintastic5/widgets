@@ -100,7 +100,7 @@ const WIDGET_CONFIG = {
 
     The ring fills according to the supplied percentage value, from 0 to 100, making it easy to see progress at a glance. The widget can be customised with a title and a subtitle and is suitable for dashboards tracking tasks, goals or performance metrics.`,
 
-    propsExplanation: `The value property sets the progress percentage displayed by the circular ring. It accepts a number between 0 and 100, where 0 represents no progress and 100 represents completion. Use WidgetShell to add a title and subtitle.`,
+    propsExplanation: `Pass a value between 0 and 100. The ring's arc is clamped to that range, but the displayed value is not. Use WidgetShell to add a title and subtitle.`,
 
     codeExample: `import { Widget, WidgetShell, ProgressRing } from "@holmesdev/widgets";
 
@@ -139,7 +139,7 @@ const WIDGET_CONFIG = {
       </Widget>
     ),
     table: [
-      { prop: "value", type: "number", default: "0", description: "Percentage value (0–100)." },
+      { prop: "value", type: "number", default: "0", description: "Percentage value from 0 to 100." },
       { prop: "color", type: "string", default: "theme primary", description: "CSS color for the progress ring." },
     ],
   },
@@ -148,11 +148,11 @@ const WIDGET_CONFIG = {
     description: `The countdown widget displays the time remaining until a specified launch date in days, hours and minutes.
 
     It can be customised with a title and subtitle to suit different events, product launches or deadlines.
-    Click Notify Me to start updates every minute; click again to stop them. The displayed time does not go below zero.`,
+    Click Notify Me to start updates every minute. Click again to stop them. The displayed time does not go below zero.`,
 
-    propsExplanation: `The launch Date property specifies the target date used to calculate the remaining time. The title and subtitle properties allow you to customise the widget headings.
+    propsExplanation: `The launchDate property specifies the target date used to calculate the remaining time. Use WidgetShell for the title and subtitle. The initial time is calculated on mount. Updates begin when Notify Me is clicked and run once per minute.
 
-    The optional onNotify callback is triggered whenever the user starts or stops the countdown.
+    The optional onNotify callback is called without arguments whenever the user starts or stops the countdown. It does not send notifications by itself.
     `,
 
     codeExample: `import { Widget, WidgetShell, Countdown } from "@holmesdev/widgets";
@@ -188,8 +188,8 @@ const WIDGET_CONFIG = {
       </Widget>
     ),
     table: [
-      { prop: "launchDate", type: "string", default: "undefined", description: "Target ISO date string." },
-      { prop: "onNotify", type: "function", default: "undefined", description: "Called when the countdown is started or stopped." },
+      { prop: "launchDate", type: "string", default: "undefined", description: "Target date string parseable by JavaScript's Date constructor." },
+      { prop: "onNotify", type: "function", default: "undefined", description: "Called without arguments when the countdown is started or stopped. Does not send notifications." },
     ],
   },
   distribution: {
@@ -200,7 +200,7 @@ const WIDGET_CONFIG = {
 
     Use WidgetShell to add a title and subtitle. The widget is useful for displaying category breakdowns or dashboard statistics. `,
 
-    propsExplanation: `The segments property accepts an array of objects, each containing a label and pct value. An optional color overrides the theme palette for that segment. Use WidgetShell for the title and subtitle.`,
+    propsExplanation: `The segments property accepts an array of objects, each containing a unique label and numeric pct value. Values are used directly, not normalized, so use percentages totaling 100 for a complete chart. An optional color overrides the theme palette for that segment. Use WidgetShell for the title and subtitle.`,
 
     codeExample: `import { Widget, WidgetShell, Distribution } from "@holmesdev/widgets";
 
@@ -248,7 +248,7 @@ const WIDGET_CONFIG = {
       );
     },
     table: [
-      { prop: "segments", type: "array", default: "[]", description: "Array of { label, pct, color? }; color is a CSS color overriding the theme palette." },
+      { prop: "segments", type: "array", default: "[]", description: "Array of { label, pct, color? }. The CSS color overrides the theme palette." },
     ],
   },
   goalrings: {
@@ -261,7 +261,7 @@ const WIDGET_CONFIG = {
 
     propsExplanation: `The overall property sets the progress percentage displayed in the center of the rings.
 
-    The items property accepts an array of goal objects. Each goal contains a label, amount and pct. An optional change indicates whether performance has increased, decreased or remained unchanged. An optional color overrides the theme palette for the ring and list marker.
+    The items property accepts an array of goal objects. Each goal contains a unique label, amount and numeric pct. An optional numeric change indicates whether performance has increased, decreased or remained unchanged. An optional color overrides the theme palette for the ring and list marker.
 
     The widget displays visual progress rings for up to three goals, based on their pct values. The list displays the supplied goal items, including their labels, amounts and change values.`,
 
@@ -315,7 +315,7 @@ const WIDGET_CONFIG = {
     },
     table: [
       { prop: "overall", type: "number", default: "0", description: "Overall percentage shown in the center." },
-      { prop: "items", type: "array", default: "[]", description: "Array of { label, amount, pct, change?, color? }; color overrides the theme palette." },
+      { prop: "items", type: "array", default: "[]", description: "Array of { label, amount, pct, change?, color? }. The color overrides the theme palette." },
     ],
 
   },
@@ -330,7 +330,7 @@ export function Dashboard() {
     <Panel>
       <Widget>
         <WidgetShell title="Revenue" subtitle="This week">
-          <Gauge value={42} actualLabel=" $17,640" target="$42,000" />
+          <Gauge value={42} actual="$17,640" target="$42,000" />
         </WidgetShell>
       </Widget>
       <Widget size={2}>
@@ -640,7 +640,7 @@ export default function App() {
               >
                 Node.js
               </a>
-              {" "}and{" "}
+              {" "}and a React app. Install the package and its peer dependencies{" "}
               <a
                 href="https://www.npmjs.com/package/styled-components"
                 target="_blank"
@@ -649,10 +649,10 @@ export default function App() {
               >
                 styled-components
               </a>{" "}
-              installed.
+              (React and React DOM are also peer dependencies).
             </p>
             <CodeBlock
-              code="npm install @holmesdev/widgets"
+              code="npm install @holmesdev/widgets react react-dom styled-components"
               language="npm"
             />
           </div>
@@ -660,7 +660,7 @@ export default function App() {
           {/* Step 2: usage example showing how to import and render widgets */}
           <div className="space-y-2">
             <h3>Usage</h3>
-            <p>Import widgets individually or bundle them inside the resizable panel.</p>
+            <p>Import the stylesheet once in your app, then use widgets individually or inside the resizable panel. Panel reads size and rows from its direct children. A widget with size={'{2}'} spans two columns when space permits.</p>
             <CodeBlock code={CODE_EXAMPLE} />
           </div>
         </section>

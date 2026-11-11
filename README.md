@@ -5,7 +5,7 @@ Reusable React dashboard widgets and a panel layout.
 ## Usage
 
 ```bash
-npm install @holmesdev/widgets
+npm install @holmesdev/widgets react react-dom styled-components
 ```
 
 ```jsx
@@ -38,7 +38,7 @@ export function Dashboard() {
 }
 ```
 
-Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
+React, React DOM, and styled-components are peer dependencies. See `package.json` for supported versions. Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
 
 ## Available widgets
 
