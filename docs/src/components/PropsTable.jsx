@@ -5,6 +5,10 @@ export default function PropsTable({ props }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
       <table className="w-full border-collapse text-sm">
+        <caption className="sr-only">
+          Component props, types, default values and descriptions
+        </caption>
+
         <thead>
           <tr className="bg-gray-50">
             <th className="border-b border-gray-200 p-3 text-left text-xs font-semibold text-gray-500">

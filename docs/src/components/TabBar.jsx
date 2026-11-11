@@ -1,11 +1,19 @@
 import { Button } from "flowbite-react";
 
+import {
+  CircleGauge,
+  Timer,
+  Gauge,
+  ChartPie,
+  Target,
+} from "lucide-react";
+
 const TABS = [
-  { id: "progressring", label: "Progress Ring" },
-  { id: "countdown", label: "Countdown" },
-  { id: "gauge", label: "Gauge" },
-  { id: "distribution", label: "Distribution" },
-  { id: "goalrings", label: "Goal Rings" },
+  { id: "progressring", label: "Progress Ring", icon: CircleGauge },
+  { id: "countdown", label: "Countdown", icon: Timer },
+  { id: "gauge", label: "Gauge", icon: Gauge },
+  { id: "distribution", label: "Distribution", icon: ChartPie },
+  { id: "goalrings", label: "Goal Rings", icon: Target },
 ];
 
 export default function TabBar({ activeTab, setActiveTab }) {
@@ -15,27 +23,23 @@ export default function TabBar({ activeTab, setActiveTab }) {
       role="group"
       aria-label="Widget demonstrations"
     >
-        {TABS.map((tab) => (
+      {TABS.map((tab) => {
+        const Icon = tab.icon;
+
+        return (
           <Button
             key={tab.id}
             id={`tab-${tab.id}`}
             type="button"
             aria-pressed={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`
-            px-4 py-1.5 font-medium border transition-colors cursor-pointer tabBtn
-            ${
-              activeTab === tab.id
-                ? "bg-gray-900 text-white border-gray-900"
-                : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100"
-            }
-          `}
+            className={`tabBtn ${activeTab === tab.id ? "active" : ""}`}
           >
+            <Icon size={16} strokeWidth={2} />
             {tab.label}
           </Button>
-        ))}
-
+        );
+      })}
     </div>
-    
   );
 }

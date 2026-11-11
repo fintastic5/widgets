@@ -13,7 +13,7 @@ export const Default = {
       <Widget title="Gauge" subtitle="This week">
         <Gauge 
           value={42} 
-          actualLabel="$17,640" 
+          actual="$17,640" 
           target="$42,000" 
         />
       </Widget>
@@ -26,7 +26,7 @@ export const FullValue = {
       <Widget title="Gauge" subtitle="This week">
         <Gauge 
           value={100} 
-          actualLabel="$17,640" 
+          actual="$17,640" 
           target="$42,000" 
         />
       </Widget>
@@ -39,7 +39,7 @@ export const CustomColor = {
       <Widget title="Gauge" subtitle="This week">
         <Gauge 
           value={42} 
-          actualLabel=" $17,640" 
+          actual=" $17,640" 
           target="$42,000" 
           color="orange"
         />

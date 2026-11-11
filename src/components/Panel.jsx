@@ -204,10 +204,10 @@ const WidgetCard = styled.div`
   padding: 24px;
 
   box-sizing: border-box;
-width: 100%;
-height: 100%;
-min-width: 250px;
-min-height: 250px;
+  width: 100%;
+  height: 100%;
+  min-width: 250px;
+  min-height: 250px;
 
   display: flex;
   flex-direction: column;
@@ -252,7 +252,6 @@ const EmptyStateIcon = styled.div`
 `;
 
 /* Drop indicator */
-
 const DropIndicator = styled.div`
   grid-column: 1 / -1;
   height: 60px;
@@ -405,7 +404,19 @@ export function Panel({ children }) {
     getSavedSize("panel-height", DEFAULT_HEIGHT, MIN_HEIGHT, "height")
   );
 
-  const [dragOrderKeys, setDragOrderKeys] = useState(null);
+  // Restore the saved widget order when the panel loads.
+  const [dragOrderKeys, setDragOrderKeys] = useState(() => {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const savedOrder = window.localStorage.getItem("panel-widget-order");
+      const parsedOrder = savedOrder ? JSON.parse(savedOrder) : null;
+
+      return Array.isArray(parsedOrder) ? parsedOrder : null;
+    } catch {
+      return null;
+    }
+  });
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [draggingIndex, setDraggingIndex] = useState(null);
 
@@ -414,9 +425,25 @@ export function Panel({ children }) {
 
   // Save the panel dimensions.
   useEffect(() => {
-    localStorage.setItem("panel-width", panelWidth);
-    localStorage.setItem("panel-height", panelHeight);
+    if (typeof window === "undefined") return;
+
+    window.localStorage.setItem("panel-width", panelWidth);
+    window.localStorage.setItem("panel-height", panelHeight);
   }, [panelWidth, panelHeight]);
+
+  // Save the widget order whenever it changes.
+  useEffect(() => {
+    if (dragOrderKeys === null) return;
+
+    try {
+      window.localStorage.setItem(
+        "panel-widget-order",
+        JSON.stringify(dragOrderKeys)
+      );
+    } catch {
+      // The panel still works if browser storage is unavailable.
+    }
+  }, [dragOrderKeys]);
 
   // Keep the panel within the viewport when the window changes size.
   useEffect(() => {
