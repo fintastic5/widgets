@@ -28,7 +28,7 @@ function Header() {
       }
     );
 
-    const sections = ["overview", "live-demo","components", "get-started"];
+    const sections = ["overview", "live-demo", "components", "panel", "get-started"];
 
     sections.forEach((id) => {
       const section = document.getElementById(id);
@@ -60,6 +60,7 @@ function Header() {
         <NavbarLink href="#overview" className={linkClass("overview")}>Overview</NavbarLink>
         <NavbarLink href="#live-demo" className={linkClass("live-demo")}>Live Demo</NavbarLink>
         <NavbarLink href="#components" className={linkClass("components")}>Components</NavbarLink>
+        <NavbarLink href="#panel" className={linkClass("panel")}>Panel</NavbarLink>
         <NavbarLink href="#get-started" className={linkClass("get-started")}>Get Started</NavbarLink>
       </NavbarCollapse>
     </Navbar>

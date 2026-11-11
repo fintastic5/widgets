@@ -501,7 +501,7 @@ export default function App() {
               <span>Overview</span>
             </h2>
             <p className="sectionSubtitle">
-            A customisable React widget library with five ready-to-use dashboard widgets and a flexible, responsive panel layout. Use widgets individually or mix and match to create a dashboard that works for you. Arrange, resize and customise your widgets, with your layout automatically saved.
+            A customisable React widget library with five ready-to-use dashboard widgets and a flexible, responsive panel layout. Use widgets individually or mix and match to create a dashboard that works for you. Reorder widgets and resize the panel, with its layout automatically saved.
           </p>
           </div>
           {/* Key Feature Highlights */}
@@ -616,6 +616,64 @@ export default function App() {
         </section>
 
         <Components theme={theme} />
+
+        <section id="panel">
+          <div className="sectionHeader">
+            <h2 className="sectionTitle">The Panel System</h2>
+            <p className="sectionSubtitle">
+              Panel brings widgets together in a resizable, scrollable dashboard. Wrap each
+              component in a Widget card and place the cards directly inside Panel. Use
+              WidgetShell when you want a title and subtitle.
+            </p>
+          </div>
+          <div className="space-y-4 text-gray-700">
+            <h3>Building your dashboard</h3>
+            <p>
+              Add the widgets you need as direct children of Panel. Use <code>size</code> to
+              make a card wider and <code>rows</code> to make it taller. Both default to 1.
+              The layout adjusts to the available space, and wider cards stack into one
+              column on a narrow panel. If the content does not fit, users can scroll to
+              see the rest.
+            </p>
+            <CodeBlock code={`import { Panel, Widget, WidgetShell, Gauge, ProgressRing } from "@holmesdev/widgets";
+
+export function Dashboard() {
+  return (
+    <Panel>
+      <Widget key="revenue">
+        <WidgetShell title="Revenue">
+          <Gauge value={42} />
+        </WidgetShell>
+      </Widget>
+      <Widget key="progress" size={2} rows={2}>
+        <WidgetShell title="Progress">
+          <ProgressRing value={78} />
+        </WidgetShell>
+      </Widget>
+    </Panel>
+  );
+}`} language="jsx" />
+            <p>
+              Panel accepts <code>children</code>. Each direct child's <code>size</code> and
+              <code> rows</code> props set its column and row spans inside the panel.
+              Widget provides the card styling, while WidgetShell adds an optional title
+              and subtitle. Import <code>@holmesdev/widgets/style.css</code> once in your app
+              to load the styles.
+            </p>
+            <h3>Features</h3>
+            <ul className="list-disc space-y-2 pl-6">
+              <li><strong>Reorder widgets:</strong> Drag cards to arrange the dashboard to suit your needs.</li>
+              <li><strong>Resize the panel:</strong> Drag an edge or corner. The panel snaps to fit complete cards when released.</li>
+              <li><strong>Keyboard resizing:</strong> Focus a resize handle and use the arrow keys. Hold Shift for larger adjustments.</li>
+              <li><strong>Saved layout:</strong> Panel size and widget order are saved in the browser and restored when the page reloads. Give direct children stable, unique React keys to preserve their order when the widget list changes.</li>
+            </ul>
+            <p>
+              Panel instances on the same site share saved layout settings. Add or remove
+              widgets through your React code. The panel does not add external widgets by
+              drag and drop.
+            </p>
+          </div>
+        </section>
 
         <section id="get-started">
           <div className="sectionHeader">
