@@ -1,0 +1,35 @@
+.featureCard {
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-widget);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.featureIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--color-primary);
+}
+
+.featureTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-font-primary);
+  margin: 0;
+}
+
+.featureDesc {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-font-secondary);
+  margin: 0;
+}

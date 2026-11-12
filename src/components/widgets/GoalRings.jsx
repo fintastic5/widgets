@@ -66,6 +66,7 @@ const Row = styled.li`
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
 `;
 
 const Key = styled.span`
@@ -78,8 +79,10 @@ const Key = styled.span`
 
 const Label = styled.span`
   flex: 1;
-  font-size: var(--font-size-body-sm)
-  color: var(--color-font-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-body-sm);
 `;
 
 const Amount = styled.span`
@@ -112,7 +115,7 @@ export function GoalRings({ overall = 0, items = [] }) {
   return (
     <Wrapper>
       <RingSection>
-        <ValueContainer role="img" aria-label={`${overall}% overall`}>
+        <ValueContainer role="img" aria-label={`Overall progress: ${overall}%`}>
           <svg 
             viewBox="0 0 140 140" 
             width="100%"
@@ -148,7 +151,7 @@ export function GoalRings({ overall = 0, items = [] }) {
           </Value>
         </ValueContainer>
       </RingSection>
-      <List>
+      <List aria-label="Goal breakdown">
         {items.map((item, i) => (
           <Row key={item.label}>
             <Key 
@@ -160,6 +163,7 @@ export function GoalRings({ overall = 0, items = [] }) {
             {item.change !== undefined && (
               <Badge
                 $direction={item.change > 0 ? "up" : item.change < 0 ? "down" : "flat"}
+                aria-label={`Change: ${item.change > 0 ? "increased" : item.change < 0 ? "decreased" : "unchanged"} by ${Math.abs(item.change)} percent`}
               >
                 {item.change > 0 ? "+" : ""}{item.change}%
               </Badge>

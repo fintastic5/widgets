@@ -8,15 +8,14 @@ const PANEL_BORDER = 1;
 const SCROLLBAR_WIDTH = 16;
 
 const DEFAULT_WIDTH =
-  CARD_SIZE * 2 +
-  GRID_GAP +
-  PANEL_PADDING * 2 +
-  PANEL_BORDER * 2 +
-  SCROLLBAR_WIDTH;
-
-const DEFAULT_HEIGHT =
   CARD_SIZE * 3 +
   GRID_GAP * 2 +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2;
+
+const DEFAULT_HEIGHT =
+  CARD_SIZE * 2 +
+  GRID_GAP +
   PANEL_PADDING * 2 +
   PANEL_BORDER * 2;
 
@@ -39,9 +38,9 @@ function clamp(value, min, max) {
 }
 
 /* Snap panel dimension to the nearest card boundary. */
-function snapPanelSize(value, max) {
+function snapPanelSize(value, max, scrollbarAllowance = 0) {
   const availableSize =
-    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - SCROLLBAR_WIDTH;
+    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - scrollbarAllowance;
 
   // Find the maximum number of cards that can fit.
   const maxTracks = Math.max(
@@ -58,7 +57,7 @@ function snapPanelSize(value, max) {
       value -
       PANEL_PADDING * 2 -
       PANEL_BORDER * 2 -
-      SCROLLBAR_WIDTH +
+      scrollbarAllowance +
       GRID_GAP
     ) /
       (CARD_SIZE + GRID_GAP)
@@ -76,7 +75,7 @@ function snapPanelSize(value, max) {
     (tracks - 1) * GRID_GAP +
     PANEL_PADDING * 2 +
     PANEL_BORDER * 2 +
-    SCROLLBAR_WIDTH
+    scrollbarAllowance
   );
 }
 
@@ -90,11 +89,8 @@ function getSavedSize(key, fallback, min, dimension) {
 
   const saved = Number(window.localStorage.getItem(key));
   const hasSavedValue = window.localStorage.getItem(key) !== null;
-  const isPreviousDefaultWidth =
-    dimension === "width" && saved === fallback - SCROLLBAR_WIDTH;
-
   return clamp(
-    Number.isFinite(saved) && hasSavedValue && !isPreviousDefaultWidth
+    Number.isFinite(saved) && hasSavedValue
       ? saved
       : fallback,
     min,
@@ -105,6 +101,7 @@ function getSavedSize(key, fallback, min, dimension) {
 /* Resizable panel */
 const PanelFrame = styled.div`
   position: relative;
+  box-sizing: border-box;
 
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
@@ -143,9 +140,9 @@ const PanelGrid = styled.div`
   grid-template-columns: repeat(auto-fit, ${CARD_SIZE}px);
   grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
-  width: max-content;
   width: 100%;
   align-content: start;
+  justify-content: center;
 `;
 
 /* Widget slot */
@@ -188,7 +185,7 @@ const Slot = styled.div`
   }
 
   /* Wide widgets stack vertically when only one column fits. */
-  @container panel-content (max-width: 519px) {
+  @container panel-content (max-width: 523px) {
     grid-column: span 1;
   }
 `;
@@ -204,10 +201,10 @@ const WidgetCard = styled.div`
   padding: 24px;
 
   box-sizing: border-box;
-width: 100%;
-height: 100%;
-min-width: 250px;
-min-height: 250px;
+  width: 100%;
+  height: 100%;
+  min-width: 250px;
+  min-height: 250px;
 
   display: flex;
   flex-direction: column;
@@ -252,7 +249,6 @@ const EmptyStateIcon = styled.div`
 `;
 
 /* Drop indicator */
-
 const DropIndicator = styled.div`
   grid-column: 1 / -1;
   height: 60px;
@@ -405,7 +401,19 @@ export function Panel({ children }) {
     getSavedSize("panel-height", DEFAULT_HEIGHT, MIN_HEIGHT, "height")
   );
 
-  const [dragOrderKeys, setDragOrderKeys] = useState(null);
+  // Restore the saved widget order when the panel loads.
+  const [dragOrderKeys, setDragOrderKeys] = useState(() => {
+    if (typeof window === "undefined") return null;
+
+    try {
+      const savedOrder = window.localStorage.getItem("panel-widget-order");
+      const parsedOrder = savedOrder ? JSON.parse(savedOrder) : null;
+
+      return Array.isArray(parsedOrder) ? parsedOrder : null;
+    } catch {
+      return null;
+    }
+  });
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [draggingIndex, setDraggingIndex] = useState(null);
 
@@ -414,9 +422,25 @@ export function Panel({ children }) {
 
   // Save the panel dimensions.
   useEffect(() => {
-    localStorage.setItem("panel-width", panelWidth);
-    localStorage.setItem("panel-height", panelHeight);
+    if (typeof window === "undefined") return;
+
+    window.localStorage.setItem("panel-width", panelWidth);
+    window.localStorage.setItem("panel-height", panelHeight);
   }, [panelWidth, panelHeight]);
+
+  // Save the widget order whenever it changes.
+  useEffect(() => {
+    if (dragOrderKeys === null) return;
+
+    try {
+      window.localStorage.setItem(
+        "panel-widget-order",
+        JSON.stringify(dragOrderKeys)
+      );
+    } catch {
+      // The panel still works if browser storage is unavailable.
+    }
+  }, [dragOrderKeys]);
 
   // Keep the panel within the viewport when the window changes size.
   useEffect(() => {
@@ -501,7 +525,8 @@ export function Panel({ children }) {
     // Snap to the nearest complete column or row.
     const snappedWidth = snapPanelSize(
       resize.currentWidth ?? resize.startWidth,
-      window.innerWidth
+      window.innerWidth,
+      SCROLLBAR_WIDTH
     );
 
     const snappedHeight = snapPanelSize(

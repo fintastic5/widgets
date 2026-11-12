@@ -1,12 +1,20 @@
 # @holmesdev/widgets
 
-Reusable React dashboard widgets and a panel layout.
+[![npm version](https://img.shields.io/npm/v/%40holmesdev%2Fwidgets?color=cb3837)](https://www.npmjs.com/package/@holmesdev/widgets)
+[![Documentation](https://img.shields.io/badge/docs-online-blue)](https://fintastic5.github.io/widgets/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-b87333.svg)](LICENCE)
 
-## Usage
+Reusable React dashboard widgets with a flexible panel layout.
+
+[Documentation & examples](https://fintastic5.github.io/widgets/) · [npm package](https://www.npmjs.com/package/@holmesdev/widgets)
+
+## Installation
 
 ```bash
-npm install @holmesdev/widgets
+npm install @holmesdev/widgets react react-dom styled-components
 ```
+
+## Usage
 
 ```jsx
 import "@holmesdev/widgets/style.css";
@@ -38,7 +46,7 @@ export function Dashboard() {
 }
 ```
 
-Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
+React, React DOM, and styled-components are peer dependencies. See `package.json` for supported versions. Import `@holmesdev/widgets/style.css` once in your app entry point to load the widget styles and theme tokens.
 
 ## Available widgets
 
@@ -66,13 +74,11 @@ npm run build-storybook
 
 ## Documentation
 
-To use the local widgets package in the docs site, build it from the repository root first:
+Visit the [documentation](https://fintastic5.github.io/widgets/) for setup instructions, interactive examples, and component reference.
 
-```bash
-npm run build
-```
+### Run the docs locally
 
-**Rebuild it after changing widget source.** Then run the documentation site:
+The docs site uses the local widget source directly. From the repository root:
 
 ```bash
 cd docs
@@ -86,6 +92,10 @@ From `docs/`, build and preview the production site with:
 npm run build
 npm run preview
 ```
+
+## Compatibility
+
+Server-side rendering (SSR) is not yet supported. Use this package in client-rendered React apps.
 
 ## License
 

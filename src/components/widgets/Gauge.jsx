@@ -27,7 +27,7 @@ const Value = styled.div`
 `;
 
 const Footer = styled.p`
-  margin: ${({ $isTarget }) => ($isTarget ? "16px 0 0" : "8px 0 0")};
+  margin: ${({ $isTarget }) => ($isTarget ? "16px 0 0" : "4px 0 0")};
   text-align: center;
   font-size: var(--font-size-body-md);
   color: var(--color-font-secondary);
@@ -63,7 +63,7 @@ export function Gauge({ value, target, actual, actualLabel, color }) {
     <Wrapper>
       <SvgWrap
         role="img"
-        aria-label={`${pct}% of target${target != null ? `, target ${target}` : ""}`}
+        aria-label={`${pct}% of target${actual != null ? `, actual ${actual}` : actualLabel != null ? `, actual ${actualLabel}` : ""}${target != null ? `, sales target ${target}` : ""}`}
       >
         <svg viewBox="0 0 176 96" width="176" height="96" aria-hidden="true">
           <path
@@ -84,7 +84,9 @@ export function Gauge({ value, target, actual, actualLabel, color }) {
         <Value aria-hidden="true">{pct}%</Value>
       </SvgWrap>
       {actual != null ? (
-        <Footer>{actual}</Footer>
+        <Footer>
+          Actual: <FooterValue>{actual}</FooterValue>
+        </Footer>
       ) : actualLabel != null ? (
         <Footer>
           Actual: <FooterValue>{actualLabel}</FooterValue>

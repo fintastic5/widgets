@@ -22,10 +22,11 @@
   --font-weight-bold: 700;
 }
 
+:root,
 [data-theme="light"] {
-  --color-bg-panel: #F9FAFB;
+  --color-bg-panel: #F3F4F6;
   --color-bg-widget: #FFFFFF;
-  --color-border: #858585;
+  --color-border: #D2D2D2;
 
   --color-font-primary: #111827;
   --color-font-secondary: #4B5563;
@@ -33,8 +34,8 @@
 
   /* Countdown Specific Tokens */
   --color-countdown-bg: #18181B;
-  --color-countdown-border: #858585;
-  --color-countdown-digit: #F1F1F1;
+  --color-countdown-border: #E5E7EB;
+  --color-countdown-digit: #F3F4F6;
   --color-countdown-label: #CBD5E1;
 
   --color-button-default: #F3F4F6; 
@@ -163,10 +164,11 @@ html, body {
 
 /* Universal high-contrast focus indicator for keyboard users (WCAG AA 2.4.7) */
 :focus-visible {
-  outline: 3px solid var(--color-primary) !important;
-  outline-offset: 3px !important;
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
   border-radius: var(--widget-border-radius);
 }
+
 
 /* Scrollbar */
 ::-webkit-scrollbar {
@@ -175,12 +177,9 @@ html, body {
 }
 ::-webkit-scrollbar-track {
   background: transparent;
-
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: 6px;
 }
-
-
-
