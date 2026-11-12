@@ -148,11 +148,11 @@ const WIDGET_CONFIG = {
     description: `The countdown widget displays the time remaining until a specified launch date in days, hours and minutes.
 
     It can be customised with a title and subtitle to suit different events, product launches or deadlines.
-    Click Notify Me to start updates every minute. Click again to stop them. The displayed time does not go below zero.`,
+    It starts automatically, updates every minute, and stops at zero.`,
 
-    propsExplanation: `The launchDate property specifies the target date used to calculate the remaining time. Use WidgetShell for the title and subtitle. The initial time is calculated on mount. Updates begin when Notify Me is clicked and run once per minute.
+    propsExplanation: `The launchDate property specifies the target date used to calculate the remaining time. Use WidgetShell for the title and subtitle. The countdown starts on mount and updates automatically. Changing launchDate starts a new countdown.
 
-    The optional onNotify callback is called without arguments whenever the user starts or stops the countdown. It does not send notifications by itself.
+    The optional onComplete callback is called once when the target is reached, including if the date has already passed on mount. The optional onNotify callback shows a Notify Me button and is called when it is clicked. Neither callback sends notifications by itself. The preview button displays a demo message. It does not subscribe you to notifications.
     `,
 
     codeExample: `import { Widget, WidgetShell, Countdown } from "@holmesdev/widgets";
@@ -163,7 +163,8 @@ const WIDGET_CONFIG = {
           <WidgetShell title="Countdown" subtitle="Product launch">
             <Countdown
               launchDate="${DEFAULT_LAUNCH_DATE}"
-              onNotify={() => console.log("Notify me clicked")}
+              onComplete={() => console.log("Launch time reached!")}
+              onNotify={() => console.log("Set up a notification")}
             />
           </WidgetShell>
         </Widget>
@@ -183,13 +184,17 @@ const WIDGET_CONFIG = {
     render: (values) => (
       <Widget>
         <WidgetShell title={values.title} subtitle={values.subtitle}>
-          <Countdown key={values.launchDate} launchDate={values.launchDate} />
+          <Countdown
+            launchDate={values.launchDate}
+            onNotify={() => window.alert("Demo only: no notification has been scheduled.")}
+          />
         </WidgetShell>
       </Widget>
     ),
     table: [
       { prop: "launchDate", type: "string", default: "undefined", description: "Target date string parseable by JavaScript's Date constructor." },
-      { prop: "onNotify", type: "function", default: "undefined", description: "Called without arguments when the countdown is started or stopped. Does not send notifications." },
+      { prop: "onComplete", type: "function", default: "undefined", description: "Called without arguments once when the target date is reached." },
+      { prop: "onNotify", type: "function", default: "undefined", description: "Shows a Notify Me button and is called when clicked." },
     ],
   },
   distribution: {
