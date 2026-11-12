@@ -732,7 +732,7 @@ export function Dashboard() {
           <div id="theming" className="space-y-2">
             <h3>Theming</h3>
             <p>
-              Choose from <code>light</code>, <code>dark</code>, and <code>midnight</code> by
+              Light is the default theme. Choose from <code>light</code>, <code>dark</code>, and <code>midnight</code> by
               setting <code>data-theme</code> on a wrapper around your widgets or Panel.
               All widgets inside the wrapper inherit its theme. Import
               {" "}<code>@holmesdev/widgets/style.css</code> once in your app to load the
