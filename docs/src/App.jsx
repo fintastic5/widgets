@@ -696,6 +696,9 @@ export function Dashboard() {
           <div className="space-y-2">
             <h3>Installation</h3>
             <p>
+              Server-side rendering (SSR) is not yet supported. Use this package in client-rendered React apps.
+            </p>
+            <p>
               Make sure you have {" "}
               <a
                 href="https://nodejs.org/en"

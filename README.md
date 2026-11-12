@@ -93,6 +93,10 @@ npm run build
 npm run preview
 ```
 
+## Compatibility
+
+Server-side rendering (SSR) is not yet supported. Use this package in client-rendered React apps.
+
 ## License
 
 This project is licensed under the [MIT License](LICENCE).
