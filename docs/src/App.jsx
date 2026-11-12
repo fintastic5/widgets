@@ -728,6 +728,56 @@ export function Dashboard() {
             <p>Import the stylesheet once in your app, then use widgets individually or inside the resizable panel. Panel reads size and rows from its direct children. A widget with size={'{2}'} spans two columns when space permits.</p>
             <CodeBlock code={CODE_EXAMPLE} />
           </div>
+
+          <div id="theming" className="space-y-2">
+            <h3>Theming</h3>
+            <p>
+              Choose from <code>light</code>, <code>dark</code>, and <code>midnight</code> by
+              setting <code>data-theme</code> on a wrapper around your widgets or Panel.
+              All widgets inside the wrapper inherit its theme. Import
+              {" "}<code>@holmesdev/widgets/style.css</code> once in your app to load the
+              styles and theme colours.
+            </p>
+            <CodeBlock code={`<div data-theme="dark">
+  <Widget>
+    <WidgetShell title="Progress">
+      <ProgressRing value={78} />
+    </WidgetShell>
+  </Widget>
+</div>`} language="jsx" />
+            <p>
+              To switch themes dynamically, keep the theme name in React state and
+              update it from a selector. The buttons below the Live Demo also change
+              the theme of the component previews on this page.
+            </p>
+            <CodeBlock code={`import { useState } from "react";
+import { Widget, WidgetShell, ProgressRing } from "@holmesdev/widgets";
+import "@holmesdev/widgets/style.css";
+
+export function ThemedWidget() {
+  const [theme, setTheme] = useState("dark");
+
+  return (
+    <>
+      <label>
+        Theme
+        <select value={theme} onChange={(event) => setTheme(event.target.value)}>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+          <option value="midnight">Midnight</option>
+        </select>
+      </label>
+      <div data-theme={theme}>
+        <Widget>
+          <WidgetShell title="Progress">
+            <ProgressRing value={78} />
+          </WidgetShell>
+        </Widget>
+      </div>
+    </>
+  );
+}`} language="jsx" />
+          </div>
         </section>
       </main>
       <FooterComponent />
