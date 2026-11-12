@@ -567,7 +567,10 @@ export default function App() {
               </Widget>
               <Widget>
                 <WidgetShell title="Countdown" subtitle="Product Launch">
-                  <Countdown launchDate={DEFAULT_LAUNCH_DATE} />
+                  <Countdown
+                    launchDate={DEFAULT_LAUNCH_DATE}
+                    onNotify={() => window.alert("Demo only: no notification has been scheduled.")}
+                  />
                 </WidgetShell>
               </Widget>
               <Widget>
