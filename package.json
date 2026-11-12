@@ -1,7 +1,8 @@
 {
   "name": "@holmesdev/widgets",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Reusable React dashboard widgets.",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/widgets.umd.cjs",
   "module": "./dist/widgets.js",
