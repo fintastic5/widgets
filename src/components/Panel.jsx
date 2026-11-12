@@ -8,15 +8,14 @@ const PANEL_BORDER = 1;
 const SCROLLBAR_WIDTH = 16;
 
 const DEFAULT_WIDTH =
-  CARD_SIZE * 2 +
-  GRID_GAP +
-  PANEL_PADDING * 2 +
-  PANEL_BORDER * 2 +
-  SCROLLBAR_WIDTH;
-
-const DEFAULT_HEIGHT =
   CARD_SIZE * 3 +
   GRID_GAP * 2 +
+  PANEL_PADDING * 2 +
+  PANEL_BORDER * 2;
+
+const DEFAULT_HEIGHT =
+  CARD_SIZE * 2 +
+  GRID_GAP +
   PANEL_PADDING * 2 +
   PANEL_BORDER * 2;
 
@@ -39,9 +38,9 @@ function clamp(value, min, max) {
 }
 
 /* Snap panel dimension to the nearest card boundary. */
-function snapPanelSize(value, max) {
+function snapPanelSize(value, max, scrollbarAllowance = 0) {
   const availableSize =
-    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - SCROLLBAR_WIDTH;
+    max - PANEL_PADDING * 2 - PANEL_BORDER * 2 - scrollbarAllowance;
 
   // Find the maximum number of cards that can fit.
   const maxTracks = Math.max(
@@ -58,7 +57,7 @@ function snapPanelSize(value, max) {
       value -
       PANEL_PADDING * 2 -
       PANEL_BORDER * 2 -
-      SCROLLBAR_WIDTH +
+      scrollbarAllowance +
       GRID_GAP
     ) /
       (CARD_SIZE + GRID_GAP)
@@ -76,7 +75,7 @@ function snapPanelSize(value, max) {
     (tracks - 1) * GRID_GAP +
     PANEL_PADDING * 2 +
     PANEL_BORDER * 2 +
-    SCROLLBAR_WIDTH
+    scrollbarAllowance
   );
 }
 
@@ -90,11 +89,8 @@ function getSavedSize(key, fallback, min, dimension) {
 
   const saved = Number(window.localStorage.getItem(key));
   const hasSavedValue = window.localStorage.getItem(key) !== null;
-  const isPreviousDefaultWidth =
-    dimension === "width" && saved === fallback - SCROLLBAR_WIDTH;
-
   return clamp(
-    Number.isFinite(saved) && hasSavedValue && !isPreviousDefaultWidth
+    Number.isFinite(saved) && hasSavedValue
       ? saved
       : fallback,
     min,
@@ -105,6 +101,7 @@ function getSavedSize(key, fallback, min, dimension) {
 /* Resizable panel */
 const PanelFrame = styled.div`
   position: relative;
+  box-sizing: border-box;
 
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
@@ -143,9 +140,9 @@ const PanelGrid = styled.div`
   grid-template-columns: repeat(auto-fit, ${CARD_SIZE}px);
   grid-auto-rows: minmax(${CARD_SIZE}px, auto);
   gap: ${GRID_GAP}px;
-  width: max-content;
   width: 100%;
   align-content: start;
+  justify-content: center;
 `;
 
 /* Widget slot */
@@ -188,7 +185,7 @@ const Slot = styled.div`
   }
 
   /* Wide widgets stack vertically when only one column fits. */
-  @container panel-content (max-width: 519px) {
+  @container panel-content (max-width: 523px) {
     grid-column: span 1;
   }
 `;
@@ -528,7 +525,8 @@ export function Panel({ children }) {
     // Snap to the nearest complete column or row.
     const snappedWidth = snapPanelSize(
       resize.currentWidth ?? resize.startWidth,
-      window.innerWidth
+      window.innerWidth,
+      SCROLLBAR_WIDTH
     );
 
     const snappedHeight = snapPanelSize(

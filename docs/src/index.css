@@ -376,3 +376,34 @@ section{
     scroll-behavior: auto !important;
   }
 }
+
+/* Keep the resizable panel centered while allowing oversized panels to scroll. */
+.liveDemoStage {
+  width: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+  padding: clamp(12px, 3vw, 28px);
+  border: 1px solid #d2d2d2;
+  border-radius: 14px;
+  background: #f3f4f6;
+}
+
+.liveDemoStage::-webkit-scrollbar {
+  display: none;
+}
+
+.liveDemoPanel {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+}
+
+.liveDemoPanel > * {
+  flex-shrink: 0;
+  margin-inline: auto;
+}
+
+/* Documentation paragraph spacing should not enlarge dashboard cards. */
+.liveDemoPanel p {
+  line-height: normal;
+}

@@ -546,9 +546,10 @@ export default function App() {
           </div>
           {/* Panel with all five widgets, themed via inline CSS variables */}
           <div
-            className="w-full overflow-auto rounded-xl container p-7"
+            className="liveDemoStage"
             data-theme={theme}
           >
+            <div className="liveDemoPanel">
             <Panel>
               <Widget>
                 <WidgetShell title="Progress" subtitle="This week">
@@ -593,6 +594,7 @@ export default function App() {
                 </WidgetShell>
               </Widget>
             </Panel>
+            </div>
           </div>
 
           {/* Theme switcher */}
