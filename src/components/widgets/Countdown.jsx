@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Bell, Calendar, Check } from "lucide-react";
+import { Bell, Calendar } from "lucide-react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,20 +113,38 @@ function timeRemaining(target) {
   return { days, hours, mins };
 }
 
-export function Countdown({ launchDate, onNotify }) {
+export function Countdown({ launchDate, onNotify, onComplete }) {
   const [time, setTime] = useState(() => timeRemaining(launchDate));
-
-  const [isTimerSet, setIsTimerSet] = useState(false);
+  const onCompleteRef = useRef(onComplete);
+  const completionRef = useRef({ launchDate, completed: false });
 
   useEffect(() => {
-  if (!isTimerSet) return;
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
-  const id = setInterval(() => {
-    setTime(timeRemaining(launchDate));
-  }, 60000);
+  useEffect(() => {
+    if (completionRef.current.launchDate !== launchDate) {
+      completionRef.current = { launchDate, completed: false };
+    }
 
-  return () => clearInterval(id);
-}, [launchDate, isTimerSet]);
+    let id;
+    function update() {
+      const remaining = new Date(launchDate).getTime() - Date.now();
+      setTime(timeRemaining(launchDate));
+      if (!Number.isFinite(remaining)) return;
+      if (remaining <= 0) {
+        if (!completionRef.current.completed) {
+          completionRef.current.completed = true;
+          onCompleteRef.current?.();
+        }
+        return;
+      }
+      id = setTimeout(update, Math.min(60000, remaining));
+    }
+
+    update();
+    return () => clearTimeout(id);
+  }, [launchDate]);
 
   const dateLabel = new Date(launchDate).toLocaleDateString(undefined, {
     day: "numeric",
@@ -134,11 +152,6 @@ export function Countdown({ launchDate, onNotify }) {
     year: "numeric",
   });
   
-  function handleTimerToggle() {
-    onNotify?.();
-    setIsTimerSet((prev) => !prev);
-  }
-
   return (
     <Wrapper>
       <TimeContainer role="timer" aria-label={`${time.days} days, ${time.hours} hours, ${time.mins} minutes remaining`} >
@@ -163,22 +176,11 @@ export function Countdown({ launchDate, onNotify }) {
         <Strong>{dateLabel}</Strong>
       </DateRow>
 
-      <NotifyButton 
-        type="button"
-        onClick={handleTimerToggle}
-        aria-label={isTimerSet ? "Stop countdown" : "Start countdown"}
-      >
-        {isTimerSet ? (
-          <>
-            <Check size={14} aria-hidden="true" />
-            Countdown Running
-          </>
-        ) : (
-          <>
-            <Bell size={14} aria-hidden="true"/> Notify Me
-          </>
-        )}
-      </NotifyButton>
+      {onNotify && (
+        <NotifyButton type="button" onClick={onNotify}>
+          <Bell size={14} aria-hidden="true"/> Notify Me
+        </NotifyButton>
+      )}
     </Wrapper>
   );
 }
