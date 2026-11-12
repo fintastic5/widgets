@@ -629,7 +629,7 @@ export default function App() {
 
         <section id="panel">
           <div className="sectionHeader">
-            <h2 className="sectionTitle">The Panel System</h2>
+            <h2 className="sectionTitle">Panel System</h2>
             <p className="sectionSubtitle">
               Panel brings widgets together in a resizable, scrollable dashboard. Wrap each
               component in a Widget card and place the cards directly inside Panel. Use
