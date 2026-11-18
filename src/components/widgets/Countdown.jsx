@@ -16,22 +16,18 @@ const Wrapper = styled.div`
 const TimeContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
-  width: 100%;
+  gap: 6px;
+  margin-bottom: 12px;
 `;
 
 const Box = styled.div`
   background: var(--color-countdown-bg);
   border: 1px solid var(--color-countdown-border);
-  height: 100%;
-  width: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 16px 6px;
+  text-align: center;
+  padding: 18px 4px;
   border-radius: 12px;
+  min-width: 56px;
+  margin-top: 2px;
 `;
 
 const BoxValue = styled.div`
@@ -79,6 +75,7 @@ const NotifyButton = styled.button`
   font-size: var(--font-size-body-sm);
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  margin-top: 4px;
 
   &:hover {
     background-color: var(--color-button-hover);
@@ -182,3 +179,4 @@ export function Countdown({ launchDate, onNotify }) {
     </Wrapper>
   );
 }
+
